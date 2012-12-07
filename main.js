@@ -209,8 +209,7 @@ define(function (require, exports, module) {
                 returns : "void"
                 };
         
-        //comString = comString.replace(/^\s*\n/, "");
-        // get rid of * chars
+        // get rid of * chars and space
         comment.body =  comString.replace(/\n\s*\*/g, "\n");
         comment.body = comment.body.replace(/^\s*\n/, "");
         

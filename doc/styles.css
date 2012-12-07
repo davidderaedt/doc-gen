@@ -1,7 +1,7 @@
 body{
     
     background-color:#EEE;
-    font-family:"Lucida Grande";
+    font-family: "Arial", sans-serif;
     color:#222;    
     font-size:0.8em;
 }
@@ -39,7 +39,7 @@ aside {
 
 ul{
     list-style-type: none;
-    padding: 0px;
+    padding: 4px;
     margin: 0px;
 }
 .main{
