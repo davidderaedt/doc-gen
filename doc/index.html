@@ -982,6 +982,12 @@
 <h1>NativeFileSystem</h1>
 <p class="path">file/NativeFileSystem.js</p>
 <p></p>
+<pre><code><span>public</span><h2>Class: showOpenDialog</h2></code></pre><p> showOpenDialog<br><br> @param {bool} allowMultipleSelection<br> @param {bool} chooseDirectories<br> @param {string} title<br> @param {string} initialPath<br> @param {Array.} fileTypes<br> @param {!function(Array.)} successCallback<br> @param {!function(number)} errorCallback (TODO #2057: should this pass a FileError?)<br> @constructor<br>         </p>
+<hr>
+<pre><code><span>public void</span><h2>requestNativeFileSystem()</h2></code></pre><p> requestNativeFileSystem<br><br> @param {!string} path<br> @param {!function(DirectoryEntry)} successCallback<br> @param {!function(number)} errorCallback (TODO #2057: should pass a FileError)<br>         </p>
+<hr>
+<pre><code><span>public number</span><h2>_nativeToFileError()</h2></code></pre><p> Converts a brackets.fs.ERR_* error code to a FileError.* error code<br> @param {number} nativeErr<br> @return {number}<br>         </p>
+<hr>
 <pre><code><span>public void</span><h2>NativeFileSystem.Encodings</h2></code></pre><p> class: Encodings<br><br> Static class that contains constants for file<br> encoding types.<br>     </p>
 <hr>
 <pre><code><span>public void</span><h2>NativeFileSystem._FSEncodings</h2></code></pre><p> class: _FSEncodings<br><br> Internal static class that contains constants for file<br> encoding types to be used by internal file system<br> implimentation.<br>    </p>

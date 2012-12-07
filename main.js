@@ -21,23 +21,26 @@ define(function (require, exports, module) {
     var ProjectManager      = brackets.getModule("project/ProjectManager");  
     var FileUtils           = brackets.getModule("file/FileUtils");      
     var NativeFileSystem    = brackets.getModule("file/NativeFileSystem").NativeFileSystem;    
-    
+    var codeParser          = require("codeParser");
     
     var COMMAND_ID  = "docgen.gendoc"; 
     var MENU_NAME   = "Generate docs";
 
     var projectFolder = ProjectManager.getProjectRoot().fullPath;    
     var templateTxt;
-    // TODO expose in config file ?
-    var excludedDirectories = ["extensions", "thirdparty", "nls"];
-    var totalFiles; // used for stats
-    var totalEntries; 
-    var totalUnprocessed; // used for stats
     
-    // tmp locations
-    // TODO determine a way to determine the location of those (config file?)
+    // Options
+    // TODO expose in a config file ?
+    var excludedDirectories = ["extensions", "thirdparty", "nls"];
+    var ignorePrivate   = false;
     var templatePath    = "extensions/dev/doc-gen/doc/template.txt";
     var outputPath      = "extensions/dev/doc-gen/doc/index.html";
+    
+    // the following are used for stats
+    var totalFiles; 
+    var totalEntries; 
+    var totalUnprocessed;
+    
     
     
     
@@ -73,9 +76,9 @@ define(function (require, exports, module) {
     function parseFiles() {
         
         var documentedFiles = [];
-        totalUnprocessed = 0 ;
+        totalUnprocessed = 0;
         totalEntries = 0;
-        totalFiles = 0 ;
+        totalFiles = 0;
         
         StatusBar.showBusyIndicator(true);
         
@@ -92,8 +95,6 @@ define(function (require, exports, module) {
                     var relPath = fileInfo.fullPath.split(projectFolder)[1];
                     var mainDir = relPath.split("/")[0];
                     
-
-                                        
                     if (ext != ".js" || shouldExclude(mainDir)) {
                         result.resolve();
                         return result.promise();
@@ -102,7 +103,7 @@ define(function (require, exports, module) {
                     DocumentManager.getDocumentForPath(fileInfo.fullPath)
                         .done(function (doc) {
                             
-                            totalFiles++
+                            totalFiles++;
                             //console.log("PARSING FILE:", doc);
                             
                             var docFileObj = parseFileContents(filename, doc.getText());
@@ -144,13 +145,13 @@ define(function (require, exports, module) {
     function shouldExclude(dir) {
         var i;
         for (i = 0; i < excludedDirectories.length; i++) {
-            if(dir == excludedDirectories[i]) return true;
+            if (dir == excludedDirectories[i]) return true;
         }
         return false;
     }    
             
     /*
-        Mainly inspired by Dox.js
+        Parsing logic originally inspired by Dox.js
         https://github.com/visionmedia/dox/
     */
     function parseFileContents(filename, src) {
@@ -172,11 +173,29 @@ define(function (require, exports, module) {
                 i += 3;
                 cstart = i;
                 inComment = true;
-            } else if (inComment && src[i] == "*" && src[i + 1] == "/") {
+            } 
+            else if (inComment && src[i] == "*" && src[i + 1] == "/") {
+
+                inComment = false;                
                 comment = src.slice(cstart, i);
+
+                i += 2;
+                                                                
+                var sourceCode = src.slice(i);
                 
-                // find out what we're trying to comment
-                entry = parseCodeContext(src.slice(i + 2));
+                // remove whitespace
+                sourceCode = sourceCode.replace(/^\s*/m, "");
+                var firstLine = sourceCode.split("\n")[0];
+                
+                // ignore annotations if it's before another comment
+                if (sourceCode.indexOf("/*") == 0 || sourceCode.indexOf("//") == 0) {
+                    totalUnprocessed ++;
+                    console.log(filename, "Ignoring annotation before comment:", [firstLine]);
+                    continue;
+                }
+                
+                // Analyze what we're trying to comment                
+                entry = codeParser.parseCode(sourceCode);
                 
                 if (entry) {
                     
@@ -190,8 +209,11 @@ define(function (require, exports, module) {
                     fileobj.entries.push(entry);
                 }
                 
-                inComment = false;
-                i += 2;
+                else {
+                    console.log(filename, "Unable to process context:", [firstLine]);
+                    totalUnprocessed ++;
+                }
+                
             }
             
         }
@@ -207,14 +229,15 @@ define(function (require, exports, module) {
                 isClass : false,
                 access : "public",
                 returns : "void"
-                };
+            };
         
         // get rid of * chars and space
         comment.body =  comString.replace(/\n\s*\*/g, "\n");
         comment.body = comment.body.replace(/^\s*\n/, "");
         
-        if(comString.indexOf("@private")>=0) comment.access = "private";
-        if(comString.indexOf("@constructor")>=0) comment.isClass = true;
+        if (comString.indexOf("@private") >= 0) comment.access = "private";
+        if (comString.indexOf("@constructor") >= 0) comment.isClass = true;
+        
         if (/@return {(\w+)}/gm.exec(comString)) {
             comment.returns = RegExp.$1;
         }         
@@ -230,96 +253,6 @@ define(function (require, exports, module) {
         return comment;
     }
 
-    
-    /*
-        Original regexps found in Dox.js
-        https://github.com/visionmedia/dox/
-    */    
-    function parseCodeContext(str) {
-        
-        //removing whitespace
-        str = str.replace(/^\s*/m, "");
-        //str = str.split('\n')[0];
-        
-        // function statement
-        if (/^function (\w+) *\(/.exec(str)) {
-            return {
-                type: 'function',
-                name: RegExp.$1,
-                string: RegExp.$1 + '()'
-            };
-        // define
-        } else if (/^define/.exec(str)) {
-            return {
-                type: 'define', 
-                name: RegExp.$1,
-                string: RegExp.$1 + '()'
-            }; 
-        // function expression 
-        } else if (/^var *(\w+) *= *function/.exec(str)) {
-            return {
-                type: 'function',
-                name: RegExp.$1,
-                string: RegExp.$1 + '()'
-            };
-          // prototype method
-        } else if (/^(\w+)\.prototype\.(\w+) *= *function/.exec(str)) {
-            return {
-                type: 'prototype-method',
-                constructor: RegExp.$1,
-                cons: RegExp.$1,
-                name: RegExp.$2,
-                string: RegExp.$1 + '.prototype.' + RegExp.$2 + '()'
-            };
-        // prototype property
-        } else if (/^(\w+)\.prototype\.(\w+) *= *([^\n;]+)/.exec(str)) {
-            return {
-                type: 'prototype-property',
-                constructor: RegExp.$1,
-                cons: RegExp.$1,
-                name: RegExp.$2,
-                value: RegExp.$3,
-                string: RegExp.$1 + '.prototype' + RegExp.$2
-            };
-        // method
-        } else if (/^([\w.]+)\.(\w+) *= *function/.exec(str)) {
-            return {
-                type: 'method',
-                receiver: RegExp.$1,
-                name: RegExp.$2,
-                string: RegExp.$1 + '.' + RegExp.$2 + '()'
-            };
-        // property
-        } else if (/^(\w+)\.(\w+) *= *([^\n;]+)/.exec(str)) {
-            return {
-                type: 'property',
-                receiver: RegExp.$1,
-                name: RegExp.$2,
-                value: RegExp.$3,
-                string: RegExp.$1 + '.' + RegExp.$2
-            };
-        // declaration
-        } else if (/^var +([\$\w]+) *= *([^\n;]+)/.exec(str)) {
-            return {
-                type: 'var-declaration',
-                name: RegExp.$1,
-                value: RegExp.$2,
-                string: RegExp.$1
-            };
-        } else if (/^var +([\$\w]+) *;/.exec(str)) {
-            return {
-                type: 'var-declaration*',
-                name: RegExp.$1,
-                value: "null",
-                string: RegExp.$1
-            };
-        } else {
-            totalUnprocessed ++;
-            console.log("Unable to process context:", [str]);
-            return null;
-        }
-    }
-                    
     
     function createtxtFrom(results) {
         
@@ -356,11 +289,16 @@ define(function (require, exports, module) {
         
         var i;
         for (i = 0; i < fileObj.entries.length; i++) {
+            
             var entry = fileObj.entries[i];
+            
             if (entry.type == "define") continue;
+            
+            if (ignorePrivate && entry.comment.access == "private") continue;
+            
             if (entry.type == "prototype-method") entry.name = entry.cons + "." + entry.name;
             
-            if(entry.comment.isClass) {
+            if (entry.comment.isClass) {
                 txt += "<pre><code><span>" + entry.comment.access + "</span><h2>Class: " + entry.name + "</h2></code></pre>";
             }
             else { 
