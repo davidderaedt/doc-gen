@@ -1,0 +1,49 @@
+body{
+    
+    background-color:#EEE;
+    font-family:"Lucida Grande";
+    color:#222;    
+    font-size:0.8em;
+}
+
+article h1{    
+    font-size:2em;
+}
+article h2{    
+    font-size:1.5em;
+}
+
+.path {
+    font-style:italic;    
+}
+
+header {
+    background-color:#999;
+    padding:6px;
+}
+
+header img{
+    float:left;
+}
+
+header h1{
+    font-size:1.2em;
+    font-weight:bold;        
+}
+
+aside {
+    float:left;
+    background-color:#FFF;
+    width:250px;
+}
+
+ul{
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+.main{
+    margin:10px;
+    float:left;
+    width:650px;
+}
