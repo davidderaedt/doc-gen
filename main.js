@@ -21,7 +21,6 @@ define(function (require, exports, module) {
     var ProjectManager      = brackets.getModule("project/ProjectManager");  
     var FileUtils           = brackets.getModule("file/FileUtils");      
     var NativeFileSystem    = brackets.getModule("file/NativeFileSystem").NativeFileSystem;    
-    var codeParser          = require("codeParser");
     var jsDocParser         = require("JSDocParser");
     var htmlDocExporter     = require("htmlDocExporter");
     
@@ -32,50 +31,47 @@ define(function (require, exports, module) {
     var templateTxt;
     
     // Options
-    // TODO expose in a config file ?
-    var excludedDirectories = ["extensions", "thirdparty", "nls"];
-    var ignorePrivate   = false;
-    var templatePath    = "extensions/dev/doc-gen/doc/template.txt";
-    var outputPath      = "extensions/dev/doc-gen/doc/index.html";
+    // TODO expose in a config file
+    var options = {
+        excludedDirectories : ["extensions", "thirdparty", "nls"],
+        ignorePrivate   : false,
+        templatePath    : "extensions/dev/doc-gen/doc/template.txt",
+        outputPath      : "extensions/dev/doc-gen/doc/index.html"
+    
+    };
     
     // the following are used for stats
     var totalFiles; 
     var totalEntries; 
     var totalUnprocessed;
     
-    
-    
-    
-    function loadTemplate() {
         
-        //var projectFolder = ProjectManager.getProjectRoot().fullPath;
-        var templateFile = new NativeFileSystem.FileEntry(projectFolder + templatePath);       
+    
+    function executeGendocCommand() {
+                
+        //console.log("Loading Template:" + options.templatePath);
+        
+        var templateFile = new NativeFileSystem.FileEntry(projectFolder + options.templatePath);       
         
         FileUtils.readAsText(templateFile)
             .done(function (rawText, readTimestamp) {
+                
                 templateTxt = rawText;
+                
+                parseProject();
+                
             })
             .fail(function (err) {
                 console.log(err);
-            });          
-    }
-    
-    
-    
-    function doMyCommand() {
-        
-        if (templateTxt === null) {
-            console.log("No documentation template found. Aborting.");            
-            return;
-        }
-        
-        console.log("Generating documentation...");
-        
-        parseProject();     
+                console.log("No documentation template found. Aborting.");            
+            });
+                    
     }
     
     
     function parseProject() {
+        
+        //console.log("Parsing Project");
         
         var documentedFiles = [];
         totalUnprocessed = 0;
@@ -108,13 +104,26 @@ define(function (require, exports, module) {
                             totalFiles++;
                             //console.log("PARSING FILE:", doc);
                             
-                            var docFileObj = parseFileContents(filename, doc.getText());
+                            var docFileObj = {};
+                            docFileObj.entries = jsDocParser.parseFileContents(doc.getText());
                             docFileObj.path = relativePath;
-                            docFileObj.name = filename.split(".")[0];
+                            docFileObj.filename = filename;
+                            docFileObj.desc = "";
+                            docFileObj.isModule = false;
+                            docFileObj.moduleName = filename.split(".")[0];
+                            
+                            var moduleEntry = getModuleEntry(docFileObj.entries);
+                            
+                            if (moduleEntry) {
+                                docFileObj.isModule = true;
+                                docFileObj.desc = moduleEntry.comment.body;
+                            }
+                            
                             
                             documentedFiles.push(docFileObj);
                             
                             totalEntries += docFileObj.entries.length;
+                            totalUnprocessed += jsDocParser.getUnprocessedCount();
                             
                             result.resolve();
                         })
@@ -128,9 +137,9 @@ define(function (require, exports, module) {
                 })
                     .done(function () {
                         
-                        var txt = htmlDocExporter.getHTMLDocFor(documentedFiles, templateTxt, ignorePrivate);
+                        var txt = htmlDocExporter.getHTMLDocFor(documentedFiles, templateTxt, options.ignorePrivate);
                         
-                        createTxtFile(txt, projectFolder + outputPath);
+                        createTxtFile(txt, projectFolder + options.outputPath);
                         
                         console.log(documentedFiles.length + " source files documented out of " + totalFiles + " files in total.");
                         console.log(totalEntries + " entries generated.");
@@ -148,85 +157,22 @@ define(function (require, exports, module) {
 
     function shouldExclude(dir) {
         var i;
-        for (i = 0; i < excludedDirectories.length; i++) {
-            if (dir == excludedDirectories[i]) return true;
+        for (i = 0; i < options.excludedDirectories.length; i++) {
+            if (dir == options.excludedDirectories[i]) return true;
         }
         return false;
     }    
             
-    /*
-        Parsing logic originally inspired by Dox.js
-        https://github.com/visionmedia/dox/
-    */
-    function parseFileContents(filename, src) {
-        
-        var fileobj = {
-            entries : [],
-            desc : "",
-            filename : filename
-        };
-            
-        var comment = "";
-        var entry;
-        var inComment = false;
-        var cstart;
-        
-        for (var i = 0, len = src.length; i < len; ++i) {
-            
-            if (!inComment && src[i] == "/" && src[i + 1] == "*" && src[i + 2] == "*") {
-                i += 3;
-                cstart = i;
-                inComment = true;
-            } 
-            else if (inComment && src[i] == "*" && src[i + 1] == "/") {
-
-                inComment = false;                
-                comment = src.slice(cstart, i);
-
-                i += 2;
-                                                                
-                var sourceCode = src.slice(i);
-                
-                // remove whitespace
-                sourceCode = sourceCode.replace(/^\s*/m, "");
-                // useful for debugging
-                var firstLine = sourceCode.split("\n")[0];
-                
-                // ignore annotations if it's before another comment
-                if (sourceCode.indexOf("/*") === 0 || sourceCode.indexOf("//") === 0) {
-                    totalUnprocessed ++;
-                    console.log(filename, "Ignoring annotation before comment:", [firstLine]);
-                    continue;
-                }
-                
-                // Analyze what we're trying to comment
-                entry = codeParser.parseCode(sourceCode);
-                
-                if (entry) {
-                    
-                    // make sense of the actual comment
-                    entry.comment = jsDocParser.parseAnnotation(comment);
-                    
-                    // Comments before define statements describe the whole module
-                    if (entry.type == "define") {
-                        fileobj.desc = entry.comment.body;
-                    }
-                    fileobj.entries.push(entry);
-                }
-                
-                else {
-                    console.log(filename, "Unable to process context:", [firstLine]);
-                    totalUnprocessed ++;
-                }
-                
-            }
-            
-        }
-        
-        return fileobj;                     
-        
-    }
     
+    
+    function getModuleEntry(entries) {
+        var i;
+        for (i = 0; i < entries.length; i++) {
+            var entry = entries[i];
+            if (entry.type == "module") return entry;
+        }
+        return null;
+    }
     
     
     function createTxtFile(content, destPath) {
@@ -243,11 +189,8 @@ define(function (require, exports, module) {
     }
 
     
-    // Yes, we load the template at startup.
-    // Not sure this such a good idea though.
-    loadTemplate();
 
-    CommandManager.register(MENU_NAME, COMMAND_ID, doMyCommand);
+    CommandManager.register(MENU_NAME, COMMAND_ID, executeGendocCommand);
     
     // I'd rather have it in a "Project" Menu...
     var menu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);

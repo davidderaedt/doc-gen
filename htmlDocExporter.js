@@ -25,7 +25,7 @@ define(function (require, exports, module) {
         for (i = 0; i < results.length; i++) {
             var f = results[i];
             mainStr += getHTMLForFile(f, ignorePrivate);
-            menuStr += "<li><a href=\"#" + f.name + "\">" + f.name + "</a></li>" + le;
+            menuStr += "<li><a href=\"#" + f.moduleName + "\">" + f.moduleName + "</a></li>" + le;
         }
 
         txt = txt.replace("{menuStr}", menuStr);
@@ -36,15 +36,15 @@ define(function (require, exports, module) {
     }
     
     
-    // This could use templates too...
+    // This should use templates too...
     function getHTMLForFile(fileObj, ignorePrivate) {
         var le = "\n";
         
         var txt = "";
         
-        txt += "<a name=\"" + fileObj.name + "\"></a><article>" + le;
-        txt += "<p class=\"path\">" + fileObj.path + "</p>" + le;                
-        txt += "<h1>" + fileObj.name + "</h1>" + le;
+        txt += "<a name=\"" + fileObj.moduleName + "\"></a><article>" + le;
+        txt += "<h1>" + fileObj.moduleName + "</h1>" + le;
+        txt += "<p class=\"path\">" + fileObj.path + "</p>" + le;        
         txt += "<p>" + toHTML(fileObj.desc) + "</p>" + le;
         
         var i;
@@ -52,7 +52,7 @@ define(function (require, exports, module) {
             
             var entry = fileObj.entries[i];
             
-            if (entry.type == "define") continue;
+            if (entry.type == "module") continue;
             
             if (ignorePrivate && entry.comment.access == "private") continue;
             

@@ -108,22 +108,22 @@
 	<div class="main">
     
 		<a name="brackets"></a><article>
-<p class="path">brackets.js</p>
 <h1>brackets</h1>
+<p class="path">brackets.js</p>
 <p> brackets is the root of the Brackets codebase. This file pulls in all other modules as<br> dependencies (or dependencies thereof), initializes the UI, and binds global menus & keyboard<br> shortcuts to their Commands.<br><br> TODO: (issue #264) break out the definition of brackets into a separate module from the application controller logic<br><br> Unlike other modules, this one can be accessed without an explicit require() because it exposes<br> a global object, window.brackets.<br> </p>
 </article>
 <hr>
 <hr>
 <a name="strings"></a><article>
-<p class="path">strings.js</p>
 <h1>strings</h1>
+<p class="path">strings.js</p>
 <p> This file provides the interface to user visible strings in Brackets. Code that needs<br> to display strings should should load this module by calling var Strings = require("strings").<br> The i18n plugin will dynamically load the strings for the right locale and populate<br> the exports variable. See src\nls\strings.js for the master file of English strings.<br> </p>
 </article>
 <hr>
 <hr>
 <a name="CommandManager"></a><article>
-<p class="path">command/CommandManager.js</p>
 <h1>CommandManager</h1>
+<p class="path">command/CommandManager.js</p>
 <p> Manages global application commands that can be called from menu items, key bindings, or subparts<br> of the application.<br>  </p>
 <pre><code><h2>_commands</h2></code></pre><p><strong>return type: </strong><code>Object.</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -197,15 +197,15 @@
 <hr>
 <hr>
 <a name="Commands"></a><article>
-<p class="path">command/Commands.js</p>
 <h1>Commands</h1>
+<p class="path">command/Commands.js</p>
 <p></p>
 </article>
 <hr>
 <hr>
 <a name="KeyBindingManager"></a><article>
-<p class="path">command/KeyBindingManager.js</p>
 <h1>KeyBindingManager</h1>
+<p class="path">command/KeyBindingManager.js</p>
 <p> Manages the mapping of keyboard inputs to commands.<br> </p>
 <pre><code><h2>_keyMap</h2></code></pre><p><strong>return type: </strong><code>!Object.}</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -283,8 +283,8 @@
 <hr>
 <hr>
 <a name="Menus"></a><article>
-<p class="path">command/Menus.js</p>
 <h1>Menus</h1>
+<p class="path">command/Menus.js</p>
 <p></p>
 <pre><code><h2>AppMenuBar</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -414,15 +414,15 @@
 <hr>
 <hr>
 <a name="DebugCommandHandlers"></a><article>
-<p class="path">debug/DebugCommandHandlers.js</p>
 <h1>DebugCommandHandlers</h1>
+<p class="path">debug/DebugCommandHandlers.js</p>
 <p></p>
 </article>
 <hr>
 <hr>
 <a name="ChangedDocumentTracker"></a><article>
-<p class="path">document/ChangedDocumentTracker.js</p>
 <h1>ChangedDocumentTracker</h1>
+<p class="path">document/ChangedDocumentTracker.js</p>
 <p> Defines a ChangedDocumentTracker class to monitor changes to files in the current project.<br> </p>
 <pre><code><h2>ChangedDocumentTracker ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -460,8 +460,8 @@
 <hr>
 <hr>
 <a name="DocumentCommandHandlers"></a><article>
-<p class="path">document/DocumentCommandHandlers.js</p>
 <h1>DocumentCommandHandlers</h1>
+<p class="path">document/DocumentCommandHandlers.js</p>
 <p></p>
 <pre><code><h2>_$title</h2></code></pre><p><strong>return type: </strong><code>jQueryObject} Container for label shown above editor; must be an inline element </code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -599,8 +599,8 @@
 <hr>
 <hr>
 <a name="DocumentManager"></a><article>
-<p class="path">document/DocumentManager.js</p>
 <h1>DocumentManager</h1>
+<p class="path">document/DocumentManager.js</p>
 <p> DocumentManager maintains a list of currently 'open' Documents. It also owns the list of files in<br> the working set, and the notion of which Document is currently shown in the main editor UI area.<br> <br> Document is the model for a file's contents; it dispatches events whenever those contents change.<br> To transiently inspect a file's content, simply get a Document and call getText() on it. However,<br> to be notified of Document changes or to modify a Document, you MUST call addRef() to ensure the<br> Document instance 'stays alive' and is shared by all other who read/modify that file. ('Open'<br> Documents are all Documents that are 'kept alive', i.e. have ref count > 0).<br><br> To get a Document, call getDocumentForPath(); never new up a Document yourself.<br> <br> Secretly, a Document may use an Editor instance to act as the model for its internal state. (This<br> is unavoidable because CodeMirror does not separate its model from its UI). Documents are not<br> modifiable until they have a backing 'master Editor'. Creation of the backing Editor is owned by<br> EditorManager. A Document only gets a backing Editor if it becomes the currentDocument, or if edits<br> occur in any Editor (inline or full-sized) bound to the Document; there is currently no other way<br> to ensure a Document is modifiable.<br><br> A non-modifiable Document may still dispatch change notifications, if the Document was changed<br> externally on disk.<br><br> Aside from the text content, Document tracks a few pieces of metadata - notably, whether there are<br> any unsaved changes.<br><br> This module dispatches several events:<br><br>    - dirtyFlagChange -- When any Document's isDirty flag changes. The 2nd arg to the listener is the<br>      Document whose flag changed.<br>    - documentSaved -- When a Document's changes have been saved. The 2nd arg to the listener is the <br>      Document that has been saved.<br><br>    - currentDocumentChange -- When the value of getCurrentDocument() changes.<br><br>    To listen for working set changes, you must listen to *all* of these events:<br>    - workingSetAdd -- When a file is added to the working set (see getWorkingSet()). The 2nd arg<br>      to the listener is the added FileEntry.<br>    - workingSetAddList -- When multiple files are added to the working set (e.g. project open, multiple file open).<br>      The 2nd arg to the listener is the array of added FileEntry objects.<br>    - workingSetRemove -- When a file is removed from the working set (see getWorkingSet()). The<br>      2nd arg to the listener is the removed FileEntry.<br>    - workingSetRemoveList -- When multiple files are removed from the working set (e.g. project close).<br>      The 2nd arg to the listener is the array of removed FileEntry objects.<br>    - workingSetReorder -- When the indexes of 2 files are swapped. Listener receives no arguments.<br>    - workingSetSort -- When the workingSet array is sorted. Listener receives no arguments.<br>      TODO (#2076): combine workingSetSort & workingSetReorder since they convey nearly identical information.<br><br>    - fileNameChange -- When the name of a file or folder has changed. The 2nd arg is the old name.<br>      The 3rd arg is the new name.<br><br> These are jQuery events, so to listen for them you do something like this:<br>    $(DocumentManager).on("eventname", handler);<br> </p>
 <pre><code><h2>PREFERENCES_CLIENT_ID</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -846,8 +846,8 @@
 <hr>
 <hr>
 <a name="TextRange"></a><article>
-<p class="path">document/TextRange.js</p>
 <h1>TextRange</h1>
+<p class="path">document/TextRange.js</p>
 <p> </p>
 <pre><code><h2>TextRange Class</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -881,8 +881,8 @@
 <hr>
 <hr>
 <a name="CodeHintManager"></a><article>
-<p class="path">editor/CodeHintManager.js</p>
 <h1>CodeHintManager</h1>
+<p class="path">editor/CodeHintManager.js</p>
 <p></p>
 <pre><code><h2>CodeHintList Class</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -964,8 +964,8 @@
 <hr>
 <hr>
 <a name="CSSInlineEditor"></a><article>
-<p class="path">editor/CSSInlineEditor.js</p>
 <h1>CSSInlineEditor</h1>
+<p class="path">editor/CSSInlineEditor.js</p>
 <p></p>
 <pre><code><h2>_getSelectorName (editor, pos)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -979,8 +979,8 @@
 <hr>
 <hr>
 <a name="Editor"></a><article>
-<p class="path">editor/Editor.js</p>
 <h1>Editor</h1>
+<p class="path">editor/Editor.js</p>
 <p> Editor is a 1-to-1 wrapper for a CodeMirror editor instance. It layers on Brackets-specific<br> functionality and provides APIs that cleanly pass through the bits of CodeMirror that the rest<br> of our codebase may want to interact with. An Editor is always backed by a Document, and stays<br> in sync with its content; because Editor keeps the Document alive, it's important to always<br> destroy() an Editor that's going away so it can release its Document ref.<br><br> For now, there's a distinction between the "master" Editor for a Document - which secretly acts<br> as the Document's internal model of the text state - and the multitude of "slave" secondary Editors<br> which, via Document, sync their changes to and from that master.<br><br> For now, direct access to the underlying CodeMirror object is still possible via _codeMirror --<br> but this is considered deprecated and may go away.<br>  <br> The Editor object dispatches the following events:<br>    - keyEvent -- When any key event happens in the editor (whether it changes the text or not).<br>          Event handlers are passed ({Editor}, {KeyboardEvent}). The 2nd arg is the raw DOM event.<br>          Note: most listeners will only want to respond when event.type === "keypress".<br>    - cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.<br>          Note: do not listen to this in order to be generally informed of edits--listen to the<br>          "change" event on Document instead.<br>    - scroll -- When the editor is scrolled, either by user action or programmatically.<br>    - lostContent -- When the backing Document changes in such a way that this Editor is no longer<br>          able to display accurate text. This occurs if the Document's file is deleted, or in certain<br>          Document->editor syncing edge cases that we do not yet support (the latter cause will<br>          eventually go away). <br><br> The Editor also dispatches "change" events internally, but you should listen for those on<br> Documents, not Editors.<br><br> These are jQuery events, so to listen for them you do something like this:<br>    $(editorInstance).on("eventname", handler);<br> </p>
 <pre><code><h2>_prefs</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -1238,8 +1238,8 @@
 <hr>
 <hr>
 <a name="EditorCommandHandlers"></a><article>
-<p class="path">editor/EditorCommandHandlers.js</p>
 <h1>EditorCommandHandlers</h1>
+<p class="path">editor/EditorCommandHandlers.js</p>
 <p> Text-editing commands that apply to whichever Editor is currently focused<br> </p>
 <pre><code><h2>DIRECTION_UP</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -1309,8 +1309,8 @@
 <hr>
 <hr>
 <a name="EditorManager"></a><article>
-<p class="path">editor/EditorManager.js</p>
 <h1>EditorManager</h1>
+<p class="path">editor/EditorManager.js</p>
 <p> EditorManager owns the UI for the editor area. This essentially mirrors the 'current document'<br> property maintained by DocumentManager's model.<br><br> Note that there is a little bit of unusual overlap between EditorManager and DocumentManager:<br> because the Document state is actually stored in the CodeMirror editor UI, DocumentManager is<br> not a pure headless model. Each Document encapsulates an editor instance, and thus EditorManager<br> must have some knowledge about Document's internal state (we access its _editor property).<br><br> This module dispatches the following events:<br>    - activeEditorChange --  Fires after the active editor (full or inline) changes and size/visibility<br>                             are complete. Doesn't fire when editor temporarily loses focus to a non-editor<br>                             control (e.g. search toolbar or modal dialog, or window deactivation). Does<br>                             fire when focus moves between inline editor and its full-size container.<br>                             This event tracks getActiveEditor() changes, while DocumentManager's<br>                             currentDocumentChange tracks getCurrentFullEditor() changes.<br>                             The 2nd arg to the listener is which Editor became active; the 3rd arg is<br>                             which Editor is deactivated as a result. Either one may be null.<br>                             NOTE (#1257): getFocusedEditor() sometimes lags behind this event. Listeners<br>                             should use the arguments or call getActiveEditor() to reliably see which Editor <br>                             just gained focus.<br> </p>
 <pre><code><h2>_editorHolder</h2></code></pre><p><strong>return type: </strong><code>jQueryObject} DOM node that contains all editors (visible and hidden alike) </code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -1436,8 +1436,8 @@
 <hr>
 <hr>
 <a name="EditorUtils"></a><article>
-<p class="path">editor/EditorUtils.js</p>
 <h1>EditorUtils</h1>
+<p class="path">editor/EditorUtils.js</p>
 <p> Set of utilites for working with the code editor<br> </p>
 <pre><code><h2>getModeFromFileExtension (fileUrl)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -1447,8 +1447,8 @@
 <hr>
 <hr>
 <a name="InlineTextEditor"></a><article>
-<p class="path">editor/InlineTextEditor.js</p>
 <h1>InlineTextEditor</h1>
+<p class="path">editor/InlineTextEditor.js</p>
 <p></p>
 <pre><code><h2>_editorHolderWidth ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -1502,8 +1502,8 @@
 <hr>
 <hr>
 <a name="InlineWidget"></a><article>
-<p class="path">editor/InlineWidget.js</p>
 <h1>InlineWidget</h1>
+<p class="path">editor/InlineWidget.js</p>
 <p></p>
 <pre><code><h2>InlineWidget Class</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -1541,8 +1541,8 @@
 <hr>
 <hr>
 <a name="MultiRangeInlineEditor"></a><article>
-<p class="path">editor/MultiRangeInlineEditor.js</p>
 <h1>MultiRangeInlineEditor</h1>
+<p class="path">editor/MultiRangeInlineEditor.js</p>
 <p> An inline editor for displaying and editing multiple text ranges. Each range corresponds to a <br> contiguous set of lines in a file. <br> <br> In the current implementation, only one range is visible at a time. A list on the right side<br> of the editor allows the user to select which range is visible. <br><br> This module does not dispatch any events.<br> </p>
 <pre><code><h2>_parseStyleSize ($target, styleName)</h2></code></pre><p><strong>return type: </strong><code>number</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -1636,8 +1636,8 @@
 <hr>
 <hr>
 <a name="FileUtils"></a><article>
-<p class="path">file/FileUtils.js</p>
 <h1>FileUtils</h1>
+<p class="path">file/FileUtils.js</p>
 <p> Set of utilites for working with files and text content.<br> </p>
 <pre><code><h2>readAsText (fileEntry)</h2></code></pre><p><strong>return type: </strong><code>$.Promise</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -1703,8 +1703,8 @@
 <hr>
 <hr>
 <a name="NativeFileSystem"></a><article>
-<p class="path">file/NativeFileSystem.js</p>
 <h1>NativeFileSystem</h1>
+<p class="path">file/NativeFileSystem.js</p>
 <p></p>
 <pre><code><h2>showOpenDialog Class</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -1810,15 +1810,15 @@
 <hr>
 <hr>
 <a name="HelpCommandHandlers"></a><article>
-<p class="path">help/HelpCommandHandlers.js</p>
 <h1>HelpCommandHandlers</h1>
+<p class="path">help/HelpCommandHandlers.js</p>
 <p></p>
 </article>
 <hr>
 <hr>
 <a name="CSSUtils"></a><article>
-<p class="path">language/CSSUtils.js</p>
 <h1>CSSUtils</h1>
+<p class="path">language/CSSUtils.js</p>
 <p> Set of utilities for simple parsing of CSS text.<br> </p>
 <pre><code><h2>extractAllSelectors (text)</h2></code></pre><p><strong>return type: </strong><code>Array.</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -1852,8 +1852,8 @@
 <hr>
 <hr>
 <a name="HTMLUtils"></a><article>
-<p class="path">language/HTMLUtils.js</p>
 <h1>HTMLUtils</h1>
+<p class="path">language/HTMLUtils.js</p>
 <p></p>
 <pre><code><h2>_extractAttrVal (ctx)</h2></code></pre><p><strong>return type: </strong><code> val:{string}, offset:{number}</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -1887,8 +1887,8 @@
 <hr>
 <hr>
 <a name="JSLintUtils"></a><article>
-<p class="path">language/JSLintUtils.js</p>
 <h1>JSLintUtils</h1>
+<p class="path">language/JSLintUtils.js</p>
 <p> Allows JSLint to run on the current document and report results in a UI panel.<br><br> </p>
 <pre><code><h2>_prefs</h2></code></pre><p><strong>return type: </strong><code>PreferenceStorage}</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -1922,8 +1922,8 @@
 <hr>
 <hr>
 <a name="JSUtils"></a><article>
-<p class="path">language/JSUtils.js</p>
 <h1>JSUtils</h1>
+<p class="path">language/JSUtils.js</p>
 <p> Set of utilities for simple parsing of JS text.<br> </p>
 <pre><code><h2>_changedDocumentTracker</h2></code></pre><p><strong>return type: </strong><code>ChangedDocumentTracker}</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -1973,8 +1973,8 @@
 <hr>
 <hr>
 <a name="LiveDevelopment"></a><article>
-<p class="path">LiveDevelopment/LiveDevelopment.js</p>
 <h1>LiveDevelopment</h1>
+<p class="path">LiveDevelopment/LiveDevelopment.js</p>
 <p> LiveDevelopment manages the Inspector, all Agents, and the active LiveDocument<br><br> # STARTING<br><br> To start a session call `open`. This will read the currentDocument from brackets,<br> launch the LiveBrowser (currently Chrome) with the remote debugger port open,<br> establish the Inspector connection to the remote debugger, and finally load all<br> agents.<br><br> # STOPPING<br><br> To stop a session call `close`. This will close the active browser window,<br> disconnect the Inspector, unload all agents, and clean up.<br><br> # STATUS<br><br> Status updates are dispatched as `statusChange` jQuery events. The status<br> codes are:<br><br> -1: Error<br>  0: Inactive<br>  1: Connecting to the remote debugger<br>  2: Loading agents<br>  3: Active<br>  4: Out of sync<br> </p>
 <pre><code><h2>_urlToPath (url)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2092,8 +2092,8 @@
 <hr>
 <hr>
 <a name="main"></a><article>
-<p class="path">LiveDevelopment/main.js</p>
 <h1>main</h1>
+<p class="path">LiveDevelopment/main.js</p>
 <p> main integrates LiveDevelopment into Brackets<br><br> This module creates two menu items:<br><br>  "Go Live": open or close a Live Development session and visualize the status<br>  "Highlight": toggle source highlighting<br><br> @require DocumentManager<br> </p>
 <pre><code><h2>_loadStyles ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2127,8 +2127,8 @@
 <hr>
 <hr>
 <a name="PreferencesDialogs"></a><article>
-<p class="path">preferences/PreferencesDialogs.js</p>
 <h1>PreferencesDialogs</h1>
+<p class="path">preferences/PreferencesDialogs.js</p>
 <p> PreferencesDialogs<br><br> </p>
 <pre><code><h2>_validateBaseUrl (url)</h2></code></pre><p><strong>return type: </strong><code>String</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2142,8 +2142,8 @@
 <hr>
 <hr>
 <a name="PreferencesManager"></a><article>
-<p class="path">preferences/PreferencesManager.js</p>
 <h1>PreferencesManager</h1>
+<p class="path">preferences/PreferencesManager.js</p>
 <p> PreferencesManager<br><br> </p>
 <pre><code><h2>getPreferenceStorage (clientID, defaults)</h2></code></pre><p><strong>return type: </strong><code>PreferenceStorage</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2165,8 +2165,8 @@
 <hr>
 <hr>
 <a name="PreferenceStorage"></a><article>
-<p class="path">preferences/PreferenceStorage.js</p>
 <h1>PreferenceStorage</h1>
+<p class="path">preferences/PreferenceStorage.js</p>
 <p> PreferenceStorage defines an interface for persisting preference data as<br> name/value pairs for a module or plugin.<br> </p>
 <pre><code><h2>_validateJSONPair (key, value)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -2208,8 +2208,8 @@
 <hr>
 <hr>
 <a name="FileIndexManager"></a><article>
-<p class="path">project/FileIndexManager.js</p>
 <h1>FileIndexManager</h1>
+<p class="path">project/FileIndexManager.js</p>
 <p></p>
 <pre><code><h2>_indexList</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2267,8 +2267,8 @@
 <hr>
 <hr>
 <a name="FileSyncManager"></a><article>
-<p class="path">project/FileSyncManager.js</p>
 <h1>FileSyncManager</h1>
+<p class="path">project/FileSyncManager.js</p>
 <p> FileSyncManager is a set of utilities to help track external modifications to the files and folders<br> in the currently open project.<br><br> Currently, we look for external changes purely by checking file timestamps against the last-sync<br> timestamp recorded on Document. Later, we will use actual native directory-watching callbacks<br> instead.<br><br> FUTURE: Whenever we have a 'project file tree model,' we should manipulate that instead of notifying<br> DocumentManager directly. DocumentManager, the tree UI, etc. then all listen to that model for changes.<br> </p>
 <pre><code><h2>_alreadyChecking</h2></code></pre><p><strong>return type: </strong><code>boolean}</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2330,8 +2330,8 @@
 <hr>
 <hr>
 <a name="FileViewController"></a><article>
-<p class="path">project/FileViewController.js</p>
 <h1>FileViewController</h1>
+<p class="path">project/FileViewController.js</p>
 <p> Responsible for coordinating file selection between views by permitting only one view<br> to show the current file selection at a time. Currently, only WorkingSetView and <br> ProjectManager can show file selection. In general the WorkingSetView takes higher<br> priority until the user selects a file in the ProjectManager.<br><br> Events dispatched:<br> - documentSelectionFocusChange - indicates a document change has caused the focus to <br>   change between the working set and file tree.<br><br> - fileViewFocusChange - indicates the selection focus has changed between the working<br>   set and the project tree, but the document selection has NOT changed<br><br> Current file selection rules in views:<br> - select a file in WorkingSetView > select in WorkingSetView<br> - add a file to the WorkingSetView > select in WorkingSetView<br> - select a file in ProjectManager > select in ProjectManager<br> - open a file from places other than the WorkingSetView or ProjectManager > <br>       select file in WorkignSetView if its in the working set, otherwise select in ProjectManager<br> </p>
 <pre><code><h2>_curDocChangedDueToMe</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -2365,8 +2365,8 @@
 <hr>
 <hr>
 <a name="ProjectManager"></a><article>
-<p class="path">project/ProjectManager.js</p>
 <h1>ProjectManager</h1>
+<p class="path">project/ProjectManager.js</p>
 <p> ProjectManager is the model for the set of currently open project. It is responsible for<br> creating and updating the project tree when projects are opened and when changes occur to<br> the file tree.<br><br> This module dispatches these events:<br>    - beforeProjectClose -- before _projectRoot changes<br>    - projectOpen        -- after  _projectRoot changes<br>    - projectFilesChange -- sent if one of the project files has changed--<br>                            added, removed, renamed, etc.<br><br> These are jQuery events, so to listen for them you do something like this:<br>    $(ProjectManager).on("eventname", handler);<br> </p>
 <pre><code><h2>$projectTreeContainer</h2></code></pre><p><strong>return type: </strong><code>jQueryObject}</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -2532,8 +2532,8 @@
 <hr>
 <hr>
 <a name="SidebarView"></a><article>
-<p class="path">project/SidebarView.js</p>
 <h1>SidebarView</h1>
+<p class="path">project/SidebarView.js</p>
 <p> The view that controls the showing and hiding of the sidebar. Dispatches the following events:<br>    hide -- when the sidebar is hidden<br>    show -- when the sidebar is shown<br> </p>
 <pre><code><h2>_updateProjectTitle ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -2547,8 +2547,8 @@
 <hr>
 <hr>
 <a name="WorkingSetSort"></a><article>
-<p class="path">project/WorkingSetSort.js</p>
 <h1>WorkingSetSort</h1>
+<p class="path">project/WorkingSetSort.js</p>
 <p> Manages the workingSet sort methods.<br> </p>
 <pre><code><h2>_prefs</h2></code></pre><p><strong>return type: </strong><code>PreferenceStorage}</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -2646,8 +2646,8 @@
 <hr>
 <hr>
 <a name="WorkingSetView"></a><article>
-<p class="path">project/WorkingSetView.js</p>
 <h1>WorkingSetView</h1>
+<p class="path">project/WorkingSetView.js</p>
 <p> WorkingSetView generates the UI for the list of the files user is editing based on the model provided by EditorManager.<br> The UI allows the user to see what files are open/dirty and allows them to close files and specify the current editor.<br><br> </p>
 <pre><code><h2>_FILE_KEY</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2729,8 +2729,8 @@
 <hr>
 <hr>
 <a name="FindInFiles"></a><article>
-<p class="path">search/FindInFiles.js</p>
 <h1>FindInFiles</h1>
+<p class="path">search/FindInFiles.js</p>
 <p></p>
 <pre><code><h2>_labelForScope (scope)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2768,8 +2768,8 @@
 <hr>
 <hr>
 <a name="FindReplace"></a><article>
-<p class="path">search/FindReplace.js</p>
 <h1>FindReplace</h1>
+<p class="path">search/FindReplace.js</p>
 <p></p>
 <pre><code><h2>doSearch (cm, rev)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2779,8 +2779,8 @@
 <hr>
 <hr>
 <a name="QuickOpen"></a><article>
-<p class="path">search/QuickOpen.js</p>
 <h1>QuickOpen</h1>
+<p class="path">search/QuickOpen.js</p>
 <p></p>
 <pre><code><h2>plugins</h2></code></pre><p><strong>return type: </strong><code>Array. </code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2910,8 +2910,8 @@
 <hr>
 <hr>
 <a name="AppInit"></a><article>
-<p class="path">utils/AppInit.js</p>
 <h1>AppInit</h1>
+<p class="path">utils/AppInit.js</p>
 <p> Defines hooks to assist with module initialization.<br><br> This module defines 2 methods for client modules to attach callbacks:<br>    - htmlReady - When the main application template is rendered<br>    - appReady - When Brackets completes loading all modules and extensions<br><br> These are *not* jQuery events. Each method is similar to $(document).ready<br> in that it will call the handler immediately if brackets is already done<br> loading.<br> </p>
 <pre><code><h2>appReady (callback)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2925,8 +2925,8 @@
 <hr>
 <hr>
 <a name="Async"></a><article>
-<p class="path">utils/Async.js</p>
 <h1>Async</h1>
+<p class="path">utils/Async.js</p>
 <p> Utilities for working with Deferred, Promise, and other asynchronous processes.<br> </p>
 <pre><code><h2>doInParallel (items, beginProcessItem, failFast)</h2></code></pre><p><strong>return type: </strong><code>$.Promise</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2956,8 +2956,8 @@
 <hr>
 <hr>
 <a name="BuildInfoUtils"></a><article>
-<p class="path">utils/BuildInfoUtils.js</p>
 <h1>BuildInfoUtils</h1>
+<p class="path">utils/BuildInfoUtils.js</p>
 <p> Utilities for determining the git SHA from an optional repository or from the<br> installed copy of Brackets.<br> </p>
 <pre><code><h2>_loadSHA (path, callback)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2971,8 +2971,8 @@
 <hr>
 <hr>
 <a name="CollectionUtils"></a><article>
-<p class="path">utils/CollectionUtils.js</p>
 <h1>CollectionUtils</h1>
+<p class="path">utils/CollectionUtils.js</p>
 <p>  Utilities functions related to data collections (arrays & maps)<br> </p>
 <pre><code><h2>indexOf (array, isMatch)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -2982,8 +2982,8 @@
 <hr>
 <hr>
 <a name="ExtensionLoader"></a><article>
-<p class="path">utils/ExtensionLoader.js</p>
 <h1>ExtensionLoader</h1>
+<p class="path">utils/ExtensionLoader.js</p>
 <p> ExtensionLoader searches the filesystem for extensions, then creates a new context for each one and loads it<br> </p>
 <pre><code><h2>getUserExtensionPath ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3017,8 +3017,8 @@
 <hr>
 <hr>
 <a name="ExtensionUtils"></a><article>
-<p class="path">utils/ExtensionUtils.js</p>
 <h1>ExtensionUtils</h1>
+<p class="path">utils/ExtensionUtils.js</p>
 <p> ExtensionUtils defines utility methods for implementing extensions.<br> </p>
 <pre><code><h2>loadStyleSheet (module, path)</h2></code></pre><p><strong>return type: </strong><code>!$.Promise</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3028,22 +3028,22 @@
 <hr>
 <hr>
 <a name="Global"></a><article>
-<p class="path">utils/Global.js</p>
 <h1>Global</h1>
+<p class="path">utils/Global.js</p>
 <p> Initializes the global "brackets" variable and it's properties.<br> Modules should not access the global.brackets object until either<br> (a) the module requires this module, i.e. require("utils/Global") or<br> (b) the module receives a "ready" callback from the utils/AppReady module.<br> </p>
 </article>
 <hr>
 <hr>
 <a name="KeyEvent"></a><article>
-<p class="path">utils/KeyEvent.js</p>
 <h1>KeyEvent</h1>
+<p class="path">utils/KeyEvent.js</p>
 <p> Utilities module to provide constants for keyCodes<br> </p>
 </article>
 <hr>
 <hr>
 <a name="NativeApp"></a><article>
-<p class="path">utils/NativeApp.js</p>
 <h1>NativeApp</h1>
+<p class="path">utils/NativeApp.js</p>
 <p></p>
 <pre><code><h2>_browserErrToFileError (err)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -3069,8 +3069,8 @@
 <hr>
 <hr>
 <a name="PerfUtils"></a><article>
-<p class="path">utils/PerfUtils.js</p>
 <h1>PerfUtils</h1>
+<p class="path">utils/PerfUtils.js</p>
 <p> This is a collection of utility functions for gathering performance data.<br> </p>
 <pre><code><h2>enabled</h2></code></pre><p><strong>return type: </strong><code>boolean} enabled</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3144,8 +3144,8 @@
 <hr>
 <hr>
 <a name="Resizer"></a><article>
-<p class="path">utils/Resizer.js</p>
 <h1>Resizer</h1>
+<p class="path">utils/Resizer.js</p>
 <p> Resizer is a Module utility to inject resizing capabilities to any element<br> inside Brackets.<br> <br> On initialization, Resizer discovers all nodes tagged as "vert-resizable" <br> and "horz-resizable" to add the resizer handler. Additionally, "top-resizer", <br> "bottom-resizer", "left-resizer" and "right-resizer" classes control the <br> position of the resizer on the element.<br><br> An element can be made resizable at any time using the `makeResizable()` API.<br> Panel sizes are saved via preferences and restored when the DOM node becomes resizable<br> again in a subsequent launch.<br><br> The resizable elements trigger a panelResizeStart, panelResizeUpdate and panelResizeEnd<br> event that can be used to create performance optimizations (such as hiding/showing elements <br> while resizing), custom layout logic, etc. See makeResizable() for details on the events.<br><br> A resizable element can be collapsed/expanded using the `show`, `hide` and `toggle` APIs or<br> via user action. This triggers panelCollapsed/panelExpanded events - see makeResizable().<br> </p>
 <pre><code><h2>_prefs</h2></code></pre><p><strong>return type: </strong><code>PreferenceStorage}</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -3171,8 +3171,8 @@
 <hr>
 <hr>
 <a name="ShellAPI"></a><article>
-<p class="path">utils/ShellAPI.js</p>
 <h1>ShellAPI</h1>
+<p class="path">utils/ShellAPI.js</p>
 <p> This is JavaScript API exposed to the native shell when Brackets is run in a native shell rather than a browser.<br>  </p>
 <pre><code><h2>executeCommand (eventName)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3182,8 +3182,8 @@
 <hr>
 <hr>
 <a name="StringUtils"></a><article>
-<p class="path">utils/StringUtils.js</p>
 <h1>StringUtils</h1>
+<p class="path">utils/StringUtils.js</p>
 <p>  Utilities functions related to string manipulation<br><br> </p>
 <pre><code><h2>format (str)</h2></code></pre><p><strong>return type: </strong><code>string</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3205,8 +3205,8 @@
 <hr>
 <hr>
 <a name="TokenUtils"></a><article>
-<p class="path">utils/TokenUtils.js</p>
 <h1>TokenUtils</h1>
+<p class="path">utils/TokenUtils.js</p>
 <p> Functions for iterating through tokens in the current editor buffer. Useful for doing<br> light parsing that can rely purely on information gathered by the code coloring mechanism.<br> </p>
 <pre><code><h2>getInitialContext (editor, pos)</h2></code></pre><p><strong>return type: </strong><code>editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3232,8 +3232,8 @@
 <hr>
 <hr>
 <a name="UpdateNotification"></a><article>
-<p class="path">utils/UpdateNotification.js</p>
 <h1>UpdateNotification</h1>
+<p class="path">utils/UpdateNotification.js</p>
 <p>  Utilities functions for displaying update notifications<br><br> </p>
 <pre><code><h2>_addedClickHandler</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -3259,8 +3259,8 @@
 <hr>
 <hr>
 <a name="UrlParams"></a><article>
-<p class="path">utils/UrlParams.js</p>
 <h1>UrlParams</h1>
+<p class="path">utils/UrlParams.js</p>
 <p></p>
 <pre><code><h2>UrlParams ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3286,8 +3286,8 @@
 <hr>
 <hr>
 <a name="ViewUtils"></a><article>
-<p class="path">utils/ViewUtils.js</p>
 <h1>ViewUtils</h1>
+<p class="path">utils/ViewUtils.js</p>
 <p></p>
 <pre><code><h2>_resizeHandlers</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
@@ -3321,8 +3321,8 @@
 <hr>
 <hr>
 <a name="ViewCommandHandlers"></a><article>
-<p class="path">view/ViewCommandHandlers.js</p>
 <h1>ViewCommandHandlers</h1>
+<p class="path">view/ViewCommandHandlers.js</p>
 <p></p>
 <pre><code><h2>DYNAMIC_FONT_STYLE_ID</h2></code></pre><p><strong>return type: </strong><code>string}</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3336,64 +3336,64 @@
 <hr>
 <hr>
 <a name="bootstrap-alerts"></a><article>
-<p class="path">widgets/bootstrap-alerts.js</p>
 <h1>bootstrap-alerts</h1>
+<p class="path">widgets/bootstrap-alerts.js</p>
 <p></p>
 </article>
 <hr>
 <hr>
 <a name="bootstrap-buttons"></a><article>
-<p class="path">widgets/bootstrap-buttons.js</p>
 <h1>bootstrap-buttons</h1>
+<p class="path">widgets/bootstrap-buttons.js</p>
 <p></p>
 </article>
 <hr>
 <hr>
 <a name="bootstrap-dropdown"></a><article>
-<p class="path">widgets/bootstrap-dropdown.js</p>
 <h1>bootstrap-dropdown</h1>
+<p class="path">widgets/bootstrap-dropdown.js</p>
 <p></p>
 </article>
 <hr>
 <hr>
 <a name="bootstrap-modal"></a><article>
-<p class="path">widgets/bootstrap-modal.js</p>
 <h1>bootstrap-modal</h1>
+<p class="path">widgets/bootstrap-modal.js</p>
 <p></p>
 </article>
 <hr>
 <hr>
 <a name="bootstrap-popover"></a><article>
-<p class="path">widgets/bootstrap-popover.js</p>
 <h1>bootstrap-popover</h1>
+<p class="path">widgets/bootstrap-popover.js</p>
 <p></p>
 </article>
 <hr>
 <hr>
 <a name="bootstrap-scrollspy"></a><article>
-<p class="path">widgets/bootstrap-scrollspy.js</p>
 <h1>bootstrap-scrollspy</h1>
+<p class="path">widgets/bootstrap-scrollspy.js</p>
 <p></p>
 </article>
 <hr>
 <hr>
 <a name="bootstrap-tabs"></a><article>
-<p class="path">widgets/bootstrap-tabs.js</p>
 <h1>bootstrap-tabs</h1>
+<p class="path">widgets/bootstrap-tabs.js</p>
 <p></p>
 </article>
 <hr>
 <hr>
 <a name="bootstrap-twipsy"></a><article>
-<p class="path">widgets/bootstrap-twipsy.js</p>
 <h1>bootstrap-twipsy</h1>
+<p class="path">widgets/bootstrap-twipsy.js</p>
 <p></p>
 </article>
 <hr>
 <hr>
 <a name="Dialogs"></a><article>
-<p class="path">widgets/Dialogs.js</p>
 <h1>Dialogs</h1>
+<p class="path">widgets/Dialogs.js</p>
 <p> Utilities for creating and managing standard modal dialogs.<br> </p>
 <pre><code><h2>showModalDialog (dlgClass, title, message)</h2></code></pre><p><strong>return type: </strong><code>$.Promise</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3407,8 +3407,8 @@
 <hr>
 <hr>
 <a name="PopUpManager"></a><article>
-<p class="path">widgets/PopUpManager.js</p>
 <h1>PopUpManager</h1>
+<p class="path">widgets/PopUpManager.js</p>
 <p> Utilities for managing pop-ups.<br> </p>
 <pre><code><h2>addPopUp ($popUp, removeHandler, autoRemove)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3422,8 +3422,8 @@
 <hr>
 <hr>
 <a name="StatusBar"></a><article>
-<p class="path">widgets/StatusBar.js</p>
 <h1>StatusBar</h1>
+<p class="path">widgets/StatusBar.js</p>
 <p> A status bar with support for file information and busy and status indicators.<br> </p>
 <pre><code><h2>showBusyIndicator (updateCursor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3453,8 +3453,8 @@
 <hr>
 <hr>
 <a name="ConsoleAgent"></a><article>
-<p class="path">LiveDevelopment/Agents/ConsoleAgent.js</p>
 <h1>ConsoleAgent</h1>
+<p class="path">LiveDevelopment/Agents/ConsoleAgent.js</p>
 <p> ConsoleAgent forwards all console message from the remote console to the<br> local console.<br> </p>
 <pre><code><h2>_log (message)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3472,8 +3472,8 @@
 <hr>
 <hr>
 <a name="CSSAgent"></a><article>
-<p class="path">LiveDevelopment/Agents/CSSAgent.js</p>
 <h1>CSSAgent</h1>
+<p class="path">LiveDevelopment/Agents/CSSAgent.js</p>
 <p> CSSAgent keeps track of loaded style sheets and allows reloading them<br> from a {Document}.<br> </p>
 <pre><code><h2>_canonicalize (url)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3507,8 +3507,8 @@
 <hr>
 <hr>
 <a name="DOMAgent"></a><article>
-<p class="path">LiveDevelopment/Agents/DOMAgent.js</p>
 <h1>DOMAgent</h1>
+<p class="path">LiveDevelopment/Agents/DOMAgent.js</p>
 <p> DOMAgent constructs and maintains a tree of {DOMNode}s that represents the<br> rendered DOM tree in the remote browser. Nodes can be accessed by id or<br> location (source offset). To update the DOM tree in response to a change of<br> the source document (replace [from,to] with text) call<br> `applyChange(from, to, text)`.<br><br> The DOMAgent triggers `getDocument` once it has loaded<br> the document.<br> </p>
 <pre><code><h2>nodeBeforeLocation (location)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3570,8 +3570,8 @@
 <hr>
 <hr>
 <a name="DOMHelpers"></a><article>
-<p class="path">LiveDevelopment/Agents/DOMHelpers.js</p>
 <h1>DOMHelpers</h1>
+<p class="path">LiveDevelopment/Agents/DOMHelpers.js</p>
 <p> DOMHelpers is a collection of functions used by the DOMAgent exports `eachNode(src, callback)`<br> </p>
 <pre><code><h2>_isQuote (c, escape, quote)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3605,8 +3605,8 @@
 <hr>
 <hr>
 <a name="DOMNode"></a><article>
-<p class="path">LiveDevelopment/Agents/DOMNode.js</p>
 <h1>DOMNode</h1>
+<p class="path">LiveDevelopment/Agents/DOMNode.js</p>
 <p> DOMNode represents a node in the DOM tree. It is constructed from a payload<br> similar to {DOM.Node} and supports all basic tree operations. If a node has<br> a nodeId it is registered with the `DOMAgent` via `addNode()`. The node's<br> sourceOffset and sourceLength is stored as its location and length. Nodes can<br> iterated using `each()` or `find()`. `dump` shows the entire tree on the console.<br> </p>
 <pre><code><h2>_fill (string, length, c)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3740,8 +3740,8 @@
 <hr>
 <hr>
 <a name="EditAgent"></a><article>
-<p class="path">LiveDevelopment/Agents/EditAgent.js</p>
 <h1>EditAgent</h1>
+<p class="path">LiveDevelopment/Agents/EditAgent.js</p>
 <p> EditAgent propagates changes from the in-document editor to the source<br> document.<br> </p>
 <pre><code><h2>_findChangedCharacters (oldValue, value)</h2></code></pre><p><strong>return type: </strong><code>from, to, text</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3759,8 +3759,8 @@
 <hr>
 <hr>
 <a name="GotoAgent"></a><article>
-<p class="path">LiveDevelopment/Agents/GotoAgent.js</p>
 <h1>GotoAgent</h1>
+<p class="path">LiveDevelopment/Agents/GotoAgent.js</p>
 <p> GotoAgent constructs and responds to the in-browser goto dialog.<br> </p>
 <pre><code><h2>_urlWithoutQueryString (url)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3810,8 +3810,8 @@
 <hr>
 <hr>
 <a name="HighlightAgent"></a><article>
-<p class="path">LiveDevelopment/Agents/HighlightAgent.js</p>
 <h1>HighlightAgent</h1>
+<p class="path">LiveDevelopment/Agents/HighlightAgent.js</p>
 <p> HighlightAgent dispatches events for highlight requests from in-browser<br> highlight requests, and allows highlighting nodes and rules in the browser.<br><br> Trigger "highlight" when a node should be highlighted<br> </p>
 <pre><code><h2>hide ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3841,8 +3841,8 @@
 <hr>
 <hr>
 <a name="NetworkAgent"></a><article>
-<p class="path">LiveDevelopment/Agents/NetworkAgent.js</p>
 <h1>NetworkAgent</h1>
+<p class="path">LiveDevelopment/Agents/NetworkAgent.js</p>
 <p> NetworkAgent tracks all resources loaded by the remote debugger. Use<br> `wasURLRequested(url)` to query whether a resource was loaded.<br> </p>
 <pre><code><h2>_urlWithoutQueryString (url)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3864,8 +3864,8 @@
 <hr>
 <hr>
 <a name="RemoteAgent"></a><article>
-<p class="path">LiveDevelopment/Agents/RemoteAgent.js</p>
 <h1>RemoteAgent</h1>
+<p class="path">LiveDevelopment/Agents/RemoteAgent.js</p>
 <p> RemoteAgent defines and provides an interface for custom remote functions<br> loaded from RemoteFunctions. Remote commands are executed via<br> `call(name, varargs)`.<br><br> Remote events are dispatched as events on this object.<br> </p>
 <pre><code><h2>call (method, varargs)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3883,8 +3883,8 @@
 <hr>
 <hr>
 <a name="RemoteFunctions"></a><article>
-<p class="path">LiveDevelopment/Agents/RemoteFunctions.js</p>
 <h1>RemoteFunctions</h1>
+<p class="path">LiveDevelopment/Agents/RemoteFunctions.js</p>
 <p></p>
 <pre><code><h2>RemoteFunctions (experimental)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3898,8 +3898,8 @@
 <hr>
 <hr>
 <a name="ScriptAgent"></a><article>
-<p class="path">LiveDevelopment/Agents/ScriptAgent.js</p>
 <h1>ScriptAgent</h1>
+<p class="path">LiveDevelopment/Agents/ScriptAgent.js</p>
 <p> ScriptAgent tracks all executed scripts, defines internal breakpoints, and<br> interfaces with the remote debugger.<br> </p>
 <pre><code><h2>_addTraceToNode (nodeId, trace)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3925,8 +3925,8 @@
 <hr>
 <hr>
 <a name="CSSDocument"></a><article>
-<p class="path">LiveDevelopment/Documents/CSSDocument.js</p>
 <h1>CSSDocument</h1>
+<p class="path">LiveDevelopment/Documents/CSSDocument.js</p>
 <p> CSSDocument manages a single CSS source document<br><br> # EDITING<br><br> Editing the document will cause the style sheet to be reloaded via the<br> CSSAgent, which immediately updates the appearance of the rendered document.<br><br> # HIGHLIGHTING<br><br> CSSDocument supports highlighting nodes from the HighlightAgent and<br> highlighting all DOMNode corresponding to the rule at the cursor position<br> in the editor.<br><br> # EVENTS<br><br> CSSDocument dispatches these events:<br>  deleted - When the file for the underlying Document has been deleted. The<br>      2nd argument to the listener will be this CSSDocument.<br> </p>
 <pre><code><h2>CSSDocument</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3968,8 +3968,8 @@
 <hr>
 <hr>
 <a name="HTMLDocument"></a><article>
-<p class="path">LiveDevelopment/Documents/HTMLDocument.js</p>
 <h1>HTMLDocument</h1>
+<p class="path">LiveDevelopment/Documents/HTMLDocument.js</p>
 <p> HTMLDocument manages a single HTML source document<br><br> # EDITING<br><br> Editing the document will cause the corresponding node to be updated<br> by calling `applyChanges` on the DOMAgent. This will only work for<br> altering text nodes and will break when attempting to change DOM elements<br> or inserting or deleting nodes.<br><br> # HIGHLIGHTING<br><br> HTMLDocument supports highlighting nodes from the HighlightAgent and<br> highlighting the DOMNode corresponding to the cursor position in the<br> editor.<br> </p>
 <pre><code><h2>HTMLDocument</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -3995,8 +3995,8 @@
 <hr>
 <hr>
 <a name="JSDocument"></a><article>
-<p class="path">LiveDevelopment/Documents/JSDocument.js</p>
 <h1>JSDocument</h1>
+<p class="path">LiveDevelopment/Documents/JSDocument.js</p>
 <p> JSDocument manages a single JavaScript source document<br><br> # EDITING<br><br> Editing the document will cause the script to be reloaded via the<br> ScriptAgent, which updates the implementation of all functions without<br> loosing any state. To support redrawing canvases, jQuery must be loaded<br> and a rerender method must be attached to every canvas that clears and<br> renders the canvas.<br><br> # HIGHLIGHTING<br><br> JSDocument supports highlighting nodes from the HighlightAgent. Support<br> for highlighting the nodes that were created / touched by the current<br> line is missing.<br> </p>
 <pre><code><h2>JSDocument</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
@@ -4022,8 +4022,8 @@
 <hr>
 <hr>
 <a name="Inspector"></a><article>
-<p class="path">LiveDevelopment/Inspector/Inspector.js</p>
 <h1>Inspector</h1>
+<p class="path">LiveDevelopment/Inspector/Inspector.js</p>
 <p> Inspector manages the connection to Chrome/Chromium's remote debugger.<br> See inspector.html for the documentation of the remote debugger.<br><br> # SETUP<br><br> To enable remote debugging in Chrome or Chromium open either application<br> with the following parameters:<br><br>   --enable-remote-debugger --remote-debugging-port=9222<br><br> This will open an HTTP server on the specified port, which can be used to<br> browse the available remote debugger sessions. In general, every open<br> browser tab can host an individual remote debugger session. The<br> available interfaces can be exported by requesting:<br><br>   http://127.0.0.1:9222/json<br><br> The response is a JSON-formatted array that specifies all available remote<br> debugger sessions including the remote debugging web sockets.<br><br> Inspector can connect directly to a web socket via `connect(socketURL)`, or<br> it can find the web socket that corresponds to the tab at the given URL and<br> connect to it via `connectToURL(url)`. The later returns a promise. To <br> disconnect use `disconnect()`.<br><br> # EVENTS<br><br> Inspector dispatches several connectivity-related events + all remote debugger<br> events (see below). Event handlers are attached via `on(event, function)` and<br> detached via `off(event, function)`.<br><br>   `connect`    Inspector did successfully connect to the remote debugger<br>   `disconnect` Inspector did disconnect from the remote debugger<br>   `error`      Inspector encountered an error<br>   `message`    Inspector received a message from the remote debugger - this<br>                  provides a low-level entry point to remote debugger events<br><br> # REMOTE DEBUGGER COMMANDS<br><br> Commands are executed by calling `{Domain}.{Command}()` with the parameters<br> specified in the order of the remote debugger documentation. These command<br> functions are generated automatically at runtime from Inspector.json. The<br> actual implementation of these functions is found in<br> `_send(method, signature, varargs)`, which verifies, serializes, and<br> transmits the command to the remote debugger. If the last parameter of any<br> command function call is a function, it will be used as the callback.<br><br> # REMOTE DEBUGGER EVENTS<br><br> Debugger events are dispatched as regular events using {Domain}.{Event} as<br> the event name. The handler function will be called with a single parameter<br> that stores all returned values as an object.<br> </p>
 <pre><code><h2>_verifySignature (signature, value)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>

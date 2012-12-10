@@ -47,9 +47,9 @@ define(function (require, exports, module) {
         // define        
         else if (/^define/.exec(str)) {
             return {
-                type: 'define', 
+                type: "module", 
                 firstline : firstline,
-                string: "define"
+                string: "module"
             }; 
         }
         // function expression         
