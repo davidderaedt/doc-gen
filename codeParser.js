@@ -13,52 +13,75 @@ define(function (require, exports, module) {
         
         Original regexps found in Dox.js
         https://github.com/visionmedia/dox/
-    */    
+        
+        Still haven't decided if / how to support parameters.
+        E.g. 
+            else if (/^(\w+)\.prototype\.(\w+) *= *function *([^{]+)/.exec(str)) {
+            return {
+                type: 'prototype-method',
+                constructor: RegExp.$1,
+                cons: RegExp.$1,
+                name: RegExp.$2,
+                string: RegExp.$1 + '.prototype.' + RegExp.$2 + RegExp.$3
+            };        
+    */        
+    
     function parseCode(src) {
         
         //removing whitespace
         var str = src.replace(/^\s*/m, "");
-        //str = str.split('\n')[0];
+        
+        // get the firstline (used for debugging)
+        var firstline = str.split('\n')[0];
         
         // function statement
-        if (/^function (\w+) *\(/.exec(str)) {
+        if (/^function\s*(\w+)\s*\(([^)]*)\)/m.exec(str)) {
             return {
                 type: 'function',
                 name: RegExp.$1,
-                string: RegExp.$1 + '()'
+                params: RegExp.$2,
+                firstline : firstline,
+                string: RegExp.$1 + " (" + RegExp.$2 + ")"
             };
         }
         // define        
         else if (/^define/.exec(str)) {
             return {
                 type: 'define', 
-                name: RegExp.$1,
-                string: RegExp.$1 + '()'
+                firstline : firstline,
+                string: "define"
             }; 
         }
         // function expression         
-        else if (/^var *(\w+) *= *function/.exec(str)) {
+        else if (/^var *(\w+) *= *function\s*\(([^)]*)\)/m.exec(str)) {
             return {
                 type: 'function-expr',
                 name: RegExp.$1,
-                string: RegExp.$1 + '()'
+                params: RegExp.$2,
+                firstline : firstline,
+                string: RegExp.$1 + " (" + RegExp.$2 + ")"
             };
         } 
         // inline function         
-        else if (/^(\w+) *: *function/.exec(str)) {
+        // /^(\w+) *: *function\s*\((.*)\)/
+        else if (/^(\w+)\s*:\s*function\s*\(([^)]*)/m.exec(str)) {
             return {
                 type: 'function-inline',
                 name: RegExp.$1,
-                string: RegExp.$1 + '()'
+                params: RegExp.$2,
+                firstline : firstline,
+                string: RegExp.$1 + " (" + RegExp.$2 + ")"
             };
         }
         // prototype method        
-        else if (/^(\w+)\.prototype\.(\w+) *= *function/.exec(str)) {
+        else if (/^(\w+)\.prototype\.(\w+) *= *function\s*\(([^)]*)\)/m.exec(str)) {
             return {
                 type: 'prototype-method',
                 constructor: RegExp.$1,
                 name: RegExp.$2,
-                string: RegExp.$1 + '.prototype.' + RegExp.$2 + '()'
+                params: RegExp.$3,
+                firstline : firstline,
+                string: RegExp.$1 + '.prototype.' + RegExp.$2 + "(" + RegExp.$3 + ")"
             };
         } 
         // prototype property        
@@ -68,16 +91,19 @@ define(function (require, exports, module) {
                 constructor: RegExp.$1,
                 name: RegExp.$2,
                 value: RegExp.$3,
+                firstline : firstline,
                 string: RegExp.$1 + '.prototype' + RegExp.$2
             };
         } 
         // method        
-        else if (/^([\w.]+)\.(\w+) *= *function/.exec(str)) {
+        else if (/^([\w.]+)\.(\w+) *= *function\s*\(([^)]*)\)/m.exec(str)) {
             return {
                 type: 'method',
                 receiver: RegExp.$1,
                 name: RegExp.$2,
-                string: RegExp.$1 + '.' + RegExp.$2 + '()'
+                params: RegExp.$3,
+                firstline : firstline,
+                string: RegExp.$1 + '.' + RegExp.$2 + "(" + RegExp.$3 + ")"
             };
         } 
         // property        
@@ -87,6 +113,7 @@ define(function (require, exports, module) {
                 receiver: RegExp.$1,
                 name: RegExp.$2,
                 value: RegExp.$3,
+                firstline : firstline,
                 string: RegExp.$1 + '.' + RegExp.$2
             };
         } 
@@ -96,6 +123,7 @@ define(function (require, exports, module) {
                 type: 'var-declaration-init',
                 name: RegExp.$1,
                 value: RegExp.$2,
+                firstline : firstline,
                 string: RegExp.$1
             };
         } 
@@ -105,6 +133,7 @@ define(function (require, exports, module) {
                 type: 'var-declaration*',
                 name: RegExp.$1,
                 value: "null",
+                firstline : firstline,
                 string: RegExp.$1
             };
         } 

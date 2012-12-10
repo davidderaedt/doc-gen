@@ -10,7 +10,7 @@
 define(function (require, exports, module) {
     'use strict';
 
-    console.log("INITIALIZING doctest EXTENSION");
+    //console.log("INITIALIZING doctest EXTENSION");
     
     var Async               = brackets.getModule("utils/Async");
     var CommandManager      = brackets.getModule("command/CommandManager");
@@ -22,6 +22,8 @@ define(function (require, exports, module) {
     var FileUtils           = brackets.getModule("file/FileUtils");      
     var NativeFileSystem    = brackets.getModule("file/NativeFileSystem").NativeFileSystem;    
     var codeParser          = require("codeParser");
+    var jsDocParser         = require("JSDocParser");
+    var htmlDocExporter     = require("htmlDocExporter");
     
     var COMMAND_ID  = "docgen.gendoc"; 
     var MENU_NAME   = "Generate docs";
@@ -46,7 +48,7 @@ define(function (require, exports, module) {
     
     function loadTemplate() {
         
-        var projectFolder = ProjectManager.getProjectRoot().fullPath;
+        //var projectFolder = ProjectManager.getProjectRoot().fullPath;
         var templateFile = new NativeFileSystem.FileEntry(projectFolder + templatePath);       
         
         FileUtils.readAsText(templateFile)
@@ -67,13 +69,13 @@ define(function (require, exports, module) {
             return;
         }
         
-        console.log("Executing Command gendoc");
+        console.log("Generating documentation...");
         
-        parseFiles();     
+        parseProject();     
     }
     
     
-    function parseFiles() {
+    function parseProject() {
         
         var documentedFiles = [];
         totalUnprocessed = 0;
@@ -92,8 +94,8 @@ define(function (require, exports, module) {
                     var filename = fileInfo.name;
                     var extIndex = filename.lastIndexOf(".");
                     var ext = filename.slice(extIndex);
-                    var relPath = fileInfo.fullPath.split(projectFolder)[1];
-                    var mainDir = relPath.split("/")[0];
+                    var relativePath = fileInfo.fullPath.split(projectFolder)[1];
+                    var mainDir = relativePath.split("/")[0];
                     
                     if (ext != ".js" || shouldExclude(mainDir)) {
                         result.resolve();
@@ -107,7 +109,7 @@ define(function (require, exports, module) {
                             //console.log("PARSING FILE:", doc);
                             
                             var docFileObj = parseFileContents(filename, doc.getText());
-                            docFileObj.path = relPath;
+                            docFileObj.path = relativePath;
                             docFileObj.name = filename.split(".")[0];
                             
                             documentedFiles.push(docFileObj);
@@ -126,7 +128,9 @@ define(function (require, exports, module) {
                 })
                     .done(function () {
                         
-                        createtxtFrom(documentedFiles);
+                        var txt = htmlDocExporter.getHTMLDocFor(documentedFiles, templateTxt, ignorePrivate);
+                        
+                        createTxtFile(txt, projectFolder + outputPath);
                         
                         console.log(documentedFiles.length + " source files documented out of " + totalFiles + " files in total.");
                         console.log(totalEntries + " entries generated.");
@@ -185,26 +189,27 @@ define(function (require, exports, module) {
                 
                 // remove whitespace
                 sourceCode = sourceCode.replace(/^\s*/m, "");
+                // useful for debugging
                 var firstLine = sourceCode.split("\n")[0];
                 
                 // ignore annotations if it's before another comment
-                if (sourceCode.indexOf("/*") == 0 || sourceCode.indexOf("//") == 0) {
+                if (sourceCode.indexOf("/*") === 0 || sourceCode.indexOf("//") === 0) {
                     totalUnprocessed ++;
                     console.log(filename, "Ignoring annotation before comment:", [firstLine]);
                     continue;
                 }
                 
-                // Analyze what we're trying to comment                
+                // Analyze what we're trying to comment
                 entry = codeParser.parseCode(sourceCode);
                 
                 if (entry) {
                     
                     // make sense of the actual comment
-                    entry.comment = processComment(comment);
+                    entry.comment = jsDocParser.parseAnnotation(comment);
                     
                     // Comments before define statements describe the whole module
                     if (entry.type == "define") {
-                        fileobj.desc = entry.comment.body;//comment.replace(/\n\s*\*/g, "\n");
+                        fileobj.desc = entry.comment.body;
                     }
                     fileobj.entries.push(entry);
                 }
@@ -222,127 +227,16 @@ define(function (require, exports, module) {
         
     }
     
-    function processComment(comString) {
-        
-        var comment = {
-                body : "",
-                isClass : false,
-                access : "public",
-                returns : "void"
-            };
-        
-        // get rid of * chars and space
-        comment.body =  comString.replace(/\n\s*\*/g, "\n");
-        comment.body = comment.body.replace(/^\s*\n/, "");
-        
-        if (comString.indexOf("@private") >= 0) comment.access = "private";
-        if (comString.indexOf("@constructor") >= 0) comment.isClass = true;
-        
-        if (/@return {(\w+)}/gm.exec(comString)) {
-            comment.returns = RegExp.$1;
-        }         
-        
-        // todo : remove "?" options for curly braces as it's only there
-        // because of some malformed annotations.
-        if (/@type {?(\w+)}?/gm.exec(comString)) {
-            comment.returns = RegExp.$1;
-        }         
-        
-        // TODO : process all jsdoc tokens
-        
-        return comment;
-    }
-
     
-    function createtxtFrom(results) {
-        
-        var le = "\n";
-        
-        var txt = templateTxt;
+    
+    function createTxtFile(content, destPath) {
                 
-        var menuStr = "";
-        var mainStr = "";
-        
-        var i;
-        for (i = 0; i < results.length; i++) {
-            var f = results[i];
-            mainStr += getHTMLForFile(f);
-            menuStr += "<li><a href=\"#" + f.name + "\">" + f.name + "</a></li>" + le;
-        }
-
-        txt = txt.replace("{menuStr}", menuStr);
-        txt = txt.replace("{mainStr}", mainStr);
-                      
-        //console.log(txt);
-        createFile(txt);
-    }
-    
-    
-    // This could use templates too...
-    function getHTMLForFile(fileObj) {
-        var le = "\n";
-        var txt = "<a name=\"" + fileObj.name + "\"></a><article>" + le;
-        
-        txt += "<h1>" + fileObj.name + "</h1>" + le;
-        txt += "<p class=\"path\">" + fileObj.path + "</p>" + le;
-        txt += "<p>" + toHTML(fileObj.desc) + "</p>" + le;
-        
-        var i;
-        for (i = 0; i < fileObj.entries.length; i++) {
-            
-            var entry = fileObj.entries[i];
-            
-            if (entry.type == "define") continue;
-            
-            if (ignorePrivate && entry.comment.access == "private") continue;
-            
-            if (entry.type == "prototype-method") entry.name = entry.cons + "." + entry.name;
-            
-            if (entry.comment.isClass) {
-                txt += "<pre><code><span>" + entry.comment.access + "</span><h2>Class: " + entry.name + "</h2></code></pre>";
-            }
-            else { 
-                txt += "<pre><code><span>" + entry.comment.access + " " + entry.comment.returns + "</span><h2>" + entry.string + "</h2></code></pre>";
-            }
-            txt += "<p>" + toHTML(entry.comment.body) + "</p>" + le;
-            txt += "<hr>" + le;        
-        }
-        
-        txt += "</article>" + le;
-        txt += "<hr>" + le;
-        txt += "<hr>" + le;
-        
-        return txt;
-        
-    }
-    
-    
-    function toHTML(str) {
-        str = htmlDecode(str);
-        str =  str.replace(/\n/g, "<br>");
-        return str;
-    }
-    
-    
-    
-    function htmlDecode(value) {
-        if (value) {
-            return $('<div />').html(value).text();
-        } else {
-            return '';
-        }
-    }   
-    
-    
-    
-    function createFile(destContent) {
-        
-        var destPath = projectFolder + outputPath;
-        //console.log(destPath);
-        
         var destFile = new NativeFileSystem.FileEntry(destPath);
         
-        FileUtils.writeText(destFile, destContent)
+        FileUtils.writeText(destFile, content)
+            .done(function () {
+                console.log("Documentation files successfully generated");
+            })
             .fail(function (err) {
                 console.log(err);
             });
