@@ -71,14 +71,17 @@ define(function (require, exports, module) {
                 var printName = entry.code.string;
                 
                 if (entry.code.type == "module") {
-                    txt += "<h1>" + fileObj.shortName + "</h1>" + le;
-                    txt += "<pre><code><h2>" + printName + "</h2></code></pre>";                
+                    txt += "<h1>" + fileObj.shortName + " module</h1>" + le;
+                   // txt += "<pre><code><h2>" + printName + "</h2></code></pre>";                
                 } 
                 else {
-                    if (entry.comment.isClass) printName = entry.code.name + " Class";
+                    if (entry.comment.isClass) {
+                        printName = entry.code.name + " Class";
+                        entry.comment.returns = entry.code.name;
+                    }
     
                     txt += "<pre><code><h2>" + printName + "</h2></code></pre>";
-                    txt += "<p><strong>return type: </strong><code>" + toHTML(entry.comment.returns) + "</code></p>" + le;
+                    txt += "<p><strong>type/returns: </strong><code>" + toHTML(entry.comment.returns) + "</code></p>" + le;
                     txt += "<p><strong>access: </strong><code>" + entry.comment.access + "</code></p>" + le;            
                 }
                 
@@ -98,21 +101,21 @@ define(function (require, exports, module) {
     
     
     function toHTML(str) {
-        str = htmlDecode(str);
+        str = htmlEncode(str);
+        console.log(str);
         str =  str.replace(/\n/g, "<br>");
         return str;
     }
     
-    
-    
-    function htmlDecode(value) {
+    function htmlEncode(value){
         if (value) {
-            return $('<div />').html(value).text();
+            return jQuery('<div />').text(value).html();
         } else {
             return '';
         }
-    }   
-        
+    }    
+    
+  
     function getUnprocessedCount() {
         return totalUnprocessed;
     }

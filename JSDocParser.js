@@ -6,8 +6,6 @@ define(function (require, exports, module) {
     'use strict';
 
     var codeParser          = require("codeParser");
-    
-            
 
     
     /*
@@ -54,17 +52,6 @@ define(function (require, exports, module) {
                 
                 // what we're trying to comment  
                 var codeObj = codeParser.parseCode(sourceCode);
-                
-                /*
-                if(codeObj===null) {
-                    console.log("Unable to understand code context for:", [firstLine]);
-                    totalUnprocessed ++;                    
-                }
-                else if(codeObj.type == "comment") {
-                    totalUnprocessed ++;
-                    console.log("Annotation before comment:", [firstLine]);                    
-                }
-                */
                 
                 var entry = {
                     comment : commentObj,                    
