@@ -19,7 +19,6 @@
 <li><a href="#Commands">Commands</a></li>
 <li><a href="#KeyBindingManager">KeyBindingManager</a></li>
 <li><a href="#Menus">Menus</a></li>
-<li><a href="#DebugCommandHandlers">DebugCommandHandlers</a></li>
 <li><a href="#ChangedDocumentTracker">ChangedDocumentTracker</a></li>
 <li><a href="#DocumentCommandHandlers">DocumentCommandHandlers</a></li>
 <li><a href="#DocumentManager">DocumentManager</a></li>
@@ -35,7 +34,6 @@
 <li><a href="#MultiRangeInlineEditor">MultiRangeInlineEditor</a></li>
 <li><a href="#FileUtils">FileUtils</a></li>
 <li><a href="#NativeFileSystem">NativeFileSystem</a></li>
-<li><a href="#HelpCommandHandlers">HelpCommandHandlers</a></li>
 <li><a href="#CSSUtils">CSSUtils</a></li>
 <li><a href="#HTMLUtils">HTMLUtils</a></li>
 <li><a href="#JSLintUtils">JSLintUtils</a></li>
@@ -73,14 +71,6 @@
 <li><a href="#UrlParams">UrlParams</a></li>
 <li><a href="#ViewUtils">ViewUtils</a></li>
 <li><a href="#ViewCommandHandlers">ViewCommandHandlers</a></li>
-<li><a href="#bootstrap-alerts">bootstrap-alerts</a></li>
-<li><a href="#bootstrap-buttons">bootstrap-buttons</a></li>
-<li><a href="#bootstrap-dropdown">bootstrap-dropdown</a></li>
-<li><a href="#bootstrap-modal">bootstrap-modal</a></li>
-<li><a href="#bootstrap-popover">bootstrap-popover</a></li>
-<li><a href="#bootstrap-scrollspy">bootstrap-scrollspy</a></li>
-<li><a href="#bootstrap-tabs">bootstrap-tabs</a></li>
-<li><a href="#bootstrap-twipsy">bootstrap-twipsy</a></li>
 <li><a href="#Dialogs">Dialogs</a></li>
 <li><a href="#PopUpManager">PopUpManager</a></li>
 <li><a href="#StatusBar">StatusBar</a></li>
@@ -108,23 +98,26 @@
 	<div class="main">
     
 		<a name="brackets"></a><article>
-<h1>brackets</h1>
 <p class="path">brackets.js</p>
-<p> brackets is the root of the Brackets codebase. This file pulls in all other modules as<br> dependencies (or dependencies thereof), initializes the UI, and binds global menus & keyboard<br> shortcuts to their Commands.<br><br> TODO: (issue #264) break out the definition of brackets into a separate module from the application controller logic<br><br> Unlike other modules, this one can be accessed without an explicit require() because it exposes<br> a global object, window.brackets.<br> </p>
+<h1>brackets</h1>
+<pre><code><h2>module</h2></code></pre><p> brackets is the root of the Brackets codebase. This file pulls in all other modules as<br> dependencies (or dependencies thereof), initializes the UI, and binds global menus & keyboard<br> shortcuts to their Commands.<br><br> TODO: (issue #264) break out the definition of brackets into a separate module from the application controller logic<br><br> Unlike other modules, this one can be accessed without an explicit require() because it exposes<br> a global object, window.brackets.<br> </p>
+<hr>
 </article>
 <hr>
 <hr>
 <a name="strings"></a><article>
-<h1>strings</h1>
 <p class="path">strings.js</p>
-<p> This file provides the interface to user visible strings in Brackets. Code that needs<br> to display strings should should load this module by calling var Strings = require("strings").<br> The i18n plugin will dynamically load the strings for the right locale and populate<br> the exports variable. See src\nls\strings.js for the master file of English strings.<br> </p>
+<h1>strings</h1>
+<pre><code><h2>module</h2></code></pre><p> This file provides the interface to user visible strings in Brackets. Code that needs<br> to display strings should should load this module by calling var Strings = require("strings").<br> The i18n plugin will dynamically load the strings for the right locale and populate<br> the exports variable. See src\nls\strings.js for the master file of English strings.<br> </p>
+<hr>
 </article>
 <hr>
 <hr>
 <a name="CommandManager"></a><article>
-<h1>CommandManager</h1>
 <p class="path">command/CommandManager.js</p>
-<p> Manages global application commands that can be called from menu items, key bindings, or subparts<br> of the application.<br>  </p>
+<h1>CommandManager</h1>
+<pre><code><h2>module</h2></code></pre><p> Manages global application commands that can be called from menu items, key bindings, or subparts<br> of the application.<br>  </p>
+<hr>
 <pre><code><h2>_commands</h2></code></pre><p><strong>return type: </strong><code>Object.</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Map of all registered global commands<br> @type Object.<br>     </p>
@@ -137,35 +130,35 @@
 <p><strong>access: </strong><code>private</code></p>
 <p> @constructor<br> @private<br><br> @param {string} name - text that will be displayed in the UI to represent command<br> @param {string} id<br> @param {function} commandFn - the function that is called when the command is executed.<br><br> TODO: where should this be triggered, The Command or Exports?<br> Events:<br>      enabledStateChange<br>      checkedStateChange<br>      keyBindingAdded<br>      keyBindingRemoved<br>     </p>
 <hr>
-<pre><code><h2>Command.prototype.getID()</h2></code></pre><p><strong>return type: </strong><code>Command</code></p>
+<pre><code><h2>Command.prototype.getID ()</h2></code></pre><p><strong>return type: </strong><code>Command</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @return {Command} </p>
 <hr>
-<pre><code><h2>Command.prototype.execute()</h2></code></pre><p><strong>return type: </strong><code>$.Promise</code></p>
+<pre><code><h2>Command.prototype.execute ()</h2></code></pre><p><strong>return type: </strong><code>$.Promise</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Executes the command. Additional arguments are passed to the executing function<br><br> @return {$.Promise} a jQuery promise that will be resolved when the command completes.<br>     </p>
 <hr>
-<pre><code><h2>Command.prototype.getEnabled()</h2></code></pre><p><strong>return type: </strong><code>boolean</code></p>
+<pre><code><h2>Command.prototype.getEnabled ()</h2></code></pre><p><strong>return type: </strong><code>boolean</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @return {boolean} </p>
 <hr>
-<pre><code><h2>Command.prototype.setEnabled(enabled)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Command.prototype.setEnabled (enabled)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sets enabled state of Command and dispatches "enabledStateChange"<br> when the enabled state changes.<br> @param {boolean} enabled<br>     </p>
 <hr>
-<pre><code><h2>Command.prototype.setChecked(checked)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Command.prototype.setChecked (checked)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sets enabled state of Command and dispatches "checkedStateChange"<br> when the enabled state changes.<br> @param {boolean} checked<br>     </p>
 <hr>
-<pre><code><h2>Command.prototype.getChecked()</h2></code></pre><p><strong>return type: </strong><code>boolean</code></p>
+<pre><code><h2>Command.prototype.getChecked ()</h2></code></pre><p><strong>return type: </strong><code>boolean</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @return {boolean} </p>
 <hr>
-<pre><code><h2>Command.prototype.setName(name)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Command.prototype.setName (name)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sets the name of the Command and dispatches "nameChange" so that<br> UI that reflects the command name can update.<br> <br> Note, a Command name can appear in either HTML or native UI<br> so HTML tags should not be used. To add a Unicode character,<br> use \uXXXX instead of an HTML entity.<br> <br> @param {string} name<br>     </p>
 <hr>
-<pre><code><h2>Command.prototype.getName()</h2></code></pre><p><strong>return type: </strong><code>string</code></p>
+<pre><code><h2>Command.prototype.getName ()</h2></code></pre><p><strong>return type: </strong><code>string</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @return {string} </p>
 <hr>
@@ -197,16 +190,15 @@
 <hr>
 <hr>
 <a name="Commands"></a><article>
-<h1>Commands</h1>
 <p class="path">command/Commands.js</p>
-<p></p>
 </article>
 <hr>
 <hr>
 <a name="KeyBindingManager"></a><article>
-<h1>KeyBindingManager</h1>
 <p class="path">command/KeyBindingManager.js</p>
-<p> Manages the mapping of keyboard inputs to commands.<br> </p>
+<h1>KeyBindingManager</h1>
+<pre><code><h2>module</h2></code></pre><p> Manages the mapping of keyboard inputs to commands.<br> </p>
+<hr>
 <pre><code><h2>_keyMap</h2></code></pre><p><strong>return type: </strong><code>!Object.}</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Maps normalized shortcut descriptor to key binding info.<br> @type {!Object.}<br>     </p>
@@ -283,9 +275,7 @@
 <hr>
 <hr>
 <a name="Menus"></a><article>
-<h1>Menus</h1>
 <p class="path">command/Menus.js</p>
-<p></p>
 <pre><code><h2>AppMenuBar</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Brackets Application Menu Constants<br> @enum {string}<br>     </p>
@@ -338,51 +328,51 @@
 <p><strong>access: </strong><code>private</code></p>
 <p> @constructor<br> @private<br><br> Menu represents a top-level menu in the menu bar. A Menu may correspond to an HTML-based<br> menu or a native menu if Brackets is running in a native application shell. <br> <br> Since menus may have a native implementation clients should create Menus through <br> addMenu() and should NOT construct a Menu object directly. <br> Clients should also not access HTML content of a menu directly and instead use<br> the Menu API to query and modify menus.<br><br>     </p>
 <hr>
-<pre><code><h2>Menu.prototype._getMenuItemForCommand(command)</h2></code></pre><p><strong>return type: </strong><code>?HTMLLIElement</code></p>
+<pre><code><h2>Menu.prototype._getMenuItemForCommand (command)</h2></code></pre><p><strong>return type: </strong><code>?HTMLLIElement</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Determine MenuItem in this Menu, that has the specified command<br><br> @param {Command} command - the command to search for.<br> @return {?HTMLLIElement} menu item list element<br>     </p>
 <hr>
-<pre><code><h2>Menu.prototype._getRelativeMenuItem(relativeID, position)</h2></code></pre><p><strong>return type: </strong><code>?HTMLLIElement</code></p>
+<pre><code><h2>Menu.prototype._getRelativeMenuItem (relativeID, position)</h2></code></pre><p><strong>return type: </strong><code>?HTMLLIElement</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Determine relative MenuItem<br><br> @param {?string} relativeID - id of command (future: sub-menu).<br> @param {?string} position - only needed when relativeID is a MenuSection<br> @return {?HTMLLIElement} menu item list element<br>     </p>
 <hr>
-<pre><code><h2>Menu.prototype.removeMenuItem(command)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Menu.prototype.removeMenuItem (command)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Removes the specified menu item from this Menu. Key bindings are unaffected; use KeyBindingManager<br> directly to remove key bindings if desired.<br><br> @param {!string | Command} command - command the menu would execute if we weren't deleting it.<br>     </p>
 <hr>
-<pre><code><h2>Menu.prototype.addMenuItem(command, keyBindings, position, relativeID)</h2></code></pre><p><strong>return type: </strong><code>MenuItem</code></p>
+<pre><code><h2>Menu.prototype.addMenuItem (command, keyBindings, position, relativeID)</h2></code></pre><p><strong>return type: </strong><code>MenuItem</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Adds a new menu item with the specified id and display text. The insertion position is<br> specified via the relativeID and position arguments which describe a position <br> relative to another MenuItem or MenuGroup. It is preferred that plug-ins <br> insert new  MenuItems relative to a menu section rather than a specific <br> MenuItem (see Menu Section Constants).<br><br> TODO: Sub-menus are not yet supported, but when they are implemented this API will<br> allow adding new MenuItems to sub-menus as well.<br><br> Note, keyBindings are bound to Command objects not MenuItems. The provided keyBindings<br>      will be bound to the supplied Command object rather than the MenuItem.<br> <br> @param {!string | Command} command - the command the menu will execute.<br>      Pass Menus.DIVIDER for a menu divider, or just call addMenuDivider() instead.<br> @param {?string | Array.<{key: string, platform: string}>}  keyBindings - register one<br>      one or more key bindings to associate with the supplied command.<br> @param {?string} position - constant defining the position of new MenuItem relative to<br>      other MenuItems. Values:<br>          - With no relativeID, use Menus.FIRST or LAST (default is LAST)<br>          - Relative to a command id, use BEFORE or AFTER (required)<br>          - Relative to a MenuSection, use FIRST_IN_SECTION or LAST_IN_SECTION (required)<br> @param {?string} relativeID - command id OR one of the MenuSection.* constants. Required<br>      for all position constants except FIRST and LAST.<br><br> @return {MenuItem} the newly created MenuItem<br>     </p>
 <hr>
-<pre><code><h2>Menu.prototype.addMenuDivider(position, relativeID)</h2></code></pre><p><strong>return type: </strong><code>MenuItem</code></p>
+<pre><code><h2>Menu.prototype.addMenuDivider (position, relativeID)</h2></code></pre><p><strong>return type: </strong><code>MenuItem</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Inserts divider item in menu.<br> @param {?string} position - constant defining the position of new the divider relative<br>      to other MenuItems. Default is LAST.  (see Insertion position constants). <br> @param {?string} relativeID - id of menuItem, sub-menu, or menu section that the new <br>      divider will be positioned relative to. Required for all position constants<br>      except FIRST and LAST<br> <br> @return {MenuItem} the newly created divider<br>     </p>
 <hr>
-<pre><code><h2>MenuItem.prototype.getCommand()</h2></code></pre><p><strong>return type: </strong><code>Command</code></p>
+<pre><code><h2>MenuItem.prototype.getCommand ()</h2></code></pre><p><strong>return type: </strong><code>Command</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the Command associated with a MenuItem<br> @return {Command}<br>     </p>
 <hr>
-<pre><code><h2>MenuItem.prototype.getParentMenu()</h2></code></pre><p><strong>return type: </strong><code>Menu</code></p>
+<pre><code><h2>MenuItem.prototype.getParentMenu ()</h2></code></pre><p><strong>return type: </strong><code>Menu</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns the parent Menu for this MenuItem<br> @return {Menu} <br>     </p>
 <hr>
-<pre><code><h2>MenuItem.prototype._checkedChanged()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MenuItem.prototype._checkedChanged ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Synchronizes MenuItem checked state with underlying Command checked state<br>     </p>
 <hr>
-<pre><code><h2>MenuItem.prototype._enabledChanged()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MenuItem.prototype._enabledChanged ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Synchronizes MenuItem enabled state with underlying Command enabled state<br>     </p>
 <hr>
-<pre><code><h2>MenuItem.prototype._nameChanged()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MenuItem.prototype._nameChanged ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Synchronizes MenuItem name with underlying Command name<br>     </p>
 <hr>
-<pre><code><h2>MenuItem.prototype._keyBindingAdded(event, keyBinding)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MenuItem.prototype._keyBindingAdded (event, keyBinding)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Updates MenuItem DOM with a keyboard shortcut label<br>     </p>
 <hr>
-<pre><code><h2>MenuItem.prototype._keyBindingRemoved(event, keyBinding)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MenuItem.prototype._keyBindingRemoved (event, keyBinding)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Updates MenuItem DOM to remove keyboard shortcut label<br>     </p>
 <hr>
@@ -398,11 +388,11 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> @constructor<br> @extends {Menu}<br><br> Represents a context menu that can open at a specific location in the UI. <br><br> Clients should not create this object directly and should instead use registerContextMenu()<br> to create new ContextMenu objects.<br><br> Context menus in brackets may be HTML-based or native so clients should not reach into<br> the HTML and should instead manipulate ContextMenus through the API.<br><br> Events:<br>      beforeContextMenuOpen<br>      contextMenuClose<br><br>     </p>
 <hr>
-<pre><code><h2>ContextMenu.prototype.open(mouseOrLocation)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>ContextMenu.prototype.open (mouseOrLocation)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Displays the ContextMenu at the specified location and dispatches the <br> "beforeContextMenuOpen" event.The menu location may be adjusted to prevent<br> clipping by the browser window. All other menus and ContextMenus will be closed<br> bofore a new menu is shown.<br><br> @param {MouseEvent | {pageX:number, pageY:number}} mouseOrLocation - pass a MouseEvent<br>      to display the menu near the mouse or pass in an object with page x/y coordinates<br>      for a specific location.<br>     </p>
 <hr>
-<pre><code><h2>ContextMenu.prototype.close()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>ContextMenu.prototype.close ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Closes the context menu and dispatches the "contextMenuClose" event.<br>     </p>
 <hr>
@@ -413,46 +403,40 @@
 </article>
 <hr>
 <hr>
-<a name="DebugCommandHandlers"></a><article>
-<h1>DebugCommandHandlers</h1>
-<p class="path">debug/DebugCommandHandlers.js</p>
-<p></p>
-</article>
-<hr>
-<hr>
 <a name="ChangedDocumentTracker"></a><article>
-<h1>ChangedDocumentTracker</h1>
 <p class="path">document/ChangedDocumentTracker.js</p>
-<p> Defines a ChangedDocumentTracker class to monitor changes to files in the current project.<br> </p>
+<h1>ChangedDocumentTracker</h1>
+<pre><code><h2>module</h2></code></pre><p> Defines a ChangedDocumentTracker class to monitor changes to files in the current project.<br> </p>
+<hr>
 <pre><code><h2>ChangedDocumentTracker ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Tracks "change" events on opened Documents. Used to monitor changes<br> to documents in-memory and update caches. Assumes all documents have<br> changed when the Brackets window loses and regains focus. Does not<br> read timestamps of files on disk. Clients may optionally track file<br> timestamps on disk independently.<br>     </p>
 <hr>
-<pre><code><h2>ChangedDocumentTracker.prototype._addListener(doc)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>ChangedDocumentTracker.prototype._addListener (doc)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Assumes all files are changed when the window loses and regains focus.<br>     </p>
 <hr>
-<pre><code><h2>ChangedDocumentTracker.prototype._removeListener(doc)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>ChangedDocumentTracker.prototype._removeListener (doc)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br>     </p>
 <hr>
-<pre><code><h2>ChangedDocumentTracker.prototype._onWindowFocus(event, doc)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>ChangedDocumentTracker.prototype._onWindowFocus (event, doc)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Assumes all files are changed when the window loses and regains focus.<br>     </p>
 <hr>
-<pre><code><h2>ChangedDocumentTracker.prototype._onChange(event, doc)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>ChangedDocumentTracker.prototype._onChange (event, doc)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Tracks changed documents.<br>     </p>
 <hr>
-<pre><code><h2>ChangedDocumentTracker.prototype.reset()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>ChangedDocumentTracker.prototype.reset ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Empty the set of dirty paths. Begin tracking new dirty documents. <br>     </p>
 <hr>
-<pre><code><h2>ChangedDocumentTracker.prototype.isPathChanged(path)</h2></code></pre><p><strong>return type: </strong><code>!boolean</code></p>
+<pre><code><h2>ChangedDocumentTracker.prototype.isPathChanged (path)</h2></code></pre><p><strong>return type: </strong><code>!boolean</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Check if a file path is dirty.<br> @param {!string} file path<br> @return {!boolean} Returns true if the file was dirtied since the last reset.<br>     </p>
 <hr>
-<pre><code><h2>ChangedDocumentTracker.prototype.getChangedPaths()</h2></code></pre><p><strong>return type: </strong><code>Array.</code></p>
+<pre><code><h2>ChangedDocumentTracker.prototype.getChangedPaths ()</h2></code></pre><p><strong>return type: </strong><code>Array.</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Get the set of changed paths since the last reset.<br> @return {Array.} Changed file paths<br>     </p>
 <hr>
@@ -460,9 +444,7 @@
 <hr>
 <hr>
 <a name="DocumentCommandHandlers"></a><article>
-<h1>DocumentCommandHandlers</h1>
 <p class="path">document/DocumentCommandHandlers.js</p>
-<p></p>
 <pre><code><h2>_$title</h2></code></pre><p><strong>return type: </strong><code>jQueryObject} Container for label shown above editor; must be an inline element </code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @type {jQueryObject} Container for label shown above editor; must be an inline element </p>
@@ -599,9 +581,10 @@
 <hr>
 <hr>
 <a name="DocumentManager"></a><article>
-<h1>DocumentManager</h1>
 <p class="path">document/DocumentManager.js</p>
-<p> DocumentManager maintains a list of currently 'open' Documents. It also owns the list of files in<br> the working set, and the notion of which Document is currently shown in the main editor UI area.<br> <br> Document is the model for a file's contents; it dispatches events whenever those contents change.<br> To transiently inspect a file's content, simply get a Document and call getText() on it. However,<br> to be notified of Document changes or to modify a Document, you MUST call addRef() to ensure the<br> Document instance 'stays alive' and is shared by all other who read/modify that file. ('Open'<br> Documents are all Documents that are 'kept alive', i.e. have ref count > 0).<br><br> To get a Document, call getDocumentForPath(); never new up a Document yourself.<br> <br> Secretly, a Document may use an Editor instance to act as the model for its internal state. (This<br> is unavoidable because CodeMirror does not separate its model from its UI). Documents are not<br> modifiable until they have a backing 'master Editor'. Creation of the backing Editor is owned by<br> EditorManager. A Document only gets a backing Editor if it becomes the currentDocument, or if edits<br> occur in any Editor (inline or full-sized) bound to the Document; there is currently no other way<br> to ensure a Document is modifiable.<br><br> A non-modifiable Document may still dispatch change notifications, if the Document was changed<br> externally on disk.<br><br> Aside from the text content, Document tracks a few pieces of metadata - notably, whether there are<br> any unsaved changes.<br><br> This module dispatches several events:<br><br>    - dirtyFlagChange -- When any Document's isDirty flag changes. The 2nd arg to the listener is the<br>      Document whose flag changed.<br>    - documentSaved -- When a Document's changes have been saved. The 2nd arg to the listener is the <br>      Document that has been saved.<br><br>    - currentDocumentChange -- When the value of getCurrentDocument() changes.<br><br>    To listen for working set changes, you must listen to *all* of these events:<br>    - workingSetAdd -- When a file is added to the working set (see getWorkingSet()). The 2nd arg<br>      to the listener is the added FileEntry.<br>    - workingSetAddList -- When multiple files are added to the working set (e.g. project open, multiple file open).<br>      The 2nd arg to the listener is the array of added FileEntry objects.<br>    - workingSetRemove -- When a file is removed from the working set (see getWorkingSet()). The<br>      2nd arg to the listener is the removed FileEntry.<br>    - workingSetRemoveList -- When multiple files are removed from the working set (e.g. project close).<br>      The 2nd arg to the listener is the array of removed FileEntry objects.<br>    - workingSetReorder -- When the indexes of 2 files are swapped. Listener receives no arguments.<br>    - workingSetSort -- When the workingSet array is sorted. Listener receives no arguments.<br>      TODO (#2076): combine workingSetSort & workingSetReorder since they convey nearly identical information.<br><br>    - fileNameChange -- When the name of a file or folder has changed. The 2nd arg is the old name.<br>      The 3rd arg is the new name.<br><br> These are jQuery events, so to listen for them you do something like this:<br>    $(DocumentManager).on("eventname", handler);<br> </p>
+<h1>DocumentManager</h1>
+<pre><code><h2>module</h2></code></pre><p> DocumentManager maintains a list of currently 'open' Documents. It also owns the list of files in<br> the working set, and the notion of which Document is currently shown in the main editor UI area.<br> <br> Document is the model for a file's contents; it dispatches events whenever those contents change.<br> To transiently inspect a file's content, simply get a Document and call getText() on it. However,<br> to be notified of Document changes or to modify a Document, you MUST call addRef() to ensure the<br> Document instance 'stays alive' and is shared by all other who read/modify that file. ('Open'<br> Documents are all Documents that are 'kept alive', i.e. have ref count > 0).<br><br> To get a Document, call getDocumentForPath(); never new up a Document yourself.<br> <br> Secretly, a Document may use an Editor instance to act as the model for its internal state. (This<br> is unavoidable because CodeMirror does not separate its model from its UI). Documents are not<br> modifiable until they have a backing 'master Editor'. Creation of the backing Editor is owned by<br> EditorManager. A Document only gets a backing Editor if it becomes the currentDocument, or if edits<br> occur in any Editor (inline or full-sized) bound to the Document; there is currently no other way<br> to ensure a Document is modifiable.<br><br> A non-modifiable Document may still dispatch change notifications, if the Document was changed<br> externally on disk.<br><br> Aside from the text content, Document tracks a few pieces of metadata - notably, whether there are<br> any unsaved changes.<br><br> This module dispatches several events:<br><br>    - dirtyFlagChange -- When any Document's isDirty flag changes. The 2nd arg to the listener is the<br>      Document whose flag changed.<br>    - documentSaved -- When a Document's changes have been saved. The 2nd arg to the listener is the <br>      Document that has been saved.<br><br>    - currentDocumentChange -- When the value of getCurrentDocument() changes.<br><br>    To listen for working set changes, you must listen to *all* of these events:<br>    - workingSetAdd -- When a file is added to the working set (see getWorkingSet()). The 2nd arg<br>      to the listener is the added FileEntry.<br>    - workingSetAddList -- When multiple files are added to the working set (e.g. project open, multiple file open).<br>      The 2nd arg to the listener is the array of added FileEntry objects.<br>    - workingSetRemove -- When a file is removed from the working set (see getWorkingSet()). The<br>      2nd arg to the listener is the removed FileEntry.<br>    - workingSetRemoveList -- When multiple files are removed from the working set (e.g. project close).<br>      The 2nd arg to the listener is the array of removed FileEntry objects.<br>    - workingSetReorder -- When the indexes of 2 files are swapped. Listener receives no arguments.<br>    - workingSetSort -- When the workingSet array is sorted. Listener receives no arguments.<br>      TODO (#2076): combine workingSetSort & workingSetReorder since they convey nearly identical information.<br><br>    - fileNameChange -- When the name of a file or folder has changed. The 2nd arg is the old name.<br>      The 3rd arg is the new name.<br><br> These are jQuery events, so to listen for them you do something like this:<br>    $(DocumentManager).on("eventname", handler);<br> </p>
+<hr>
 <pre><code><h2>PREFERENCES_CLIENT_ID</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Unique PreferencesManager clientID<br>     </p>
@@ -746,63 +729,63 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> The content's line-endings style. If a Document is created on empty text, or text with<br> inconsistent line endings, defaults to the current platform's standard endings.<br> @type {FileUtils.LINE_ENDINGS_CRLF|FileUtils.LINE_ENDINGS_LF}<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype.addRef()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype.addRef ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Add a ref to keep this Document alive </p>
 <hr>
-<pre><code><h2>Document.prototype.releaseRef()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype.releaseRef ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Remove a ref that was keeping this Document alive </p>
 <hr>
-<pre><code><h2>Document.prototype._makeEditable(masterEditor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype._makeEditable (masterEditor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Attach a backing Editor to the Document, enabling setText() to be called. Assumes Editor has<br> already been initialized with the value of getText(). ONLY Editor should call this (and only<br> when EditorManager has told it to act as the master editor).<br> @param {!Editor} masterEditor<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype._makeNonEditable()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype._makeNonEditable ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Detach the backing Editor from the Document, disallowing setText(). The text content is<br> stored back onto _text so other Document clients continue to have read-only access. ONLY<br> Editor.destroy() should call this.<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype._ensureMasterEditor()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype._ensureMasterEditor ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Guarantees that _masterEditor is non-null. If needed, asks EditorManager to create a new master<br> editor bound to this Document (which in turn causes Document._makeEditable() to be called).<br> Should ONLY be called by Editor and Document.<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype.getText(useOriginalLineEndings)</h2></code></pre><p><strong>return type: </strong><code>string</code></p>
+<pre><code><h2>Document.prototype.getText (useOriginalLineEndings)</h2></code></pre><p><strong>return type: </strong><code>string</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns the document's current contents; may not be saved to disk yet. Whenever this<br> value changes, the Document dispatches a "change" event.<br><br> @param {boolean=} useOriginalLineEndings If true, line endings in the result depend on the<br>      Document's line endings setting (based on OS & the original text loaded from disk).<br>      If false, line endings are always \n (like all the other Document text getter methods).<br> @return {string}<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype.setText(text)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype.setText (text)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sets the contents of the document. Treated as an edit. Line endings will be rewritten to<br> match the document's current line-ending style.<br> @param {!string} text The text to replace the contents of the document with.<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype.refreshText(text, newTimestamp)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype.refreshText (text, newTimestamp)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sets the contents of the document. Treated as reloading the document from disk: the document<br> will be marked clean with a new timestamp, the undo/redo history is cleared, and we re-check<br> the text's line-ending style. CAN be called even if there is no backing editor.<br> @param {!string} text The text to replace the contents of the document with.<br> @param {!Date} newTimestamp Timestamp of file at the time we read its new contents from disk.<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype.replaceRange(text, start, end)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype.replaceRange (text, start, end)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Adds, replaces, or removes text. If a range is given, the text at that range is replaced with the<br> given new text; if text == "", then the entire range is effectively deleted. If 'end' is omitted,<br> then the new text is inserted at that point and all existing text is preserved. Line endings will<br> be rewritten to match the document's current line-ending style.<br> @param {!string} text  Text to insert or replace the range with<br> @param {!{line:number, ch:number}} start  Start of range, inclusive (if 'to' specified) or insertion point (if not)<br> @param {?{line:number, ch:number}} end  End of range, exclusive; optional<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype.getRange(start, end)</h2></code></pre><p><strong>return type: </strong><code>!string</code></p>
+<pre><code><h2>Document.prototype.getRange (start, end)</h2></code></pre><p><strong>return type: </strong><code>!string</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns the characters in the given range. Line endings are normalized to '\n'.<br> @param {!{line:number, ch:number}} start  Start of range, inclusive<br> @param {!{line:number, ch:number}} end  End of range, exclusive<br> @return {!string}<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype.getLine(lineNum)</h2></code></pre><p><strong>return type: </strong><code>!string</code></p>
+<pre><code><h2>Document.prototype.getLine (lineNum)</h2></code></pre><p><strong>return type: </strong><code>!string</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns the text of the given line (excluding any line ending characters)<br> @param {number} Zero-based line number<br> @return {!string}<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype.batchOperation(doOperation)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype.batchOperation (doOperation)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Batches a series of related Document changes. Repeated calls to replaceRange() should be wrapped in a<br> batch for efficiency. Begins the batch, calls doOperation(), ends the batch, and then returns.<br> @param {function()} doOperation<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype._handleEditorChange(event, editor, changeList)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype._handleEditorChange (event, editor, changeList)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> Handles changes from the master backing Editor. Changes are triggered either by direct edits<br> to that Editor's UI, OR by our setText()/refreshText() methods.<br> @private<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype._markClean()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype._markClean ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br>     </p>
 <hr>
-<pre><code><h2>Document.prototype.notifySaved()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Document.prototype.notifySaved ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Called when the document is saved (which currently happens in DocumentCommandHandlers). Marks the<br> document not dirty and notifies listeners of the save.<br>     </p>
 <hr>
@@ -846,14 +829,15 @@
 <hr>
 <hr>
 <a name="TextRange"></a><article>
-<h1>TextRange</h1>
 <p class="path">document/TextRange.js</p>
-<p> </p>
+<h1>TextRange</h1>
+<pre><code><h2>module</h2></code></pre><p> </p>
+<hr>
 <pre><code><h2>TextRange Class</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @constructor<br><br> Stores a range of lines that is automatically maintained as the Document changes. The range<br> MAY drop out of sync with the Document in certain edge cases; startLine & endLine will become<br> null when that happens.<br><br> Important: you must dispose() a TextRange when you're done with it. Because TextRange addRef()s<br> the Document (in order to listen to it), you will leak Documents otherwise.<br><br> TextRange dispatches two events:<br>  - change -- When the range changes (due to a Document change)<br>  - lostSync -- When the backing Document changes in such a way that the range can no longer<br>          accurately be maintained. Generally, occurs whenever an edit spans a range boundary.<br>          After this, startLine & endLine will be unusable (set to null).<br>          Also occurs when the document is deleted, though startLine & endLine won't be modified<br> These events only ever occur in response to Document changes, so if you are already listening<br> to the Document, you could ignore the TextRange events and just read its updated value in your<br> own Document change handler.<br><br> @param {!Document} document<br> @param {number} startLine First line in range (0-based, inclusive)<br> @param {number} endLine   Last line in range (0-based, inclusive)<br>     </p>
 <hr>
-<pre><code><h2>TextRange.prototype.dispose(editor, change)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>TextRange.prototype.dispose (editor, change)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Detaches from the Document. The TextRange will no longer update or send change events </p>
 <hr>
@@ -869,11 +853,11 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> @type {?number} Null after "lostSync" is dispatched </p>
 <hr>
-<pre><code><h2>TextRange.prototype._applySingleChangeToRange(change)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>TextRange.prototype._applySingleChangeToRange (change)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Applies a single Document change object (out of the linked list of multiple such objects)<br> to this range. Returns true if the range was changed as a result.<br>     </p>
 <hr>
-<pre><code><h2>TextRange.prototype._applyChangesToRange(changeList)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>TextRange.prototype._applyChangesToRange (changeList)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Updates the range based on the changeList from a Document "change" event. Dispatches a<br> "change" event if the range was adjusted at all. Dispatches a "lostSync" event instead if the<br> range can no longer be accurately maintained.<br>     </p>
 <hr>
@@ -881,62 +865,60 @@
 <hr>
 <hr>
 <a name="CodeHintManager"></a><article>
-<h1>CodeHintManager</h1>
 <p class="path">editor/CodeHintManager.js</p>
-<p></p>
 <pre><code><h2>CodeHintList Class</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @constructor<br><br> Displays a popup list of code completions.<br> Currently only HTML tags are supported, but this will greatly be extended in coming sprint<br> to include: extensibility API, HTML attributes hints, JavaScript hints, CSS hints<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype._handleItemClick(completion)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>CodeHintList.prototype._handleItemClick (completion)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Enters the code completion text into the editor and closes list if the provider <br> returns true. Otherwise, get a new query and update the list based on the new query.<br> @string {string} completion - text to insert into current code editor<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.addItem(name)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>CodeHintList.prototype.addItem (name)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Adds a single item to the hint list<br> @param {string} name<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.updateList()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>CodeHintList.prototype.updateList ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Rebuilds the hint list based on this.query<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.clearList()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>CodeHintList.prototype.clearList ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Removes all list items from hint list<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.buildListView()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>CodeHintList.prototype.buildListView ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Rebuilds the list items for the hint list based on this.displayList<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.setSelectedIndex(index)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>CodeHintList.prototype.setSelectedIndex (index)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Selects the item in the hint list specified by index<br> @param {Number} index<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.updateQueryAndList()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>CodeHintList.prototype.updateQueryAndList ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the new query from the current provider and rebuilds the hint list based on the new one.<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.handleKeyEvent(editor, event)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>CodeHintList.prototype.handleKeyEvent (editor, event)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Handles key presses when the hint list is being displayed<br> @param {Editor} editor<br> @param {KeyBoardEvent} keyEvent<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.isOpen()</h2></code></pre><p><strong>return type: </strong><code>Boolean</code></p>
+<pre><code><h2>CodeHintList.prototype.isOpen ()</h2></code></pre><p><strong>return type: </strong><code>Boolean</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Return true if the CodeHintList is open.<br> @return {Boolean}<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.open(editor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>CodeHintList.prototype.open (editor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Displays the hint list at the current cursor position<br> @param {Editor} editor<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.close()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>CodeHintList.prototype.close ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Closes the hint list<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.calcHintListLocation()</h2></code></pre><p><strong>return type: </strong><code>Object. </code></p>
+<pre><code><h2>CodeHintList.prototype.calcHintListLocation ()</h2></code></pre><p><strong>return type: </strong><code>Object. </code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Computes top left location for hint list so that the list is not clipped by the window<br> @return {Object. }<br>     </p>
 <hr>
-<pre><code><h2>CodeHintList.prototype.getItemsPerPage()</h2></code></pre><p><strong>return type: </strong><code>number</code></p>
+<pre><code><h2>CodeHintList.prototype.getItemsPerPage ()</h2></code></pre><p><strong>return type: </strong><code>number</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Calculate the number of items per scroll page. Used for PageUp and PageDown.<br> @return {number}<br>     </p>
 <hr>
@@ -964,9 +946,7 @@
 <hr>
 <hr>
 <a name="CSSInlineEditor"></a><article>
-<h1>CSSInlineEditor</h1>
 <p class="path">editor/CSSInlineEditor.js</p>
-<p></p>
 <pre><code><h2>_getSelectorName (editor, pos)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> Given a position in an HTML editor, returns the relevant selector for the attribute/tag<br> surrounding that position, or "" if none is found.<br> @param {!Editor} editor<br> @private<br>     </p>
@@ -979,9 +959,10 @@
 <hr>
 <hr>
 <a name="Editor"></a><article>
-<h1>Editor</h1>
 <p class="path">editor/Editor.js</p>
-<p> Editor is a 1-to-1 wrapper for a CodeMirror editor instance. It layers on Brackets-specific<br> functionality and provides APIs that cleanly pass through the bits of CodeMirror that the rest<br> of our codebase may want to interact with. An Editor is always backed by a Document, and stays<br> in sync with its content; because Editor keeps the Document alive, it's important to always<br> destroy() an Editor that's going away so it can release its Document ref.<br><br> For now, there's a distinction between the "master" Editor for a Document - which secretly acts<br> as the Document's internal model of the text state - and the multitude of "slave" secondary Editors<br> which, via Document, sync their changes to and from that master.<br><br> For now, direct access to the underlying CodeMirror object is still possible via _codeMirror --<br> but this is considered deprecated and may go away.<br>  <br> The Editor object dispatches the following events:<br>    - keyEvent -- When any key event happens in the editor (whether it changes the text or not).<br>          Event handlers are passed ({Editor}, {KeyboardEvent}). The 2nd arg is the raw DOM event.<br>          Note: most listeners will only want to respond when event.type === "keypress".<br>    - cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.<br>          Note: do not listen to this in order to be generally informed of edits--listen to the<br>          "change" event on Document instead.<br>    - scroll -- When the editor is scrolled, either by user action or programmatically.<br>    - lostContent -- When the backing Document changes in such a way that this Editor is no longer<br>          able to display accurate text. This occurs if the Document's file is deleted, or in certain<br>          Document->editor syncing edge cases that we do not yet support (the latter cause will<br>          eventually go away). <br><br> The Editor also dispatches "change" events internally, but you should listen for those on<br> Documents, not Editors.<br><br> These are jQuery events, so to listen for them you do something like this:<br>    $(editorInstance).on("eventname", handler);<br> </p>
+<h1>Editor</h1>
+<pre><code><h2>module</h2></code></pre><p> Editor is a 1-to-1 wrapper for a CodeMirror editor instance. It layers on Brackets-specific<br> functionality and provides APIs that cleanly pass through the bits of CodeMirror that the rest<br> of our codebase may want to interact with. An Editor is always backed by a Document, and stays<br> in sync with its content; because Editor keeps the Document alive, it's important to always<br> destroy() an Editor that's going away so it can release its Document ref.<br><br> For now, there's a distinction between the "master" Editor for a Document - which secretly acts<br> as the Document's internal model of the text state - and the multitude of "slave" secondary Editors<br> which, via Document, sync their changes to and from that master.<br><br> For now, direct access to the underlying CodeMirror object is still possible via _codeMirror --<br> but this is considered deprecated and may go away.<br>  <br> The Editor object dispatches the following events:<br>    - keyEvent -- When any key event happens in the editor (whether it changes the text or not).<br>          Event handlers are passed ({Editor}, {KeyboardEvent}). The 2nd arg is the raw DOM event.<br>          Note: most listeners will only want to respond when event.type === "keypress".<br>    - cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.<br>          Note: do not listen to this in order to be generally informed of edits--listen to the<br>          "change" event on Document instead.<br>    - scroll -- When the editor is scrolled, either by user action or programmatically.<br>    - lostContent -- When the backing Document changes in such a way that this Editor is no longer<br>          able to display accurate text. This occurs if the Document's file is deleted, or in certain<br>          Document->editor syncing edge cases that we do not yet support (the latter cause will<br>          eventually go away). <br><br> The Editor also dispatches "change" events internally, but you should listen for those on<br> Documents, not Editors.<br><br> These are jQuery events, so to listen for them you do something like this:<br>    $(editorInstance).on("eventname", handler);<br> </p>
+<hr>
 <pre><code><h2>_prefs</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Editor preferences </p>
@@ -1018,175 +999,175 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> @constructor<br><br> Creates a new CodeMirror editor instance bound to the given Document. The Document need not have<br> a "master" Editor realized yet, even if makeMasterEditor is false; in that case, the first time<br> an edit occurs we will automatically ask EditorManager to create a "master" editor to render the<br> Document modifiable.<br><br> ALWAYS call destroy() when you are done with an Editor - otherwise it will leak a Document ref.<br><br> @param {!Document} document  <br> @param {!boolean} makeMasterEditor  If true, this Editor will set itself as the (secret) "master"<br>          Editor for the Document. If false, this Editor will attach to the Document as a "slave"/<br>          secondary editor.<br> @param {!string} mode  Syntax-highlighting language mode; "" means plain-text mode.<br>          See {@link EditorUtils#getModeFromFileExtension()}.<br> @param {!jQueryObject} container  Container to add the editor to.<br> @param {!Object} additionalKeys  Mapping of keyboard shortcuts to<br>          custom handler functions. Mapping is in CodeMirror format<br> @param {{startLine: number, endLine: number}=} range If specified, range of lines within the document<br>          to display in this editor. Inclusive.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.destroy()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.destroy ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Removes this editor from the DOM and detaches from the Document. If this is the "master"<br> Editor that is secretly providing the Document's backing state, then the Document reverts to<br> a read-only string-backed mode.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype._selectAllVisible()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype._selectAllVisible ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Handles Select All specially when we have a visible range in order to work around<br> bugs in CodeMirror when lines are hidden.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype._updateHiddenLines()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype._updateHiddenLines ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Ensures that the lines that are actually hidden in the inline editor correspond to<br> the desired visible range.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype._handleEditorChange(event, editor, changeList)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype._handleEditorChange (event, editor, changeList)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Responds to changes in the CodeMirror editor's text, syncing the changes to the Document.<br> There are several cases where we want to ignore a CodeMirror change:<br>  - if we're the master editor, editor changes can be ignored because Document is already listening<br>    for our changes<br>  - if we're a secondary editor, editor changes should be ignored if they were caused by us reacting<br>    to a Document change<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype._handleDocumentChange(event, doc, changeList)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype._handleDocumentChange (event, doc, changeList)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Responds to changes in the Document's text, syncing the changes into our CodeMirror instance.<br> There are several cases where we want to ignore a Document change:<br>  - if we're the master editor, Document changes should be ignored becuase we already have the right<br>    text (either the change originated with us, or it has already been set into us by Document)<br>  - if we're a secondary editor, Document changes should be ignored if they were caused by us sending<br>    the document an editor change that originated with us<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype._handleDocumentDeleted(event)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype._handleDocumentDeleted (event)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Responds to the Document's underlying file being deleted. The Document is now basically dead,<br> so we must close.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype._installEditorListeners()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype._installEditorListeners ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Install singleton event handlers on the CodeMirror instance, translating them into multi-<br> listener-capable jQuery events on the Editor instance.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype._resetText(text)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype._resetText (text)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sets the contents of the editor and clears the undo/redo history. Dispatches a change event.<br> Semi-private: only Document should call this.<br> @param {!string} text<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.getCursorPos(expandTabs)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.getCursorPos (expandTabs)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the current cursor position within the editor. If there is a selection, returns whichever<br> end of the range the cursor lies at.<br> @param {boolean} expandTabs If true, return the actual visual column number instead of the character offset in<br>      the "ch" property.<br> @return !{line:number, ch:number}<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.setCursorPos(line, ch)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.setCursorPos (line, ch)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sets the cursor position within the editor. Removes any selection.<br> @param {number} line The 0 based line number.<br> @param {number=} ch  The 0 based character position; treated as 0 if unspecified.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.indexFromPos(coords)</h2></code></pre><p><strong>return type: </strong><code>number</code></p>
+<pre><code><h2>Editor.prototype.indexFromPos (coords)</h2></code></pre><p><strong>return type: </strong><code>number</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Given a position, returns its index within the text (assuming \n newlines)<br> @param {!{line:number, ch:number}}<br> @return {number}<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.posWithinRange(pos, start, end)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.posWithinRange (pos, start, end)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns true if pos is between start and end (inclusive at both ends)<br> @param {{line:number, ch:number}} pos<br> @param {{line:number, ch:number}} start<br> @param {{line:number, ch:number}} end<br><br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.hasSelection()</h2></code></pre><p><strong>return type: </strong><code>boolean</code></p>
+<pre><code><h2>Editor.prototype.hasSelection ()</h2></code></pre><p><strong>return type: </strong><code>boolean</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @return {boolean} True if there's a text selection; false if there's just an insertion point<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.getSelection()</h2></code></pre><p><strong>return type: </strong><code>!{start:{line:number, ch:number}, end:{line:number, ch:number}}</code></p>
+<pre><code><h2>Editor.prototype.getSelection ()</h2></code></pre><p><strong>return type: </strong><code>!{start:{line:number, ch:number}, end:{line:number, ch:number}}</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the current selection. Start is inclusive, end is exclusive. If there is no selection,<br> returns the current cursor position as both the start and end of the range (i.e. a selection<br> of length zero).<br> @return {!{start:{line:number, ch:number}, end:{line:number, ch:number}}}<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.getSelectedText()</h2></code></pre><p><strong>return type: </strong><code>!string</code></p>
+<pre><code><h2>Editor.prototype.getSelectedText ()</h2></code></pre><p><strong>return type: </strong><code>!string</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @return {!string} The currently selected text, or "" if no selection. Includes \n if the<br> selection spans multiple lines (does NOT reflect the Document's line-endings style).<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.setSelection(start, end)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.setSelection (start, end)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sets the current selection. Start is inclusive, end is exclusive. Places the cursor at the<br> end of the selection range.<br> @param {!{line:number, ch:number}} start<br> @param {!{line:number, ch:number}} end<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.selectWordAt(pos)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.selectWordAt (pos)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Selects word that the given pos lies within or adjacent to. If pos isn't touching a word<br> (e.g. within a token like "//"), moves the cursor to pos without selecting a range.<br> Adapted from selectWordAt() in CodeMirror v2.<br> @param {!{line:number, ch:number}}<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.lineCount()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.lineCount ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the total number of lines in the the document (includes lines not visible in the viewport)<br> @returns {!number}<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.getFirstVisibleLine()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.getFirstVisibleLine ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the number of the first visible line in the editor.<br> @returns {number} The 0-based index of the first visible line.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.getLastVisibleLine()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.getLastVisibleLine ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the number of the last visible line in the editor.<br> @returns {number} The 0-based index of the last visible line.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.totalHeight(includePadding)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.totalHeight (includePadding)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the total height of the document in pixels (not the viewport)<br> @param {!boolean} includePadding<br> @returns {!number} height in pixels<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.getScrollerElement()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.getScrollerElement ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the scroller element from the editor.<br> @returns {!HTMLDivElement} scroller<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.getRootElement()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.getRootElement ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the root DOM node of the editor.<br> @returns {!HTMLDivElement} The editor's root DOM node.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype._getLineSpaceElement()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype._getLineSpaceElement ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the lineSpace element within the editor (the container around the individual lines of code).<br> FUTURE: This is fairly CodeMirror-specific. Logic that depends on this may break if we switch<br> editors.<br> @returns {!HTMLDivElement} The editor's lineSpace element.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.getScrollPos()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.getScrollPos ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns the current scroll position of the editor.<br> @returns {{x:number, y:number}} The x,y scroll position in pixels<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.setScrollPos(x, y)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.setScrollPos (x, y)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sets the current scroll position of the editor.<br> @param {number} x scrollLeft position in pixels<br> @param {number} y scrollTop position in pixels<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.addInlineWidget(pos, inlineWidget)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.addInlineWidget (pos, inlineWidget)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Adds an inline widget below the given line. If any inline widget was already open for that<br> line, it is closed without warning.<br> @param {!{line:number, ch:number}} pos  Position in text to anchor the inline.<br> @param {!InlineWidget} inlineWidget The widget to add.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.removeAllInlineWidgets()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.removeAllInlineWidgets ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Removes all inline widgets<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.removeInlineWidget(inlineWidget)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.removeInlineWidget (inlineWidget)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Removes the given inline widget.<br> @param {number} inlineWidget The widget to remove.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype._removeInlineWidgetInternal(inlineId)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype._removeInlineWidgetInternal (inlineId)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Cleans up the given inline widget from our internal list of widgets.<br> @param {number} inlineId  id returned by addInlineWidget().<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.getInlineWidgets()</h2></code></pre><p><strong>return type: </strong><code>!Array.<{id:number, data:Object}></code></p>
+<pre><code><h2>Editor.prototype.getInlineWidgets ()</h2></code></pre><p><strong>return type: </strong><code>!Array.<{id:number, data:Object}></code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns a list of all inline widgets currently open in this editor. Each entry contains the<br> inline's id, and the data parameter that was passed to addInlineWidget().<br> @return {!Array.<{id:number, data:Object}>}<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.setInlineWidgetHeight(inlineWidget, height, ensureVisible)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.setInlineWidgetHeight (inlineWidget, height, ensureVisible)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sets the height of an inline widget in this editor. <br> @param {!InlineWidget} inlineWidget The widget whose height should be set.<br> @param {!number} height The height of the widget.<br> @param {boolean} ensureVisible Whether to scroll the entire widget into view.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype._getInlineWidgetLineNumber(inlineWidget)</h2></code></pre><p><strong>return type: </strong><code>number</code></p>
+<pre><code><h2>Editor.prototype._getInlineWidgetLineNumber (inlineWidget)</h2></code></pre><p><strong>return type: </strong><code>number</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Get the starting line number for an inline widget.<br> @param {!InlineWidget} inlineWidget <br> @return {number} The line number of the widget or -1 if not found.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype._fireWidgetOffsetTopChanged(lineNum)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype._fireWidgetOffsetTopChanged (lineNum)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Fire "offsetTopChanged" events when inline editor positions change due to<br> height changes of other inline editors.<br> @param {!InlineWidget} inlineWidget <br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.focus()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.focus ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gives focus to the editor control </p>
 <hr>
-<pre><code><h2>Editor.prototype.hasFocus()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.hasFocus ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns true if the editor has focus </p>
 <hr>
-<pre><code><h2>Editor.prototype.refresh()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.refresh ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Re-renders the editor UI<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.refreshAll()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.refreshAll ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Re-renders the editor, and all children inline editors.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.setVisible(show)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.setVisible (show)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Shows or hides the editor within its parent. Does not force its ancestors to<br> become visible.<br> @param {boolean} show true to show the editor, false to hide it<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.isFullyVisible()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.isFullyVisible ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns true if the editor is fully visible--i.e., is in the DOM, all ancestors are<br> visible, and has a non-zero width/height.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.getModeForSelection()</h2></code></pre><p><strong>return type: </strong><code>?(Object|String)} Object or Name of syntax-highlighting mode; see {@link EditorUtils#getModeFromFileExtension()</code></p>
+<pre><code><h2>Editor.prototype.getModeForSelection ()</h2></code></pre><p><strong>return type: </strong><code>?(Object|String)} Object or Name of syntax-highlighting mode; see {@link EditorUtils#getModeFromFileExtension()</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the syntax-highlighting mode for the current selection or cursor position. (The mode may<br> vary within one file due to embedded languages, e.g. JS embedded in an HTML script block).<br><br> Returns null if the mode at the start of the selection differs from the mode at the end -<br> an *approximation* of whether the mode is consistent across the whole range (a pattern like<br> A-B-A would return A as the mode, not null).<br><br> @return {?(Object|String)} Object or Name of syntax-highlighting mode; see {@link EditorUtils#getModeFromFileExtension()}.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.getModeForDocument()</h2></code></pre><p><strong>return type: </strong><code>Object|String} Object or Name of syntax-highlighting mode; see {@link EditorUtils#getModeFromFileExtension()</code></p>
+<pre><code><h2>Editor.prototype.getModeForDocument ()</h2></code></pre><p><strong>return type: </strong><code>Object|String} Object or Name of syntax-highlighting mode; see {@link EditorUtils#getModeFromFileExtension()</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Gets the syntax-highlighting mode for the document.<br><br> @return {Object|String} Object or Name of syntax-highlighting mode; see {@link EditorUtils#getModeFromFileExtension()}.<br>     </p>
 <hr>
-<pre><code><h2>Editor.prototype.setModeForDocument(mode)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Editor.prototype.setModeForDocument (mode)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sets the syntax-highlighting mode for the document.<br><br> @param {string} mode Name of syntax highlighting mode.<br>     </p>
 <hr>
@@ -1238,9 +1219,10 @@
 <hr>
 <hr>
 <a name="EditorCommandHandlers"></a><article>
-<h1>EditorCommandHandlers</h1>
 <p class="path">editor/EditorCommandHandlers.js</p>
-<p> Text-editing commands that apply to whichever Editor is currently focused<br> </p>
+<h1>EditorCommandHandlers</h1>
+<pre><code><h2>module</h2></code></pre><p> Text-editing commands that apply to whichever Editor is currently focused<br> </p>
+<hr>
 <pre><code><h2>DIRECTION_UP</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> List of constants<br>     </p>
@@ -1309,9 +1291,10 @@
 <hr>
 <hr>
 <a name="EditorManager"></a><article>
-<h1>EditorManager</h1>
 <p class="path">editor/EditorManager.js</p>
-<p> EditorManager owns the UI for the editor area. This essentially mirrors the 'current document'<br> property maintained by DocumentManager's model.<br><br> Note that there is a little bit of unusual overlap between EditorManager and DocumentManager:<br> because the Document state is actually stored in the CodeMirror editor UI, DocumentManager is<br> not a pure headless model. Each Document encapsulates an editor instance, and thus EditorManager<br> must have some knowledge about Document's internal state (we access its _editor property).<br><br> This module dispatches the following events:<br>    - activeEditorChange --  Fires after the active editor (full or inline) changes and size/visibility<br>                             are complete. Doesn't fire when editor temporarily loses focus to a non-editor<br>                             control (e.g. search toolbar or modal dialog, or window deactivation). Does<br>                             fire when focus moves between inline editor and its full-size container.<br>                             This event tracks getActiveEditor() changes, while DocumentManager's<br>                             currentDocumentChange tracks getCurrentFullEditor() changes.<br>                             The 2nd arg to the listener is which Editor became active; the 3rd arg is<br>                             which Editor is deactivated as a result. Either one may be null.<br>                             NOTE (#1257): getFocusedEditor() sometimes lags behind this event. Listeners<br>                             should use the arguments or call getActiveEditor() to reliably see which Editor <br>                             just gained focus.<br> </p>
+<h1>EditorManager</h1>
+<pre><code><h2>module</h2></code></pre><p> EditorManager owns the UI for the editor area. This essentially mirrors the 'current document'<br> property maintained by DocumentManager's model.<br><br> Note that there is a little bit of unusual overlap between EditorManager and DocumentManager:<br> because the Document state is actually stored in the CodeMirror editor UI, DocumentManager is<br> not a pure headless model. Each Document encapsulates an editor instance, and thus EditorManager<br> must have some knowledge about Document's internal state (we access its _editor property).<br><br> This module dispatches the following events:<br>    - activeEditorChange --  Fires after the active editor (full or inline) changes and size/visibility<br>                             are complete. Doesn't fire when editor temporarily loses focus to a non-editor<br>                             control (e.g. search toolbar or modal dialog, or window deactivation). Does<br>                             fire when focus moves between inline editor and its full-size container.<br>                             This event tracks getActiveEditor() changes, while DocumentManager's<br>                             currentDocumentChange tracks getCurrentFullEditor() changes.<br>                             The 2nd arg to the listener is which Editor became active; the 3rd arg is<br>                             which Editor is deactivated as a result. Either one may be null.<br>                             NOTE (#1257): getFocusedEditor() sometimes lags behind this event. Listeners<br>                             should use the arguments or call getActiveEditor() to reliably see which Editor <br>                             just gained focus.<br> </p>
+<hr>
 <pre><code><h2>_editorHolder</h2></code></pre><p><strong>return type: </strong><code>jQueryObject} DOM node that contains all editors (visible and hidden alike) </code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @type {jQueryObject} DOM node that contains all editors (visible and hidden alike) </p>
@@ -1436,9 +1419,10 @@
 <hr>
 <hr>
 <a name="EditorUtils"></a><article>
-<h1>EditorUtils</h1>
 <p class="path">editor/EditorUtils.js</p>
-<p> Set of utilites for working with the code editor<br> </p>
+<h1>EditorUtils</h1>
+<pre><code><h2>module</h2></code></pre><p> Set of utilites for working with the code editor<br> </p>
+<hr>
 <pre><code><h2>getModeFromFileExtension (fileUrl)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Given a file URL, determines the mode to use based<br> off the file's extension.<br> @param {string} fileUrl  A cannonical file URL to extract the extension from<br>     </p>
@@ -1447,9 +1431,7 @@
 <hr>
 <hr>
 <a name="InlineTextEditor"></a><article>
-<h1>InlineTextEditor</h1>
 <p class="path">editor/InlineTextEditor.js</p>
-<p></p>
 <pre><code><h2>_editorHolderWidth ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> Returns editor holder width (not CodeMirror's width).<br> @private<br>     </p>
@@ -1470,31 +1452,31 @@
 <p><strong>access: </strong><code>private</code></p>
 <p> Given a host editor and its inline editors, find the widest gutter and make all the others match<br> @param {!Editor} hostEditor Host editor containing all the inline editors to sync<br> @private<br>     </p>
 <hr>
-<pre><code><h2>InlineTextEditor.prototype.onClosed()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineTextEditor.prototype.onClosed ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Called any time inline was closed, whether manually (via close()) or automatically<br>     </p>
 <hr>
-<pre><code><h2>InlineTextEditor.prototype.sizeInlineWidgetToContents(force)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineTextEditor.prototype.sizeInlineWidgetToContents (force)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Update the inline editor's height when the number of lines change<br> @param {boolean} force the editor to resize<br>     </p>
 <hr>
-<pre><code><h2>InlineTextEditor.prototype.onAdded()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineTextEditor.prototype.onAdded ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Some tasks have to wait until we've been parented into the outer editor<br> @param {string} the inline ID that is generated by CodeMirror after the widget that holds the inline<br>  editor is constructed and added to the DOM<br>     </p>
 <hr>
-<pre><code><h2>InlineTextEditor.prototype.createInlineEditorFromText(doc, startLine, endLine, container, additionalKeys)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineTextEditor.prototype.createInlineEditorFromText (doc, startLine, endLine, container, additionalKeys)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @param {Document} doc<br> @param {number} startLine of text to show in inline editor<br> @param {number} endLine of text to show in inline editor<br> @param {HTMLDivElement} container container to hold the inline editor<br>     </p>
 <hr>
-<pre><code><h2>InlineTextEditor.prototype.load(hostEditor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineTextEditor.prototype.load (hostEditor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @param {Editor} hostEditor<br>     </p>
 <hr>
-<pre><code><h2>InlineTextEditor.prototype.onParentShown()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineTextEditor.prototype.onParentShown ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Called when the editor containing the inline is made visible.<br>     </p>
 <hr>
-<pre><code><h2>InlineTextEditor.prototype._onLostContent()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineTextEditor.prototype._onLostContent ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> If Document's file is deleted, or Editor loses sync with Document, just close<br>     </p>
 <hr>
@@ -1502,9 +1484,7 @@
 <hr>
 <hr>
 <a name="InlineWidget"></a><article>
-<h1>InlineWidget</h1>
 <p class="path">editor/InlineWidget.js</p>
-<p></p>
 <pre><code><h2>InlineWidget Class</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @constructor<br><br>     </p>
@@ -1513,27 +1493,27 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> Initial height of inline widget in pixels. Can be changed later via hostEditor.setInlineWidgetHeight()<br> @type {number}<br>     </p>
 <hr>
-<pre><code><h2>InlineWidget.prototype.close()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineWidget.prototype.close ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Closes this inline widget and all its contained Editors<br>     </p>
 <hr>
-<pre><code><h2>InlineWidget.prototype.onClosed()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineWidget.prototype.onClosed ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Called any time inline is closed, whether manually or automatically<br>     </p>
 <hr>
-<pre><code><h2>InlineWidget.prototype.onAdded()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineWidget.prototype.onAdded ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Called once content is parented in the host editor's DOM. Useful for performing tasks like setting<br> focus or measuring content, which require htmlContent to be in the DOM tree.<br>     </p>
 <hr>
-<pre><code><h2>InlineWidget.prototype.load(hostEditor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineWidget.prototype.load (hostEditor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @param {Editor} hostEditor<br>     </p>
 <hr>
-<pre><code><h2>InlineWidget.prototype.onParentShown()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineWidget.prototype.onParentShown ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Called when the editor containing the inline is made visible.<br>     </p>
 <hr>
-<pre><code><h2>InlineWidget.prototype.refresh()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>InlineWidget.prototype.refresh ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Called when the parent editor does a full refresh--for example, when the font size changes.<br>     </p>
 <hr>
@@ -1541,9 +1521,10 @@
 <hr>
 <hr>
 <a name="MultiRangeInlineEditor"></a><article>
-<h1>MultiRangeInlineEditor</h1>
 <p class="path">editor/MultiRangeInlineEditor.js</p>
-<p> An inline editor for displaying and editing multiple text ranges. Each range corresponds to a <br> contiguous set of lines in a file. <br> <br> In the current implementation, only one range is visible at a time. A list on the right side<br> of the editor allows the user to select which range is visible. <br><br> This module does not dispatch any events.<br> </p>
+<h1>MultiRangeInlineEditor</h1>
+<pre><code><h2>module</h2></code></pre><p> An inline editor for displaying and editing multiple text ranges. Each range corresponds to a <br> contiguous set of lines in a file. <br> <br> In the current implementation, only one range is visible at a time. A list on the right side<br> of the editor allows the user to select which range is visible. <br><br> This module does not dispatch any events.<br> </p>
+<hr>
 <pre><code><h2>_parseStyleSize ($target, styleName)</h2></code></pre><p><strong>return type: </strong><code>number</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Remove trailing "px" from a style size value.<br> @param {!JQuery} $target Element in DOM<br> @param {!string} styleName Style name to query<br> @return {number} Style value converted from string to number, removing "px" units<br>     </p>
@@ -1560,63 +1541,63 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> @type {Array.} </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype.load(hostEditor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype.load (hostEditor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @override<br> @param {!Editor} hostEditor  Outer Editor instance that inline editor will sit within.<br> <br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype.setSelectedIndex(index)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype.setSelectedIndex (index)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Specify the range that is shown in the editor.<br><br> @param {!number} index The index of the range to select.<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype.onClosed()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype.onClosed ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Called any time inline is closed, whether manually (via closeThisInline()) or automatically<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype._relatedContainerInsertedHandler()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype._relatedContainerInsertedHandler ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Set _relatedContainerInserted flag once the $relatedContainer is inserted in the DOM.<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype._onClick(event)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype._onClick (event)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Prevent clicks in the dead areas of the inlineWidget from changing the focus and insertion point in the editor.<br> This is done by detecting clicks in the inlineWidget that are not inside the editor or the range list and<br> restoring focus and the insertion point.<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype._updateRelatedContainer()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype._updateRelatedContainer ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Set the size, position, and clip rect of the range list.<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype._ensureCursorVisible()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype._ensureCursorVisible ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Based on the position of the cursor in the inline editor, determine whether we need to change the<br> scroll position of the host editor to ensure that the cursor is visible.<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype._handleChange()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype._handleChange ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Handle a change event from the editor. Update the related container and make sure the<br> cursor is visible.<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype._onLostContent(event, cause)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype._onLostContent (event, cause)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Overwrite InlineTextEditor's _onLostContent to do nothing if the document's file is deleted<br> (deletes are handled via TextRange's lostSync).<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype._getRanges()</h2></code></pre><p><strong>return type: </strong><code>Array.</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype._getRanges ()</h2></code></pre><p><strong>return type: </strong><code>Array.</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @return {Array.}<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype._getSelectedRange()</h2></code></pre><p><strong>return type: </strong><code>!SearchResultItem</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype._getSelectedRange ()</h2></code></pre><p><strong>return type: </strong><code>!SearchResultItem</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @return {!SearchResultItem}<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype._selectNextRange()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype._selectNextRange ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Display the next range in the range list<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype._selectPreviousRange()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype._selectPreviousRange ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p>  Display the previous range in the range list<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype.sizeInlineWidgetToContents(force, ensureVisibility)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype.sizeInlineWidgetToContents (force, ensureVisibility)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Sizes the inline widget height to be the maximum between the range list height and the editor height<br> @override <br> @param {boolean} force the editor to resize<br> @param {boolean} ensureVisibility makes the parent editor scroll to display the inline editor. Default true.<br>     </p>
 <hr>
-<pre><code><h2>MultiRangeInlineEditor.prototype.refresh()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>MultiRangeInlineEditor.prototype.refresh ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Refreshes the height of the inline editor and all child editors.<br> @override<br>     </p>
 <hr>
@@ -1636,9 +1617,10 @@
 <hr>
 <hr>
 <a name="FileUtils"></a><article>
-<h1>FileUtils</h1>
 <p class="path">file/FileUtils.js</p>
-<p> Set of utilites for working with files and text content.<br> </p>
+<h1>FileUtils</h1>
+<pre><code><h2>module</h2></code></pre><p> Set of utilites for working with files and text content.<br> </p>
+<hr>
 <pre><code><h2>readAsText (fileEntry)</h2></code></pre><p><strong>return type: </strong><code>$.Promise</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Asynchronously reads a file as UTF-8 encoded text.<br> @return {$.Promise} a jQuery promise that will be resolved with the <br>  file's text content plus its timestamp, or rejected with a FileError if<br>  the file can not be read.<br>     </p>
@@ -1703,9 +1685,7 @@
 <hr>
 <hr>
 <a name="NativeFileSystem"></a><article>
-<h1>NativeFileSystem</h1>
 <p class="path">file/NativeFileSystem.js</p>
-<p></p>
 <pre><code><h2>showOpenDialog Class</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> showOpenDialog<br><br> @param {bool} allowMultipleSelection<br> @param {bool} chooseDirectories<br> @param {string} title<br> @param {string} initialPath<br> @param {Array.} fileTypes<br> @param {!function(Array.)} successCallback<br> @param {!function(number)} errorCallback (TODO #2057: should this pass a FileError?)<br> @constructor<br>         </p>
@@ -1809,17 +1789,11 @@
 </article>
 <hr>
 <hr>
-<a name="HelpCommandHandlers"></a><article>
-<h1>HelpCommandHandlers</h1>
-<p class="path">help/HelpCommandHandlers.js</p>
-<p></p>
-</article>
-<hr>
-<hr>
 <a name="CSSUtils"></a><article>
-<h1>CSSUtils</h1>
 <p class="path">language/CSSUtils.js</p>
-<p> Set of utilities for simple parsing of CSS text.<br> </p>
+<h1>CSSUtils</h1>
+<pre><code><h2>module</h2></code></pre><p> Set of utilities for simple parsing of CSS text.<br> </p>
+<hr>
 <pre><code><h2>extractAllSelectors (text)</h2></code></pre><p><strong>return type: </strong><code>Array.</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Extracts all CSS selectors from the given text<br> Returns an array of selectors. Each selector is an object with the following properties:<br>         selector:                 the text of the selector (note: comma separated selector groups like <br>                                   "h1, h2" are broken into separate selectors)<br>         ruleStartLine:            line in the text where the rule (including preceding comment) appears<br>         ruleStartChar:            column in the line where the rule (including preceding comment) starts<br>         selectorStartLine:        line in the text where the selector appears<br>         selectorStartChar:        column in the line where the selector starts<br>         selectorEndLine:          line where the selector ends<br>         selectorEndChar:          column where the selector ends<br>         selectorGroupStartLine:   line where the comma-separated selector group (e.g. .foo, .bar, .baz)<br>                                   starts that this selector (e.g. .baz) is part of. Particularly relevant for<br>                                   groups that are on multiple lines.<br>         selectorGroupStartChar:   column in line where the selector group starts.<br>         declListStartLine:        line where the declaration list for the rule starts<br>         declListStartChar:        column in line where the declaration list for the rule starts<br>         declListEndLine:          line where the declaration list for the rule ends<br>         declListEndChar:          column in the line where the declaration list for the rule ends<br> @param text {!String} CSS text to extract from<br> @return {Array.} Array with objects specifying selectors.<br>     </p>
@@ -1852,9 +1826,7 @@
 <hr>
 <hr>
 <a name="HTMLUtils"></a><article>
-<h1>HTMLUtils</h1>
 <p class="path">language/HTMLUtils.js</p>
-<p></p>
 <pre><code><h2>_extractAttrVal (ctx)</h2></code></pre><p><strong>return type: </strong><code> val:{string}, offset:{number}</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Sometimes as attr values are getting typed, if the quotes aren't balanced yet<br> some extra 'non attribute value' text gets included in the token. This attempts<br> to assure the attribute value we grab is always good<br> @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} context<br> @return { val:{string}, offset:{number}}<br>     </p>
@@ -1887,9 +1859,10 @@
 <hr>
 <hr>
 <a name="JSLintUtils"></a><article>
-<h1>JSLintUtils</h1>
 <p class="path">language/JSLintUtils.js</p>
-<p> Allows JSLint to run on the current document and report results in a UI panel.<br><br> </p>
+<h1>JSLintUtils</h1>
+<pre><code><h2>module</h2></code></pre><p> Allows JSLint to run on the current document and report results in a UI panel.<br><br> </p>
+<hr>
 <pre><code><h2>_prefs</h2></code></pre><p><strong>return type: </strong><code>PreferenceStorage}</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> @type {PreferenceStorage}<br>     </p>
@@ -1922,9 +1895,10 @@
 <hr>
 <hr>
 <a name="JSUtils"></a><article>
-<h1>JSUtils</h1>
 <p class="path">language/JSUtils.js</p>
-<p> Set of utilities for simple parsing of JS text.<br> </p>
+<h1>JSUtils</h1>
+<pre><code><h2>module</h2></code></pre><p> Set of utilities for simple parsing of JS text.<br> </p>
+<hr>
 <pre><code><h2>_changedDocumentTracker</h2></code></pre><p><strong>return type: </strong><code>ChangedDocumentTracker}</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Tracks dirty documents between invocations of findMatchingFunctions.<br> @type {ChangedDocumentTracker}<br>     </p>
@@ -1973,9 +1947,10 @@
 <hr>
 <hr>
 <a name="LiveDevelopment"></a><article>
-<h1>LiveDevelopment</h1>
 <p class="path">LiveDevelopment/LiveDevelopment.js</p>
-<p> LiveDevelopment manages the Inspector, all Agents, and the active LiveDocument<br><br> # STARTING<br><br> To start a session call `open`. This will read the currentDocument from brackets,<br> launch the LiveBrowser (currently Chrome) with the remote debugger port open,<br> establish the Inspector connection to the remote debugger, and finally load all<br> agents.<br><br> # STOPPING<br><br> To stop a session call `close`. This will close the active browser window,<br> disconnect the Inspector, unload all agents, and clean up.<br><br> # STATUS<br><br> Status updates are dispatched as `statusChange` jQuery events. The status<br> codes are:<br><br> -1: Error<br>  0: Inactive<br>  1: Connecting to the remote debugger<br>  2: Loading agents<br>  3: Active<br>  4: Out of sync<br> </p>
+<h1>LiveDevelopment</h1>
+<pre><code><h2>module</h2></code></pre><p> LiveDevelopment manages the Inspector, all Agents, and the active LiveDocument<br><br> # STARTING<br><br> To start a session call `open`. This will read the currentDocument from brackets,<br> launch the LiveBrowser (currently Chrome) with the remote debugger port open,<br> establish the Inspector connection to the remote debugger, and finally load all<br> agents.<br><br> # STOPPING<br><br> To stop a session call `close`. This will close the active browser window,<br> disconnect the Inspector, unload all agents, and clean up.<br><br> # STATUS<br><br> Status updates are dispatched as `statusChange` jQuery events. The status<br> codes are:<br><br> -1: Error<br>  0: Inactive<br>  1: Connecting to the remote debugger<br>  2: Loading agents<br>  3: Active<br>  4: Out of sync<br> </p>
+<hr>
 <pre><code><h2>_urlToPath (url)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Convert a URL to a local full file path </p>
@@ -2092,9 +2067,10 @@
 <hr>
 <hr>
 <a name="main"></a><article>
-<h1>main</h1>
 <p class="path">LiveDevelopment/main.js</p>
-<p> main integrates LiveDevelopment into Brackets<br><br> This module creates two menu items:<br><br>  "Go Live": open or close a Live Development session and visualize the status<br>  "Highlight": toggle source highlighting<br><br> @require DocumentManager<br> </p>
+<h1>main</h1>
+<pre><code><h2>module</h2></code></pre><p> main integrates LiveDevelopment into Brackets<br><br> This module creates two menu items:<br><br>  "Go Live": open or close a Live Development session and visualize the status<br>  "Highlight": toggle source highlighting<br><br> @require DocumentManager<br> </p>
+<hr>
 <pre><code><h2>_loadStyles ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Load Live Development LESS Style </p>
@@ -2127,9 +2103,10 @@
 <hr>
 <hr>
 <a name="PreferencesDialogs"></a><article>
-<h1>PreferencesDialogs</h1>
 <p class="path">preferences/PreferencesDialogs.js</p>
-<p> PreferencesDialogs<br><br> </p>
+<h1>PreferencesDialogs</h1>
+<pre><code><h2>module</h2></code></pre><p> PreferencesDialogs<br><br> </p>
+<hr>
 <pre><code><h2>_validateBaseUrl (url)</h2></code></pre><p><strong>return type: </strong><code>String</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Validate that text string is a valid base url which should map to a server folder<br> @param {String} url<br> @return {String} empty string if valid, otherwise error string<br>     </p>
@@ -2142,9 +2119,10 @@
 <hr>
 <hr>
 <a name="PreferencesManager"></a><article>
-<h1>PreferencesManager</h1>
 <p class="path">preferences/PreferencesManager.js</p>
-<p> PreferencesManager<br><br> </p>
+<h1>PreferencesManager</h1>
+<pre><code><h2>module</h2></code></pre><p> PreferencesManager<br><br> </p>
+<hr>
 <pre><code><h2>getPreferenceStorage (clientID, defaults)</h2></code></pre><p><strong>return type: </strong><code>PreferenceStorage</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Retreive preferences data for the given clientID.<br><br> @param {string} clientID Unique identifier<br> @param {string} defaults Default preferences stored as JSON<br> @return {PreferenceStorage} <br>     </p>
@@ -2165,9 +2143,10 @@
 <hr>
 <hr>
 <a name="PreferenceStorage"></a><article>
-<h1>PreferenceStorage</h1>
 <p class="path">preferences/PreferenceStorage.js</p>
-<p> PreferenceStorage defines an interface for persisting preference data as<br> name/value pairs for a module or plugin.<br> </p>
+<h1>PreferenceStorage</h1>
+<pre><code><h2>module</h2></code></pre><p> PreferenceStorage defines an interface for persisting preference data as<br> name/value pairs for a module or plugin.<br> </p>
+<hr>
 <pre><code><h2>_validateJSONPair (key, value)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Validate JSON keys and values.<br>     </p>
@@ -2180,27 +2159,27 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> Creates a new PreferenceStorage object.<br> @param {!string} clientID Unique identifier for PreferencesManager to<br>  associate this PreferenceStorage data with.<br> @param {!object} json JSON object to persist preference data.<br>     </p>
 <hr>
-<pre><code><h2>PreferenceStorage.prototype.getClientID()</h2></code></pre><p><strong>return type: </strong><code>!string</code></p>
+<pre><code><h2>PreferenceStorage.prototype.getClientID ()</h2></code></pre><p><strong>return type: </strong><code>!string</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Unique clientID for this PreferenceStorage object.<br> @return {!string} clientID<br>     </p>
 <hr>
-<pre><code><h2>PreferenceStorage.prototype.remove(key)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>PreferenceStorage.prototype.remove (key)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Removes a preference from this PreferenceStorage object.<br> @param {!string} key A unique identifier<br>     </p>
 <hr>
-<pre><code><h2>PreferenceStorage.prototype.setValue(key, value)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>PreferenceStorage.prototype.setValue (key, value)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Assigns a value for a key. Overwrites existing value if present.<br> @param {!string} key A unique identifier<br> @param {object} value A valid JSON value<br>     </p>
 <hr>
-<pre><code><h2>PreferenceStorage.prototype.getValue(key)</h2></code></pre><p><strong>return type: </strong><code>object</code></p>
+<pre><code><h2>PreferenceStorage.prototype.getValue (key)</h2></code></pre><p><strong>return type: </strong><code>object</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Retreive the value associated with the specified key.<br> @param {!string} key Key name to lookup.<br> @return {object} Returns the value for the key or undefined.<br>     </p>
 <hr>
-<pre><code><h2>PreferenceStorage.prototype.getAllValues()</h2></code></pre><p><strong>return type: </strong><code>!object</code></p>
+<pre><code><h2>PreferenceStorage.prototype.getAllValues ()</h2></code></pre><p><strong>return type: </strong><code>!object</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Return all name-value pairs as a single JSON object.<br> @return {!object} JSON object containing name/value pairs for all keys<br>  in this PreferenceStorage object.<br>     </p>
 <hr>
-<pre><code><h2>PreferenceStorage.prototype.setAllValues(obj, append)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>PreferenceStorage.prototype.setAllValues (obj, append)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Writes name-value pairs from a JSON object as preference properties.<br> Invalid JSON values throw an error and all changes are discarded.<br><br> @param {!object} obj A JSON object with zero or more preference properties to write.<br> @param {boolean} append Defaults to false. When true, properties in the JSON object<br>  overwrite and/or append to the existing set of preference properties. When false,<br>  all existing preferences are deleted before writing new properties from the JSON object.<br>     </p>
 <hr>
@@ -2208,9 +2187,7 @@
 <hr>
 <hr>
 <a name="FileIndexManager"></a><article>
-<h1>FileIndexManager</h1>
 <p class="path">project/FileIndexManager.js</p>
-<p></p>
 <pre><code><h2>_indexList</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> All the indexes are stored in this object. The key is the name of the index<br> and the value is a FileIndex. <br>     </p>
@@ -2267,9 +2244,10 @@
 <hr>
 <hr>
 <a name="FileSyncManager"></a><article>
-<h1>FileSyncManager</h1>
 <p class="path">project/FileSyncManager.js</p>
-<p> FileSyncManager is a set of utilities to help track external modifications to the files and folders<br> in the currently open project.<br><br> Currently, we look for external changes purely by checking file timestamps against the last-sync<br> timestamp recorded on Document. Later, we will use actual native directory-watching callbacks<br> instead.<br><br> FUTURE: Whenever we have a 'project file tree model,' we should manipulate that instead of notifying<br> DocumentManager directly. DocumentManager, the tree UI, etc. then all listen to that model for changes.<br> </p>
+<h1>FileSyncManager</h1>
+<pre><code><h2>module</h2></code></pre><p> FileSyncManager is a set of utilities to help track external modifications to the files and folders<br> in the currently open project.<br><br> Currently, we look for external changes purely by checking file timestamps against the last-sync<br> timestamp recorded on Document. Later, we will use actual native directory-watching callbacks<br> instead.<br><br> FUTURE: Whenever we have a 'project file tree model,' we should manipulate that instead of notifying<br> DocumentManager directly. DocumentManager, the tree UI, etc. then all listen to that model for changes.<br> </p>
+<hr>
 <pre><code><h2>_alreadyChecking</h2></code></pre><p><strong>return type: </strong><code>boolean}</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Guard to spot re-entrancy while syncOpenDocuments() is still in progress<br> @type {boolean}<br>     </p>
@@ -2330,9 +2308,10 @@
 <hr>
 <hr>
 <a name="FileViewController"></a><article>
-<h1>FileViewController</h1>
 <p class="path">project/FileViewController.js</p>
-<p> Responsible for coordinating file selection between views by permitting only one view<br> to show the current file selection at a time. Currently, only WorkingSetView and <br> ProjectManager can show file selection. In general the WorkingSetView takes higher<br> priority until the user selects a file in the ProjectManager.<br><br> Events dispatched:<br> - documentSelectionFocusChange - indicates a document change has caused the focus to <br>   change between the working set and file tree.<br><br> - fileViewFocusChange - indicates the selection focus has changed between the working<br>   set and the project tree, but the document selection has NOT changed<br><br> Current file selection rules in views:<br> - select a file in WorkingSetView > select in WorkingSetView<br> - add a file to the WorkingSetView > select in WorkingSetView<br> - select a file in ProjectManager > select in ProjectManager<br> - open a file from places other than the WorkingSetView or ProjectManager > <br>       select file in WorkignSetView if its in the working set, otherwise select in ProjectManager<br> </p>
+<h1>FileViewController</h1>
+<pre><code><h2>module</h2></code></pre><p> Responsible for coordinating file selection between views by permitting only one view<br> to show the current file selection at a time. Currently, only WorkingSetView and <br> ProjectManager can show file selection. In general the WorkingSetView takes higher<br> priority until the user selects a file in the ProjectManager.<br><br> Events dispatched:<br> - documentSelectionFocusChange - indicates a document change has caused the focus to <br>   change between the working set and file tree.<br><br> - fileViewFocusChange - indicates the selection focus has changed between the working<br>   set and the project tree, but the document selection has NOT changed<br><br> Current file selection rules in views:<br> - select a file in WorkingSetView > select in WorkingSetView<br> - add a file to the WorkingSetView > select in WorkingSetView<br> - select a file in ProjectManager > select in ProjectManager<br> - open a file from places other than the WorkingSetView or ProjectManager > <br>       select file in WorkignSetView if its in the working set, otherwise select in ProjectManager<br> </p>
+<hr>
 <pre><code><h2>_curDocChangedDueToMe</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> Tracks whether a "currentDocumentChange" notification occured due to a call to <br> openAndSelectDocument.<br> @see FileviewController.openAndSelectDocument<br> @private <br>     </p>
@@ -2365,9 +2344,10 @@
 <hr>
 <hr>
 <a name="ProjectManager"></a><article>
-<h1>ProjectManager</h1>
 <p class="path">project/ProjectManager.js</p>
-<p> ProjectManager is the model for the set of currently open project. It is responsible for<br> creating and updating the project tree when projects are opened and when changes occur to<br> the file tree.<br><br> This module dispatches these events:<br>    - beforeProjectClose -- before _projectRoot changes<br>    - projectOpen        -- after  _projectRoot changes<br>    - projectFilesChange -- sent if one of the project files has changed--<br>                            added, removed, renamed, etc.<br><br> These are jQuery events, so to listen for them you do something like this:<br>    $(ProjectManager).on("eventname", handler);<br> </p>
+<h1>ProjectManager</h1>
+<pre><code><h2>module</h2></code></pre><p> ProjectManager is the model for the set of currently open project. It is responsible for<br> creating and updating the project tree when projects are opened and when changes occur to<br> the file tree.<br><br> This module dispatches these events:<br>    - beforeProjectClose -- before _projectRoot changes<br>    - projectOpen        -- after  _projectRoot changes<br>    - projectFilesChange -- sent if one of the project files has changed--<br>                            added, removed, renamed, etc.<br><br> These are jQuery events, so to listen for them you do something like this:<br>    $(ProjectManager).on("eventname", handler);<br> </p>
+<hr>
 <pre><code><h2>$projectTreeContainer</h2></code></pre><p><strong>return type: </strong><code>jQueryObject}</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Reference to the tree control container div. Initialized by<br> htmlReady handler<br> @type {jQueryObject}<br>     </p>
@@ -2532,9 +2512,10 @@
 <hr>
 <hr>
 <a name="SidebarView"></a><article>
-<h1>SidebarView</h1>
 <p class="path">project/SidebarView.js</p>
-<p> The view that controls the showing and hiding of the sidebar. Dispatches the following events:<br>    hide -- when the sidebar is hidden<br>    show -- when the sidebar is shown<br> </p>
+<h1>SidebarView</h1>
+<pre><code><h2>module</h2></code></pre><p> The view that controls the showing and hiding of the sidebar. Dispatches the following events:<br>    hide -- when the sidebar is hidden<br>    show -- when the sidebar is shown<br> </p>
+<hr>
 <pre><code><h2>_updateProjectTitle ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Update project title when the project root changes<br>     </p>
@@ -2547,9 +2528,10 @@
 <hr>
 <hr>
 <a name="WorkingSetSort"></a><article>
-<h1>WorkingSetSort</h1>
 <p class="path">project/WorkingSetSort.js</p>
-<p> Manages the workingSet sort methods.<br> </p>
+<h1>WorkingSetSort</h1>
+<pre><code><h2>module</h2></code></pre><p> Manages the workingSet sort methods.<br> </p>
+<hr>
 <pre><code><h2>_prefs</h2></code></pre><p><strong>return type: </strong><code>PreferenceStorage}</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> @type {PreferenceStorage}<br>     </p>
@@ -2610,27 +2592,27 @@
 <p><strong>access: </strong><code>private</code></p>
 <p> @constructor<br> @private<br><br> @param {!string} commandID - valid command identifier.<br> @param {!function(FileEntry, FileEntry)} compareFn - a valid sort function (see register for a longer explanation).<br> @param {!string} events - space-separated DocumentManager possible events ending on ".sort".<br> @param {!function($.Event)} automaticFn - the function that will be called when an automatic sort event is triggered.<br>     </p>
 <hr>
-<pre><code><h2>Sort.prototype.getCommandID()</h2></code></pre><p><strong>return type: </strong><code>CommandID</code></p>
+<pre><code><h2>Sort.prototype.getCommandID ()</h2></code></pre><p><strong>return type: </strong><code>CommandID</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @return {CommandID} </p>
 <hr>
-<pre><code><h2>Sort.prototype.getCompareFn()</h2></code></pre><p><strong>return type: </strong><code>CompareFn</code></p>
+<pre><code><h2>Sort.prototype.getCompareFn ()</h2></code></pre><p><strong>return type: </strong><code>CompareFn</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @return {CompareFn} </p>
 <hr>
-<pre><code><h2>Sort.prototype.getEvents()</h2></code></pre><p><strong>return type: </strong><code>Events</code></p>
+<pre><code><h2>Sort.prototype.getEvents ()</h2></code></pre><p><strong>return type: </strong><code>Events</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @return {Events} </p>
 <hr>
-<pre><code><h2>Sort.prototype.callAutomaticFn(event)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Sort.prototype.callAutomaticFn (event)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Calls automaticFn </p>
 <hr>
-<pre><code><h2>Sort.prototype.execute()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Sort.prototype.execute ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Performs the sort and makes it the current sort method<br>     </p>
 <hr>
-<pre><code><h2>Sort.prototype.sort()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>Sort.prototype.sort ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Only performs the working set sort if this is the current sort<br>     </p>
 <hr>
@@ -2646,9 +2628,10 @@
 <hr>
 <hr>
 <a name="WorkingSetView"></a><article>
-<h1>WorkingSetView</h1>
 <p class="path">project/WorkingSetView.js</p>
-<p> WorkingSetView generates the UI for the list of the files user is editing based on the model provided by EditorManager.<br> The UI allows the user to see what files are open/dirty and allows them to close files and specify the current editor.<br><br> </p>
+<h1>WorkingSetView</h1>
+<pre><code><h2>module</h2></code></pre><p> WorkingSetView generates the UI for the list of the files user is editing based on the model provided by EditorManager.<br> The UI allows the user to see what files are open/dirty and allows them to close files and specify the current editor.<br><br> </p>
+<hr>
 <pre><code><h2>_FILE_KEY</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Each list item in the working set stores a references to the related document in the list item's data.  <br>  Use listItem.data(_FILE_KEY) to get the document reference<br>     </p>
@@ -2729,9 +2712,7 @@
 <hr>
 <hr>
 <a name="FindInFiles"></a><article>
-<h1>FindInFiles</h1>
 <p class="path">search/FindInFiles.js</p>
-<p></p>
 <pre><code><h2>_labelForScope (scope)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns label text to indicate the search scope. Already HTML-escaped.<br> @param {?Entry} scope<br>     </p>
@@ -2740,15 +2721,15 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> FindInFilesDialog class<br> @constructor<br><br>    </p>
 <hr>
-<pre><code><h2>FindInFilesDialog.prototype._createDialogDiv(template)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>FindInFilesDialog.prototype._createDialogDiv (template)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Creates a dialog div floating on top of the current code mirror editor<br>    </p>
 <hr>
-<pre><code><h2>FindInFilesDialog.prototype._close(value)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>FindInFilesDialog.prototype._close (value)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Closes the search dialog and resolves the promise that showDialog returned<br>    </p>
 <hr>
-<pre><code><h2>FindInFilesDialog.prototype.showDialog(initialString, scope)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>FindInFilesDialog.prototype.showDialog (initialString, scope)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Shows the search dialog <br> @param {?string} initialString Default text to prepopulate the search field with<br> @param {?Entry} scope Search scope, or null to search whole proj<br> @returns {$.Promise} that is resolved with the string to search for<br>    </p>
 <hr>
@@ -2768,9 +2749,7 @@
 <hr>
 <hr>
 <a name="FindReplace"></a><article>
-<h1>FindReplace</h1>
 <p class="path">search/FindReplace.js</p>
-<p></p>
 <pre><code><h2>doSearch (cm, rev)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> If no search pending, opens the search dialog. If search is already open, moves to<br> next/prev result (depending on 'rev')<br>     </p>
@@ -2779,9 +2758,7 @@
 <hr>
 <hr>
 <a name="QuickOpen"></a><article>
-<h1>QuickOpen</h1>
 <p class="path">search/QuickOpen.js</p>
-<p></p>
 <pre><code><h2>plugins</h2></code></pre><p><strong>return type: </strong><code>Array. </code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @type Array. </p>
@@ -2826,7 +2803,7 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> QuickNavigateDialog class<br> @constructor<br>     </p>
 <hr>
-<pre><code><h2>QuickNavigateDialog.prototype._createDialogDiv(template)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>QuickNavigateDialog.prototype._createDialogDiv (template)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Creates a dialog div floating on top of the current code mirror editor<br>     </p>
 <hr>
@@ -2838,27 +2815,27 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> Converts from list item DOM node to search provider list object<br> @param {jQueryObject} domItem<br> @return {SearchResult|string} value returned from search()<br>     </p>
 <hr>
-<pre><code><h2>QuickNavigateDialog.prototype._handleItemSelect(selectedDOMItem)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>QuickNavigateDialog.prototype._handleItemSelect (selectedDOMItem)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Navigates to the appropriate file and file location given the selected item <br> and closes the dialog.<br><br> Note, if selectedItem is null quick search should inspect $searchField for text<br> that may have not matched anything in in the list, but may have information<br> for carrying out an action (e.g. go to line).<br>     </p>
 <hr>
-<pre><code><h2>QuickNavigateDialog.prototype._handleItemFocus(selectedDOMItem)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>QuickNavigateDialog.prototype._handleItemFocus (selectedDOMItem)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Opens the file specified by selected item if there is no current plug-in, otherwise defers handling<br> to the currentPlugin<br>     </p>
 <hr>
-<pre><code><h2>QuickNavigateDialog.prototype._handleKeyUp(e)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>QuickNavigateDialog.prototype._handleKeyUp (e)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> KeyUp is for cases that handle AFTER a character has been committed to $searchField<br>     </p>
 <hr>
-<pre><code><h2>QuickNavigateDialog.prototype._handleKeyDown(e)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>QuickNavigateDialog.prototype._handleKeyDown (e)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Close the dialog when the Enter or Esc key is pressed<br><br> Note, when keydown is handled $searchField does not yet have the character added<br> for the current event e. <br>     </p>
 <hr>
-<pre><code><h2>QuickNavigateDialog.prototype._handleResultsReady(results)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>QuickNavigateDialog.prototype._handleResultsReady (results)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Give visual clue when there are no results<br>     </p>
 <hr>
-<pre><code><h2>QuickNavigateDialog.prototype._close()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>QuickNavigateDialog.prototype._close ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Closes the search dialog and notifies all quick open plugins that<br> searching is done.<br>     </p>
 <hr>
@@ -2894,11 +2871,11 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> Formats item's label as properly escaped HTML text, highlighting sections that match 'query'.<br> If item is a SearchResult generated by stringMatch(), uses its metadata about which string ranges<br> matched; else formats the label with no highlighting.<br> @param {!string|SearchResult} item<br> @param {?string} matchClass CSS class for highlighting matched text<br> @param {?function(number, string):string} rangeFilter<br> @return {!string} bolded, HTML-escaped result<br>     </p>
 <hr>
-<pre><code><h2>QuickNavigateDialog.prototype.handleDocumentMouseDown(e)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>QuickNavigateDialog.prototype.handleDocumentMouseDown (e)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Close the dialog when the user clicks outside of it. Smart-autocomplete listens for this and automatically closes its popup,<br> but we want to close the whole search "dialog." (And we can't just piggyback on the popup closing event, since there are cases<br> where the popup closes that we want the dialog to remain open (e.g. deleting search term via backspace).<br>     </p>
 <hr>
-<pre><code><h2>QuickNavigateDialog.prototype.showDialog(prefix, initialString)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>QuickNavigateDialog.prototype.showDialog (prefix, initialString)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Shows the search dialog and initializes the auto suggestion list with filenames from the current project<br>     </p>
 <hr>
@@ -2910,9 +2887,10 @@
 <hr>
 <hr>
 <a name="AppInit"></a><article>
-<h1>AppInit</h1>
 <p class="path">utils/AppInit.js</p>
-<p> Defines hooks to assist with module initialization.<br><br> This module defines 2 methods for client modules to attach callbacks:<br>    - htmlReady - When the main application template is rendered<br>    - appReady - When Brackets completes loading all modules and extensions<br><br> These are *not* jQuery events. Each method is similar to $(document).ready<br> in that it will call the handler immediately if brackets is already done<br> loading.<br> </p>
+<h1>AppInit</h1>
+<pre><code><h2>module</h2></code></pre><p> Defines hooks to assist with module initialization.<br><br> This module defines 2 methods for client modules to attach callbacks:<br>    - htmlReady - When the main application template is rendered<br>    - appReady - When Brackets completes loading all modules and extensions<br><br> These are *not* jQuery events. Each method is similar to $(document).ready<br> in that it will call the handler immediately if brackets is already done<br> loading.<br> </p>
+<hr>
 <pre><code><h2>appReady (callback)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Adds a callback for the ready hook. Handlers are called after<br> htmlReady is done, the initial project is loaded, and all extensions are<br> loaded.<br> @param {function} handler<br>     </p>
@@ -2925,9 +2903,10 @@
 <hr>
 <hr>
 <a name="Async"></a><article>
-<h1>Async</h1>
 <p class="path">utils/Async.js</p>
-<p> Utilities for working with Deferred, Promise, and other asynchronous processes.<br> </p>
+<h1>Async</h1>
+<pre><code><h2>module</h2></code></pre><p> Utilities for working with Deferred, Promise, and other asynchronous processes.<br> </p>
+<hr>
 <pre><code><h2>doInParallel (items, beginProcessItem, failFast)</h2></code></pre><p><strong>return type: </strong><code>$.Promise</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Executes a series of tasks in parallel, returning a "master" Promise that is resolved once<br> all the tasks have resolved. If one or more tasks fail, behavior depends on the failFast<br> flag:<br>   - If true, the master Promise is rejected as soon as the first task fails. The remaining<br>     tasks continue to completion in the background.<br>   - If false, the master Promise is rejected after all tasks have completed.<br><br> If nothing fails:          (M = master promise; 1-4 = tasks; d = done; F = fail)<br>  M  ------------d<br>  1 >---d        .<br>  2 >------d     .<br>  3 >---------d  .<br>  4 >------------d<br><br> With failFast = false:<br>  M  ------------F<br>  1 >---d     .  .<br>  2 >------d  .  .<br>  3 >---------F  .<br>  4 >------------d<br><br> With failFast = true: -- equivalent to $.when()<br>  M  ---------F<br>  1 >---d     .<br>  2 >------d  .<br>  3 >---------F<br>  4 >------------d   (#4 continues even though master Promise has failed)<br> (Note: if tasks finish synchronously, the behavior is more like failFast=false because you<br> won't get a chance to respond to the master Promise until after all items have been processed)<br><br> To perform task-specific work after an individual task completes, attach handlers to each<br> Promise before beginProcessItem() returns it.<br><br> Note: don't use this if individual tasks (or their done/fail handlers) could ever show a user-<br> visible dialog: because they run in parallel, you could show multiple dialogs atop each other.<br><br> @param {!Array.<*>} items<br> @param {!function(*, number):Promise} beginProcessItem<br> @param {!boolean} failFast<br> @return {$.Promise}<br>     </p>
@@ -2956,9 +2935,10 @@
 <hr>
 <hr>
 <a name="BuildInfoUtils"></a><article>
-<h1>BuildInfoUtils</h1>
 <p class="path">utils/BuildInfoUtils.js</p>
-<p> Utilities for determining the git SHA from an optional repository or from the<br> installed copy of Brackets.<br> </p>
+<h1>BuildInfoUtils</h1>
+<pre><code><h2>module</h2></code></pre><p> Utilities for determining the git SHA from an optional repository or from the<br> installed copy of Brackets.<br> </p>
+<hr>
 <pre><code><h2>_loadSHA (path, callback)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Loads a SHA from Git metadata file. If the file contains a symbolic ref name, follows the ref<br> and loads the SHA from that file in turn.<br>     </p>
@@ -2971,9 +2951,10 @@
 <hr>
 <hr>
 <a name="CollectionUtils"></a><article>
-<h1>CollectionUtils</h1>
 <p class="path">utils/CollectionUtils.js</p>
-<p>  Utilities functions related to data collections (arrays & maps)<br> </p>
+<h1>CollectionUtils</h1>
+<pre><code><h2>module</h2></code></pre><p>  Utilities functions related to data collections (arrays & maps)<br> </p>
+<hr>
 <pre><code><h2>indexOf (array, isMatch)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns the first index in 'array' for which isMatch() returns true, or -1 if none<br> @param {!Array.<*>|jQueryObject} array<br> @param {!function(*, Number):boolean} isMatch Passed (item, index), same as with forEach()<br>     </p>
@@ -2982,9 +2963,10 @@
 <hr>
 <hr>
 <a name="ExtensionLoader"></a><article>
-<h1>ExtensionLoader</h1>
 <p class="path">utils/ExtensionLoader.js</p>
-<p> ExtensionLoader searches the filesystem for extensions, then creates a new context for each one and loads it<br> </p>
+<h1>ExtensionLoader</h1>
+<pre><code><h2>module</h2></code></pre><p> ExtensionLoader searches the filesystem for extensions, then creates a new context for each one and loads it<br> </p>
+<hr>
 <pre><code><h2>getUserExtensionPath ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Returns the full path of the default user extensions directory. This is in the users<br> application support directory, which is typically<br> /Users//Application Support/Brackets/extensions/user on the mac, and<br> C:\Users\\AppData\Roaming\Brackets\extensions\user on windows.<br>     </p>
@@ -3017,9 +2999,10 @@
 <hr>
 <hr>
 <a name="ExtensionUtils"></a><article>
-<h1>ExtensionUtils</h1>
 <p class="path">utils/ExtensionUtils.js</p>
-<p> ExtensionUtils defines utility methods for implementing extensions.<br> </p>
+<h1>ExtensionUtils</h1>
+<pre><code><h2>module</h2></code></pre><p> ExtensionUtils defines utility methods for implementing extensions.<br> </p>
+<hr>
 <pre><code><h2>loadStyleSheet (module, path)</h2></code></pre><p><strong>return type: </strong><code>!$.Promise</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Loads a style sheet relative to the extension module.<br><br> @param {!module} module Module provided by RequireJS<br> @param {!string} path Relative path from the extension folder to a CSS file<br> @return {!$.Promise} A promise object that is resolved if the CSS file can be loaded.<br>     </p>
@@ -3028,23 +3011,23 @@
 <hr>
 <hr>
 <a name="Global"></a><article>
-<h1>Global</h1>
 <p class="path">utils/Global.js</p>
-<p> Initializes the global "brackets" variable and it's properties.<br> Modules should not access the global.brackets object until either<br> (a) the module requires this module, i.e. require("utils/Global") or<br> (b) the module receives a "ready" callback from the utils/AppReady module.<br> </p>
+<h1>Global</h1>
+<pre><code><h2>module</h2></code></pre><p> Initializes the global "brackets" variable and it's properties.<br> Modules should not access the global.brackets object until either<br> (a) the module requires this module, i.e. require("utils/Global") or<br> (b) the module receives a "ready" callback from the utils/AppReady module.<br> </p>
+<hr>
 </article>
 <hr>
 <hr>
 <a name="KeyEvent"></a><article>
-<h1>KeyEvent</h1>
 <p class="path">utils/KeyEvent.js</p>
-<p> Utilities module to provide constants for keyCodes<br> </p>
+<h1>KeyEvent</h1>
+<pre><code><h2>module</h2></code></pre><p> Utilities module to provide constants for keyCodes<br> </p>
+<hr>
 </article>
 <hr>
 <hr>
 <a name="NativeApp"></a><article>
-<h1>NativeApp</h1>
 <p class="path">utils/NativeApp.js</p>
-<p></p>
 <pre><code><h2>_browserErrToFileError (err)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Map an fs error code to a FileError.<br>     </p>
@@ -3069,9 +3052,10 @@
 <hr>
 <hr>
 <a name="PerfUtils"></a><article>
-<h1>PerfUtils</h1>
 <p class="path">utils/PerfUtils.js</p>
-<p> This is a collection of utility functions for gathering performance data.<br> </p>
+<h1>PerfUtils</h1>
+<pre><code><h2>module</h2></code></pre><p> This is a collection of utility functions for gathering performance data.<br> </p>
+<hr>
 <pre><code><h2>enabled</h2></code></pre><p><strong>return type: </strong><code>boolean} enabled</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Flag to enable/disable performance data gathering. Default is true (enabled)<br> @type {boolean} enabled<br>     </p>
@@ -3144,9 +3128,10 @@
 <hr>
 <hr>
 <a name="Resizer"></a><article>
-<h1>Resizer</h1>
 <p class="path">utils/Resizer.js</p>
-<p> Resizer is a Module utility to inject resizing capabilities to any element<br> inside Brackets.<br> <br> On initialization, Resizer discovers all nodes tagged as "vert-resizable" <br> and "horz-resizable" to add the resizer handler. Additionally, "top-resizer", <br> "bottom-resizer", "left-resizer" and "right-resizer" classes control the <br> position of the resizer on the element.<br><br> An element can be made resizable at any time using the `makeResizable()` API.<br> Panel sizes are saved via preferences and restored when the DOM node becomes resizable<br> again in a subsequent launch.<br><br> The resizable elements trigger a panelResizeStart, panelResizeUpdate and panelResizeEnd<br> event that can be used to create performance optimizations (such as hiding/showing elements <br> while resizing), custom layout logic, etc. See makeResizable() for details on the events.<br><br> A resizable element can be collapsed/expanded using the `show`, `hide` and `toggle` APIs or<br> via user action. This triggers panelCollapsed/panelExpanded events - see makeResizable().<br> </p>
+<h1>Resizer</h1>
+<pre><code><h2>module</h2></code></pre><p> Resizer is a Module utility to inject resizing capabilities to any element<br> inside Brackets.<br> <br> On initialization, Resizer discovers all nodes tagged as "vert-resizable" <br> and "horz-resizable" to add the resizer handler. Additionally, "top-resizer", <br> "bottom-resizer", "left-resizer" and "right-resizer" classes control the <br> position of the resizer on the element.<br><br> An element can be made resizable at any time using the `makeResizable()` API.<br> Panel sizes are saved via preferences and restored when the DOM node becomes resizable<br> again in a subsequent launch.<br><br> The resizable elements trigger a panelResizeStart, panelResizeUpdate and panelResizeEnd<br> event that can be used to create performance optimizations (such as hiding/showing elements <br> while resizing), custom layout logic, etc. See makeResizable() for details on the events.<br><br> A resizable element can be collapsed/expanded using the `show`, `hide` and `toggle` APIs or<br> via user action. This triggers panelCollapsed/panelExpanded events - see makeResizable().<br> </p>
+<hr>
 <pre><code><h2>_prefs</h2></code></pre><p><strong>return type: </strong><code>PreferenceStorage}</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> @type {PreferenceStorage}<br>     </p>
@@ -3171,9 +3156,10 @@
 <hr>
 <hr>
 <a name="ShellAPI"></a><article>
-<h1>ShellAPI</h1>
 <p class="path">utils/ShellAPI.js</p>
-<p> This is JavaScript API exposed to the native shell when Brackets is run in a native shell rather than a browser.<br>  </p>
+<h1>ShellAPI</h1>
+<pre><code><h2>module</h2></code></pre><p> This is JavaScript API exposed to the native shell when Brackets is run in a native shell rather than a browser.<br>  </p>
+<hr>
 <pre><code><h2>executeCommand (eventName)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> The native function BracketsShellAPI::DispatchBracketsJSCommand calls this function in order to enable<br> calling Brackets commands from the native shell.<br>     </p>
@@ -3182,9 +3168,10 @@
 <hr>
 <hr>
 <a name="StringUtils"></a><article>
-<h1>StringUtils</h1>
 <p class="path">utils/StringUtils.js</p>
-<p>  Utilities functions related to string manipulation<br><br> </p>
+<h1>StringUtils</h1>
+<pre><code><h2>module</h2></code></pre><p>  Utilities functions related to string manipulation<br><br> </p>
+<hr>
 <pre><code><h2>format (str)</h2></code></pre><p><strong>return type: </strong><code>string</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Format a string by replacing placeholder symbols with passed in arguments.<br><br> Example: var formatted = StringUtils.format("Hello {0}", "World");<br><br> @param {string} str The base string<br> @param {...} Arguments to be substituted into the string<br><br> @return {string} Formatted string<br>     </p>
@@ -3205,9 +3192,10 @@
 <hr>
 <hr>
 <a name="TokenUtils"></a><article>
-<h1>TokenUtils</h1>
 <p class="path">utils/TokenUtils.js</p>
-<p> Functions for iterating through tokens in the current editor buffer. Useful for doing<br> light parsing that can rely purely on information gathered by the code coloring mechanism.<br> </p>
+<h1>TokenUtils</h1>
+<pre><code><h2>module</h2></code></pre><p> Functions for iterating through tokens in the current editor buffer. Useful for doing<br> light parsing that can rely purely on information gathered by the code coloring mechanism.<br> </p>
+<hr>
 <pre><code><h2>getInitialContext (editor, pos)</h2></code></pre><p><strong>return type: </strong><code>editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Creates a context object for the given editor and position, suitable for passing to the<br> move functions.<br> @param {CodeMirror} editor<br> @param {{ch:{string}, line:{number}} pos<br> @return {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}}<br>     </p>
@@ -3232,9 +3220,10 @@
 <hr>
 <hr>
 <a name="UpdateNotification"></a><article>
-<h1>UpdateNotification</h1>
 <p class="path">utils/UpdateNotification.js</p>
-<p>  Utilities functions for displaying update notifications<br><br> </p>
+<h1>UpdateNotification</h1>
+<pre><code><h2>module</h2></code></pre><p>  Utilities functions for displaying update notifications<br><br> </p>
+<hr>
 <pre><code><h2>_addedClickHandler</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br> Flag that indicates if we've added a click handler to the update notification icon.<br>     </p>
@@ -3259,26 +3248,24 @@
 <hr>
 <hr>
 <a name="UrlParams"></a><article>
-<h1>UrlParams</h1>
 <p class="path">utils/UrlParams.js</p>
-<p></p>
 <pre><code><h2>UrlParams ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Convert between URL querystring and name/value pairs. Decodes and encodes URL parameters.<br>     </p>
 <hr>
-<pre><code><h2>UrlParams.prototype.parse(url)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>UrlParams.prototype.parse (url)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Parse the window location by default. Optionally specify a URL to parse.<br> @param {string} url<br>     </p>
 <hr>
-<pre><code><h2>UrlParams.prototype.put(name, value)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>UrlParams.prototype.put (name, value)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Store a name/value string pair<br> @param {!string} name<br> @param {!string} value<br>     </p>
 <hr>
-<pre><code><h2>UrlParams.prototype.get(name)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>UrlParams.prototype.get (name)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Retreive a value by name<br> @param {!string} name<br>     </p>
 <hr>
-<pre><code><h2>UrlParams.prototype.toString()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>UrlParams.prototype.toString ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Encode name/value pairs as URI components.<br>     </p>
 <hr>
@@ -3286,9 +3273,7 @@
 <hr>
 <hr>
 <a name="ViewUtils"></a><article>
-<h1>ViewUtils</h1>
 <p class="path">utils/ViewUtils.js</p>
-<p></p>
 <pre><code><h2>_resizeHandlers</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>private</code></p>
 <p> @private<br>     </p>
@@ -3321,9 +3306,7 @@
 <hr>
 <hr>
 <a name="ViewCommandHandlers"></a><article>
-<h1>ViewCommandHandlers</h1>
 <p class="path">view/ViewCommandHandlers.js</p>
-<p></p>
 <pre><code><h2>DYNAMIC_FONT_STYLE_ID</h2></code></pre><p><strong>return type: </strong><code>string}</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> @const<br> @type {string}<br>     </p>
@@ -3335,66 +3318,11 @@
 </article>
 <hr>
 <hr>
-<a name="bootstrap-alerts"></a><article>
-<h1>bootstrap-alerts</h1>
-<p class="path">widgets/bootstrap-alerts.js</p>
-<p></p>
-</article>
-<hr>
-<hr>
-<a name="bootstrap-buttons"></a><article>
-<h1>bootstrap-buttons</h1>
-<p class="path">widgets/bootstrap-buttons.js</p>
-<p></p>
-</article>
-<hr>
-<hr>
-<a name="bootstrap-dropdown"></a><article>
-<h1>bootstrap-dropdown</h1>
-<p class="path">widgets/bootstrap-dropdown.js</p>
-<p></p>
-</article>
-<hr>
-<hr>
-<a name="bootstrap-modal"></a><article>
-<h1>bootstrap-modal</h1>
-<p class="path">widgets/bootstrap-modal.js</p>
-<p></p>
-</article>
-<hr>
-<hr>
-<a name="bootstrap-popover"></a><article>
-<h1>bootstrap-popover</h1>
-<p class="path">widgets/bootstrap-popover.js</p>
-<p></p>
-</article>
-<hr>
-<hr>
-<a name="bootstrap-scrollspy"></a><article>
-<h1>bootstrap-scrollspy</h1>
-<p class="path">widgets/bootstrap-scrollspy.js</p>
-<p></p>
-</article>
-<hr>
-<hr>
-<a name="bootstrap-tabs"></a><article>
-<h1>bootstrap-tabs</h1>
-<p class="path">widgets/bootstrap-tabs.js</p>
-<p></p>
-</article>
-<hr>
-<hr>
-<a name="bootstrap-twipsy"></a><article>
-<h1>bootstrap-twipsy</h1>
-<p class="path">widgets/bootstrap-twipsy.js</p>
-<p></p>
-</article>
-<hr>
-<hr>
 <a name="Dialogs"></a><article>
-<h1>Dialogs</h1>
 <p class="path">widgets/Dialogs.js</p>
-<p> Utilities for creating and managing standard modal dialogs.<br> </p>
+<h1>Dialogs</h1>
+<pre><code><h2>module</h2></code></pre><p> Utilities for creating and managing standard modal dialogs.<br> </p>
+<hr>
 <pre><code><h2>showModalDialog (dlgClass, title, message)</h2></code></pre><p><strong>return type: </strong><code>$.Promise</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> General purpose modal dialog. Assumes that:<br> -- the root tag of the dialog is marked with a unique class name (passed as dlgClass), as well as the<br>    classes "template modal hide".<br> -- the HTML for the dialog contains elements with "title" and "message" classes, as well as a number <br>    of elements with "dialog-button" class, each of which has a "data-button-id".<br><br> @param {string} dlgClass The class of the dialog node in the HTML.<br> @param {string=} title The title of the error dialog. Can contain HTML markup. If unspecified, title in<br>      the HTML template is used unchanged.<br> @param {string=} message The message to display in the error dialog. Can contain HTML markup. If<br>      unspecified, body in the HTML template is used unchanged.<br> @return {$.Promise} a promise that will be resolved with the ID of the clicked button when the dialog<br>     is dismissed. Never rejected.<br>     </p>
@@ -3407,9 +3335,10 @@
 <hr>
 <hr>
 <a name="PopUpManager"></a><article>
-<h1>PopUpManager</h1>
 <p class="path">widgets/PopUpManager.js</p>
-<p> Utilities for managing pop-ups.<br> </p>
+<h1>PopUpManager</h1>
+<pre><code><h2>module</h2></code></pre><p> Utilities for managing pop-ups.<br> </p>
+<hr>
 <pre><code><h2>addPopUp ($popUp, removeHandler, autoRemove)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Add Esc key handling for a popup DOM element.<br><br> @param {!jQuery} $popUp jQuery object for the DOM element pop-up<br> @param {function} removeHandler Pop-up specific remove (e.g. display:none or DOM removal)<br> @param {?Boolean} autoRemove - Specify true to indicate the PopUpManager should <br>      remove the popup from the _popUps array when the popup is closed. Specify false<br>      when the popup is always persistant in the _popUps array.<br>      <br>     </p>
@@ -3422,9 +3351,10 @@
 <hr>
 <hr>
 <a name="StatusBar"></a><article>
-<h1>StatusBar</h1>
 <p class="path">widgets/StatusBar.js</p>
-<p> A status bar with support for file information and busy and status indicators.<br> </p>
+<h1>StatusBar</h1>
+<pre><code><h2>module</h2></code></pre><p> A status bar with support for file information and busy and status indicators.<br> </p>
+<hr>
 <pre><code><h2>showBusyIndicator (updateCursor)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Shows the 'busy' indicator<br> @param {boolean} updateCursor Sets the cursor to "wait"<br>     </p>
@@ -3453,9 +3383,10 @@
 <hr>
 <hr>
 <a name="ConsoleAgent"></a><article>
-<h1>ConsoleAgent</h1>
 <p class="path">LiveDevelopment/Agents/ConsoleAgent.js</p>
-<p> ConsoleAgent forwards all console message from the remote console to the<br> local console.<br> </p>
+<h1>ConsoleAgent</h1>
+<pre><code><h2>module</h2></code></pre><p> ConsoleAgent forwards all console message from the remote console to the<br> local console.<br> </p>
+<hr>
 <pre><code><h2>_log (message)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Log a remote message to the local console<br> @param {Console.ConsoleMessage} message<br>     </p>
@@ -3472,9 +3403,10 @@
 <hr>
 <hr>
 <a name="CSSAgent"></a><article>
-<h1>CSSAgent</h1>
 <p class="path">LiveDevelopment/Agents/CSSAgent.js</p>
-<p> CSSAgent keeps track of loaded style sheets and allows reloading them<br> from a {Document}.<br> </p>
+<h1>CSSAgent</h1>
+<pre><code><h2>module</h2></code></pre><p> CSSAgent keeps track of loaded style sheets and allows reloading them<br> from a {Document}.<br> </p>
+<hr>
 <pre><code><h2>_canonicalize (url)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Create a canonicalized version of the given URL, stripping off query strings and hashes.<br> @param {string} url the URL to canonicalize<br> @return the canonicalized URL<br>     </p>
@@ -3507,9 +3439,10 @@
 <hr>
 <hr>
 <a name="DOMAgent"></a><article>
-<h1>DOMAgent</h1>
 <p class="path">LiveDevelopment/Agents/DOMAgent.js</p>
-<p> DOMAgent constructs and maintains a tree of {DOMNode}s that represents the<br> rendered DOM tree in the remote browser. Nodes can be accessed by id or<br> location (source offset). To update the DOM tree in response to a change of<br> the source document (replace [from,to] with text) call<br> `applyChange(from, to, text)`.<br><br> The DOMAgent triggers `getDocument` once it has loaded<br> the document.<br> </p>
+<h1>DOMAgent</h1>
+<pre><code><h2>module</h2></code></pre><p> DOMAgent constructs and maintains a tree of {DOMNode}s that represents the<br> rendered DOM tree in the remote browser. Nodes can be accessed by id or<br> location (source offset). To update the DOM tree in response to a change of<br> the source document (replace [from,to] with text) call<br> `applyChange(from, to, text)`.<br><br> The DOMAgent triggers `getDocument` once it has loaded<br> the document.<br> </p>
+<hr>
 <pre><code><h2>nodeBeforeLocation (location)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Get the last node before the given location<br> @param {integer} location<br>     </p>
@@ -3570,9 +3503,10 @@
 <hr>
 <hr>
 <a name="DOMHelpers"></a><article>
-<h1>DOMHelpers</h1>
 <p class="path">LiveDevelopment/Agents/DOMHelpers.js</p>
-<p> DOMHelpers is a collection of functions used by the DOMAgent exports `eachNode(src, callback)`<br> </p>
+<h1>DOMHelpers</h1>
+<pre><code><h2>module</h2></code></pre><p> DOMHelpers is a collection of functions used by the DOMAgent exports `eachNode(src, callback)`<br> </p>
+<hr>
 <pre><code><h2>_isQuote (c, escape, quote)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Test if the given character is a quote character<br> {char} source character<br> {char} escape (previous) character<br> {char} quote character<br>     </p>
@@ -3605,9 +3539,10 @@
 <hr>
 <hr>
 <a name="DOMNode"></a><article>
-<h1>DOMNode</h1>
 <p class="path">LiveDevelopment/Agents/DOMNode.js</p>
-<p> DOMNode represents a node in the DOM tree. It is constructed from a payload<br> similar to {DOM.Node} and supports all basic tree operations. If a node has<br> a nodeId it is registered with the `DOMAgent` via `addNode()`. The node's<br> sourceOffset and sourceLength is stored as its location and length. Nodes can<br> iterated using `each()` or `find()`. `dump` shows the entire tree on the console.<br> </p>
+<h1>DOMNode</h1>
+<pre><code><h2>module</h2></code></pre><p> DOMNode represents a node in the DOM tree. It is constructed from a payload<br> similar to {DOM.Node} and supports all basic tree operations. If a node has<br> a nodeId it is registered with the `DOMAgent` via `addNode()`. The node's<br> sourceOffset and sourceLength is stored as its location and length. Nodes can<br> iterated using `each()` or `find()`. `dump` shows the entire tree on the console.<br> </p>
+<hr>
 <pre><code><h2>_fill (string, length, c)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Fill a string to the given length (used for debug output)<br> @param {string} source string<br> @param {integer} length<br> @param {char} fill character<br>     </p>
@@ -3740,9 +3675,10 @@
 <hr>
 <hr>
 <a name="EditAgent"></a><article>
-<h1>EditAgent</h1>
 <p class="path">LiveDevelopment/Agents/EditAgent.js</p>
-<p> EditAgent propagates changes from the in-document editor to the source<br> document.<br> </p>
+<h1>EditAgent</h1>
+<pre><code><h2>module</h2></code></pre><p> EditAgent propagates changes from the in-document editor to the source<br> document.<br> </p>
+<hr>
 <pre><code><h2>_findChangedCharacters (oldValue, value)</h2></code></pre><p><strong>return type: </strong><code>from, to, text</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Find changed characters<br> @param {string} old value<br> @param {string} changed value<br> @return {from, to, text}<br>     </p>
@@ -3759,9 +3695,10 @@
 <hr>
 <hr>
 <a name="GotoAgent"></a><article>
-<h1>GotoAgent</h1>
 <p class="path">LiveDevelopment/Agents/GotoAgent.js</p>
-<p> GotoAgent constructs and responds to the in-browser goto dialog.<br> </p>
+<h1>GotoAgent</h1>
+<pre><code><h2>module</h2></code></pre><p> GotoAgent constructs and responds to the in-browser goto dialog.<br> </p>
+<hr>
 <pre><code><h2>_urlWithoutQueryString (url)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Return the URL without the query string<br> @param {string} URL<br>     </p>
@@ -3810,9 +3747,10 @@
 <hr>
 <hr>
 <a name="HighlightAgent"></a><article>
-<h1>HighlightAgent</h1>
 <p class="path">LiveDevelopment/Agents/HighlightAgent.js</p>
-<p> HighlightAgent dispatches events for highlight requests from in-browser<br> highlight requests, and allows highlighting nodes and rules in the browser.<br><br> Trigger "highlight" when a node should be highlighted<br> </p>
+<h1>HighlightAgent</h1>
+<pre><code><h2>module</h2></code></pre><p> HighlightAgent dispatches events for highlight requests from in-browser<br> highlight requests, and allows highlighting nodes and rules in the browser.<br><br> Trigger "highlight" when a node should be highlighted<br> </p>
+<hr>
 <pre><code><h2>hide ()</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Hide in-browser highlighting </p>
@@ -3841,9 +3779,10 @@
 <hr>
 <hr>
 <a name="NetworkAgent"></a><article>
-<h1>NetworkAgent</h1>
 <p class="path">LiveDevelopment/Agents/NetworkAgent.js</p>
-<p> NetworkAgent tracks all resources loaded by the remote debugger. Use<br> `wasURLRequested(url)` to query whether a resource was loaded.<br> </p>
+<h1>NetworkAgent</h1>
+<pre><code><h2>module</h2></code></pre><p> NetworkAgent tracks all resources loaded by the remote debugger. Use<br> `wasURLRequested(url)` to query whether a resource was loaded.<br> </p>
+<hr>
 <pre><code><h2>_urlWithoutQueryString (url)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Return the URL without the query string<br> @param {string} URL<br>     </p>
@@ -3864,9 +3803,10 @@
 <hr>
 <hr>
 <a name="RemoteAgent"></a><article>
-<h1>RemoteAgent</h1>
 <p class="path">LiveDevelopment/Agents/RemoteAgent.js</p>
-<p> RemoteAgent defines and provides an interface for custom remote functions<br> loaded from RemoteFunctions. Remote commands are executed via<br> `call(name, varargs)`.<br><br> Remote events are dispatched as events on this object.<br> </p>
+<h1>RemoteAgent</h1>
+<pre><code><h2>module</h2></code></pre><p> RemoteAgent defines and provides an interface for custom remote functions<br> loaded from RemoteFunctions. Remote commands are executed via<br> `call(name, varargs)`.<br><br> Remote events are dispatched as events on this object.<br> </p>
+<hr>
 <pre><code><h2>call (method, varargs)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Call a remote function<br> The parameters are passed on to the remote functions. Nodes are resolved<br> and sent as objectIds.<br> @param {string} function name<br>     </p>
@@ -3883,9 +3823,7 @@
 <hr>
 <hr>
 <a name="RemoteFunctions"></a><article>
-<h1>RemoteFunctions</h1>
 <p class="path">LiveDevelopment/Agents/RemoteFunctions.js</p>
-<p></p>
 <pre><code><h2>RemoteFunctions (experimental)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> RemoteFunctions define the functions to be executed in the browser. This<br> modules should define a single function that returns an object of all<br> exported functions.<br> </p>
@@ -3898,9 +3836,10 @@
 <hr>
 <hr>
 <a name="ScriptAgent"></a><article>
-<h1>ScriptAgent</h1>
 <p class="path">LiveDevelopment/Agents/ScriptAgent.js</p>
-<p> ScriptAgent tracks all executed scripts, defines internal breakpoints, and<br> interfaces with the remote debugger.<br> </p>
+<h1>ScriptAgent</h1>
+<pre><code><h2>module</h2></code></pre><p> ScriptAgent tracks all executed scripts, defines internal breakpoints, and<br> interfaces with the remote debugger.<br> </p>
+<hr>
 <pre><code><h2>_addTraceToNode (nodeId, trace)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Add a call stack trace to a node<br> @param {integer} node id<br> @param [{Debugger.CallFrame}] call stack<br>     </p>
@@ -3925,9 +3864,10 @@
 <hr>
 <hr>
 <a name="CSSDocument"></a><article>
-<h1>CSSDocument</h1>
 <p class="path">LiveDevelopment/Documents/CSSDocument.js</p>
-<p> CSSDocument manages a single CSS source document<br><br> # EDITING<br><br> Editing the document will cause the style sheet to be reloaded via the<br> CSSAgent, which immediately updates the appearance of the rendered document.<br><br> # HIGHLIGHTING<br><br> CSSDocument supports highlighting nodes from the HighlightAgent and<br> highlighting all DOMNode corresponding to the rule at the cursor position<br> in the editor.<br><br> # EVENTS<br><br> CSSDocument dispatches these events:<br>  deleted - When the file for the underlying Document has been deleted. The<br>      2nd argument to the listener will be this CSSDocument.<br> </p>
+<h1>CSSDocument</h1>
+<pre><code><h2>module</h2></code></pre><p> CSSDocument manages a single CSS source document<br><br> # EDITING<br><br> Editing the document will cause the style sheet to be reloaded via the<br> CSSAgent, which immediately updates the appearance of the rendered document.<br><br> # HIGHLIGHTING<br><br> CSSDocument supports highlighting nodes from the HighlightAgent and<br> highlighting all DOMNode corresponding to the rule at the cursor position<br> in the editor.<br><br> # EVENTS<br><br> CSSDocument dispatches these events:<br>  deleted - When the file for the underlying Document has been deleted. The<br>      2nd argument to the listener will be this CSSDocument.<br> </p>
+<hr>
 <pre><code><h2>CSSDocument</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Constructor<br><br> @param Document the source document from Brackets<br>     </p>
@@ -3956,7 +3896,7 @@
 <p><strong>access: </strong><code>public</code></p>
 <p> Triggered if the Document's file is deleted </p>
 <hr>
-<pre><code><h2>CSSDocument.prototype.onActiveEditorChange(event, newActive, oldActive)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
+<pre><code><h2>CSSDocument.prototype.onActiveEditorChange (event, newActive, oldActive)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Triggered when the active editor changes </p>
 <hr>
@@ -3968,9 +3908,10 @@
 <hr>
 <hr>
 <a name="HTMLDocument"></a><article>
-<h1>HTMLDocument</h1>
 <p class="path">LiveDevelopment/Documents/HTMLDocument.js</p>
-<p> HTMLDocument manages a single HTML source document<br><br> # EDITING<br><br> Editing the document will cause the corresponding node to be updated<br> by calling `applyChanges` on the DOMAgent. This will only work for<br> altering text nodes and will break when attempting to change DOM elements<br> or inserting or deleting nodes.<br><br> # HIGHLIGHTING<br><br> HTMLDocument supports highlighting nodes from the HighlightAgent and<br> highlighting the DOMNode corresponding to the cursor position in the<br> editor.<br> </p>
+<h1>HTMLDocument</h1>
+<pre><code><h2>module</h2></code></pre><p> HTMLDocument manages a single HTML source document<br><br> # EDITING<br><br> Editing the document will cause the corresponding node to be updated<br> by calling `applyChanges` on the DOMAgent. This will only work for<br> altering text nodes and will break when attempting to change DOM elements<br> or inserting or deleting nodes.<br><br> # HIGHLIGHTING<br><br> HTMLDocument supports highlighting nodes from the HighlightAgent and<br> highlighting the DOMNode corresponding to the cursor position in the<br> editor.<br> </p>
+<hr>
 <pre><code><h2>HTMLDocument</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Constructor<br><br> @param Document the source document from Brackets<br>     </p>
@@ -3995,9 +3936,10 @@
 <hr>
 <hr>
 <a name="JSDocument"></a><article>
-<h1>JSDocument</h1>
 <p class="path">LiveDevelopment/Documents/JSDocument.js</p>
-<p> JSDocument manages a single JavaScript source document<br><br> # EDITING<br><br> Editing the document will cause the script to be reloaded via the<br> ScriptAgent, which updates the implementation of all functions without<br> loosing any state. To support redrawing canvases, jQuery must be loaded<br> and a rerender method must be attached to every canvas that clears and<br> renders the canvas.<br><br> # HIGHLIGHTING<br><br> JSDocument supports highlighting nodes from the HighlightAgent. Support<br> for highlighting the nodes that were created / touched by the current<br> line is missing.<br> </p>
+<h1>JSDocument</h1>
+<pre><code><h2>module</h2></code></pre><p> JSDocument manages a single JavaScript source document<br><br> # EDITING<br><br> Editing the document will cause the script to be reloaded via the<br> ScriptAgent, which updates the implementation of all functions without<br> loosing any state. To support redrawing canvases, jQuery must be loaded<br> and a rerender method must be attached to every canvas that clears and<br> renders the canvas.<br><br> # HIGHLIGHTING<br><br> JSDocument supports highlighting nodes from the HighlightAgent. Support<br> for highlighting the nodes that were created / touched by the current<br> line is missing.<br> </p>
+<hr>
 <pre><code><h2>JSDocument</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Constructor<br><br> @param {Document} the source document<br>     </p>
@@ -4022,9 +3964,10 @@
 <hr>
 <hr>
 <a name="Inspector"></a><article>
-<h1>Inspector</h1>
 <p class="path">LiveDevelopment/Inspector/Inspector.js</p>
-<p> Inspector manages the connection to Chrome/Chromium's remote debugger.<br> See inspector.html for the documentation of the remote debugger.<br><br> # SETUP<br><br> To enable remote debugging in Chrome or Chromium open either application<br> with the following parameters:<br><br>   --enable-remote-debugger --remote-debugging-port=9222<br><br> This will open an HTTP server on the specified port, which can be used to<br> browse the available remote debugger sessions. In general, every open<br> browser tab can host an individual remote debugger session. The<br> available interfaces can be exported by requesting:<br><br>   http://127.0.0.1:9222/json<br><br> The response is a JSON-formatted array that specifies all available remote<br> debugger sessions including the remote debugging web sockets.<br><br> Inspector can connect directly to a web socket via `connect(socketURL)`, or<br> it can find the web socket that corresponds to the tab at the given URL and<br> connect to it via `connectToURL(url)`. The later returns a promise. To <br> disconnect use `disconnect()`.<br><br> # EVENTS<br><br> Inspector dispatches several connectivity-related events + all remote debugger<br> events (see below). Event handlers are attached via `on(event, function)` and<br> detached via `off(event, function)`.<br><br>   `connect`    Inspector did successfully connect to the remote debugger<br>   `disconnect` Inspector did disconnect from the remote debugger<br>   `error`      Inspector encountered an error<br>   `message`    Inspector received a message from the remote debugger - this<br>                  provides a low-level entry point to remote debugger events<br><br> # REMOTE DEBUGGER COMMANDS<br><br> Commands are executed by calling `{Domain}.{Command}()` with the parameters<br> specified in the order of the remote debugger documentation. These command<br> functions are generated automatically at runtime from Inspector.json. The<br> actual implementation of these functions is found in<br> `_send(method, signature, varargs)`, which verifies, serializes, and<br> transmits the command to the remote debugger. If the last parameter of any<br> command function call is a function, it will be used as the callback.<br><br> # REMOTE DEBUGGER EVENTS<br><br> Debugger events are dispatched as regular events using {Domain}.{Event} as<br> the event name. The handler function will be called with a single parameter<br> that stores all returned values as an object.<br> </p>
+<h1>Inspector</h1>
+<pre><code><h2>module</h2></code></pre><p> Inspector manages the connection to Chrome/Chromium's remote debugger.<br> See inspector.html for the documentation of the remote debugger.<br><br> # SETUP<br><br> To enable remote debugging in Chrome or Chromium open either application<br> with the following parameters:<br><br>   --enable-remote-debugger --remote-debugging-port=9222<br><br> This will open an HTTP server on the specified port, which can be used to<br> browse the available remote debugger sessions. In general, every open<br> browser tab can host an individual remote debugger session. The<br> available interfaces can be exported by requesting:<br><br>   http://127.0.0.1:9222/json<br><br> The response is a JSON-formatted array that specifies all available remote<br> debugger sessions including the remote debugging web sockets.<br><br> Inspector can connect directly to a web socket via `connect(socketURL)`, or<br> it can find the web socket that corresponds to the tab at the given URL and<br> connect to it via `connectToURL(url)`. The later returns a promise. To <br> disconnect use `disconnect()`.<br><br> # EVENTS<br><br> Inspector dispatches several connectivity-related events + all remote debugger<br> events (see below). Event handlers are attached via `on(event, function)` and<br> detached via `off(event, function)`.<br><br>   `connect`    Inspector did successfully connect to the remote debugger<br>   `disconnect` Inspector did disconnect from the remote debugger<br>   `error`      Inspector encountered an error<br>   `message`    Inspector received a message from the remote debugger - this<br>                  provides a low-level entry point to remote debugger events<br><br> # REMOTE DEBUGGER COMMANDS<br><br> Commands are executed by calling `{Domain}.{Command}()` with the parameters<br> specified in the order of the remote debugger documentation. These command<br> functions are generated automatically at runtime from Inspector.json. The<br> actual implementation of these functions is found in<br> `_send(method, signature, varargs)`, which verifies, serializes, and<br> transmits the command to the remote debugger. If the last parameter of any<br> command function call is a function, it will be used as the callback.<br><br> # REMOTE DEBUGGER EVENTS<br><br> Debugger events are dispatched as regular events using {Domain}.{Event} as<br> the event name. The handler function will be called with a single parameter<br> that stores all returned values as an object.<br> </p>
+<hr>
 <pre><code><h2>_verifySignature (signature, value)</h2></code></pre><p><strong>return type: </strong><code>void</code></p>
 <p><strong>access: </strong><code>public</code></p>
 <p> Check a parameter value against the given signature<br> This only checks for optional parameters, not types<br> Type checking is complex because of $ref and done on the remote end anyways<br> @param {signature}<br> @param {value}<br>     </p>

@@ -1,0 +1,11 @@
+{
+    "excludedDirectories": [
+        "extensions",
+        "thirdparty",
+        "nls"
+    ],
+    
+    "ignorePrivate" : false,
+    "templatePath"  : "extensions/dev/doc-gen/doc/template.txt",
+    "outputPath"    : "extensions/dev/doc-gen/doc/index.html"
+}

@@ -10,20 +10,6 @@ define(function (require, exports, module) {
         Tries to analyze a string representing a js source
         @param {String} str The string representing the source code
         @returns {Object} An object representing the code
-        
-        Original regexps found in Dox.js
-        https://github.com/visionmedia/dox/
-        
-        Still haven't decided if / how to support parameters.
-        E.g. 
-            else if (/^(\w+)\.prototype\.(\w+) *= *function *([^{]+)/.exec(str)) {
-            return {
-                type: 'prototype-method',
-                constructor: RegExp.$1,
-                cons: RegExp.$1,
-                name: RegExp.$2,
-                string: RegExp.$1 + '.prototype.' + RegExp.$2 + RegExp.$3
-            };        
     */        
     
     function parseCode(src) {
@@ -44,16 +30,25 @@ define(function (require, exports, module) {
                 string: RegExp.$1 + " (" + RegExp.$2 + ")"
             };
         }
-        // define        
+        // define / AMD module        
         else if (/^define/.exec(str)) {
             return {
                 type: "module", 
                 firstline : firstline,
                 string: "module"
             }; 
+        }        
+        // iife       
+        else if (/^\(function\s*\(([^)]*)\)/.exec(str)) {
+            return {
+                type: "iife", 
+                params: RegExp.$1,
+                firstline : firstline,
+                string: "function (" + RegExp.$1 + ")" 
+            }; 
         }
         // function expression         
-        else if (/^var *(\w+) *= *function\s*\(([^)]*)\)/m.exec(str)) {
+        else if (/^var\s+(\w+)\s*=\s*function\s*\(([^)]*)\)/m.exec(str)) {
             return {
                 type: 'function-expr',
                 name: RegExp.$1,
@@ -74,18 +69,18 @@ define(function (require, exports, module) {
             };
         }
         // prototype method        
-        else if (/^(\w+)\.prototype\.(\w+) *= *function\s*\(([^)]*)\)/m.exec(str)) {
+        else if (/^(\w+)\.prototype\.(\w+)\s*=\s*function\s*\(([^)]*)\)/m.exec(str)) {
             return {
                 type: 'prototype-method',
                 constructor: RegExp.$1,
                 name: RegExp.$2,
                 params: RegExp.$3,
                 firstline : firstline,
-                string: RegExp.$1 + '.prototype.' + RegExp.$2 + "(" + RegExp.$3 + ")"
+                string: RegExp.$1 + '.prototype.' + RegExp.$2 + " (" + RegExp.$3 + ")"
             };
         } 
         // prototype property        
-        else if (/^(\w+)\.prototype\.(\w+) *= *([^\n;]+)/.exec(str)) {
+        else if (/^(\w+)\.prototype\.(\w+)\s*=\s*([^\n;]+)/.exec(str)) {
             return {
                 type: 'prototype-property',
                 constructor: RegExp.$1,
@@ -96,7 +91,7 @@ define(function (require, exports, module) {
             };
         } 
         // method        
-        else if (/^([\w.]+)\.(\w+) *= *function\s*\(([^)]*)\)/m.exec(str)) {
+        else if (/^([\w.]+)\.(\w+)\s*=\s*function\s*\(([^)]*)\)/m.exec(str)) {
             return {
                 type: 'method',
                 receiver: RegExp.$1,
@@ -107,7 +102,7 @@ define(function (require, exports, module) {
             };
         } 
         // property        
-        else if (/^(\w+)\.(\w+) *= *([^\n;]+)/.exec(str)) {
+        else if (/^(\w+)\.(\w+)\s*=\s*([^\n;]+)/.exec(str)) {
             return {
                 type: 'property',
                 receiver: RegExp.$1,
@@ -118,7 +113,7 @@ define(function (require, exports, module) {
             };
         } 
         // var declaration and init        
-        else if (/^var +([\$\w]+) *= *([^\n;]+)/.exec(str)) {
+        else if (/^var +([\$\w]+)\s*=\s*([^\n;]+)/.exec(str)) {
             return {
                 type: 'var-declaration-init',
                 name: RegExp.$1,
@@ -130,13 +125,32 @@ define(function (require, exports, module) {
         // simple var declaration
         else if (/^var +([\$\w]+) *;/.exec(str)) {
             return {
-                type: 'var-declaration*',
+                type: 'var-declaration',
                 name: RegExp.$1,
                 value: "null",
                 firstline : firstline,
                 string: RegExp.$1
             };
-        } 
+        }
+        // comment (single line)
+        else if (/^\/\//.exec(str)) {
+            return {
+                type: 'comment',
+                name : "(comment)",
+                firstline : firstline,
+                string : "(comment)"                
+            };
+        }
+        // comment (multi line)
+        else if (/^\/\*/.exec(str)) {
+            return {
+                type: 'comment',
+                name : "(comment)",
+                firstline : firstline,
+                string : "(comment)"
+            };
+        }        
+        // unknown
         else {
             return null;
         }

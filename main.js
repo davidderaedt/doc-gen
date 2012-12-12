@@ -3,9 +3,9 @@
 
 /**  docgen is an extension to generate documentation from
 *    JSDoc formatted comments.
-*    Note: This extensions parses code looking for jsdoc comments
+*    It parses code looking for jsdoc comments
 *    and then tries to understand the context, not the other way.
-*    ie non comment members will be ignored
+*    ie non-commented members will be ignored
 */
 define(function (require, exports, module) {
     'use strict';
@@ -27,29 +27,47 @@ define(function (require, exports, module) {
     var COMMAND_ID  = "docgen.gendoc"; 
     var MENU_NAME   = "Generate docs";
 
+    var moduleDir = FileUtils.getNativeModuleDirectoryPath(module);
     var projectFolder = ProjectManager.getProjectRoot().fullPath;    
-    var templateTxt;
-    
-    // Options
-    // TODO expose in a config file
-    var options = {
-        excludedDirectories : ["extensions", "thirdparty", "nls"],
-        ignorePrivate   : false,
-        templatePath    : "extensions/dev/doc-gen/doc/template.txt",
-        outputPath      : "extensions/dev/doc-gen/doc/index.html"
-    
-    };
+    var options;
+    var templateTxt;    
     
     // the following are used for stats
     var totalFiles; 
-    var totalEntries; 
-    var totalUnprocessed;
-    
+    var totalEntries;    
         
     
     function executeGendocCommand() {
+        loadConfig();        
+    }
+    
+    
+    function loadConfig() {
+        
+        console.log("Loading Config");        
+        
+        var configFile = new NativeFileSystem.FileEntry(moduleDir + '/config.json');
                 
-        //console.log("Loading Template:" + options.templatePath);
+        FileUtils.readAsText(configFile)
+            .done(function (text, readTimestamp) {
+                try {
+                    options = JSON.parse(text);
+                    loadTemplate();
+                    
+                } catch (e) {
+                    console.log("Can't parse config.json - " + e);
+                }
+            })
+            .fail(function (err) {
+                console.log(err);
+                console.log("No config found. Aborting.");            
+            });
+    }
+    
+    
+    function loadTemplate() {
+        
+        console.log("Loading Template:" + options.templatePath);
         
         var templateFile = new NativeFileSystem.FileEntry(projectFolder + options.templatePath);       
         
@@ -58,23 +76,21 @@ define(function (require, exports, module) {
                 
                 templateTxt = rawText;
                 
-                parseProject();
-                
+                parseProject();                
             })
             .fail(function (err) {
                 console.log(err);
                 console.log("No documentation template found. Aborting.");            
             });
-                    
+        
     }
-    
+            
     
     function parseProject() {
         
-        //console.log("Parsing Project");
+        console.log("Parsing Project");
         
         var documentedFiles = [];
-        totalUnprocessed = 0;
         totalEntries = 0;
         totalFiles = 0;
         
@@ -108,22 +124,13 @@ define(function (require, exports, module) {
                             docFileObj.entries = jsDocParser.parseFileContents(doc.getText());
                             docFileObj.path = relativePath;
                             docFileObj.filename = filename;
-                            docFileObj.desc = "";
-                            docFileObj.isModule = false;
-                            docFileObj.moduleName = filename.split(".")[0];
+                            docFileObj.shortName = filename.split(".")[0];
                             
-                            var moduleEntry = getModuleEntry(docFileObj.entries);
                             
-                            if (moduleEntry) {
-                                docFileObj.isModule = true;
-                                docFileObj.desc = moduleEntry.comment.body;
+                            if(docFileObj.entries.length > 0) {
+                                documentedFiles.push(docFileObj);
+                                totalEntries += docFileObj.entries.length;
                             }
-                            
-                            
-                            documentedFiles.push(docFileObj);
-                            
-                            totalEntries += docFileObj.entries.length;
-                            totalUnprocessed += jsDocParser.getUnprocessedCount();
                             
                             result.resolve();
                         })
@@ -137,13 +144,15 @@ define(function (require, exports, module) {
                 })
                     .done(function () {
                         
+                        console.log("Generate Documentation");
+                        
                         var txt = htmlDocExporter.getHTMLDocFor(documentedFiles, templateTxt, options.ignorePrivate);
                         
                         createTxtFile(txt, projectFolder + options.outputPath);
                         
                         console.log(documentedFiles.length + " source files documented out of " + totalFiles + " files in total.");
                         console.log(totalEntries + " entries generated.");
-                        console.log(totalUnprocessed + " entries unprocessed (see logs for details).");
+                        console.log(htmlDocExporter.getUnprocessedCount() + " entries unprocessed (see logs for details).");
                                                 
                         StatusBar.hideBusyIndicator();
                     })
@@ -164,12 +173,12 @@ define(function (require, exports, module) {
     }    
             
     
-    
+    // not used for now
     function getModuleEntry(entries) {
         var i;
         for (i = 0; i < entries.length; i++) {
             var entry = entries[i];
-            if (entry.type == "module") return entry;
+            if (entry.code && entry.code.type == "module") return entry;
         }
         return null;
     }

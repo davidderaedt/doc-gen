@@ -8,7 +8,7 @@ define(function (require, exports, module) {
     var codeParser          = require("codeParser");
     
             
-    var totalUnprocessed;
+
     
     /*
         Parsing logic originally inspired by Dox.js
@@ -23,7 +23,7 @@ define(function (require, exports, module) {
         var entry;
         var inComment = false;
         var cstart;
-        totalUnprocessed=0;
+        
         
         for (var i = 0, len = src.length; i < len; ++i) {
             
@@ -34,7 +34,8 @@ define(function (require, exports, module) {
             } 
             else if (inComment && src[i] == "*" && src[i + 1] == "/") {
 
-                inComment = false;                
+                inComment = false;
+                
                 comment = src.slice(cstart, i);
 
                 i += 2;
@@ -47,30 +48,30 @@ define(function (require, exports, module) {
                 
                 // (used for debugging)
                 var firstLine = sourceCode.split("\n")[0];
+                                
+                // make sense of the actual comment
+                var commentObj = parseAnnotation(comment);
                 
-                // ignore annotations if it's before another comment
-                if (sourceCode.indexOf("/*") === 0 || sourceCode.indexOf("//") === 0) {
+                // what we're trying to comment  
+                var codeObj = codeParser.parseCode(sourceCode);
+                
+                /*
+                if(codeObj===null) {
+                    console.log("Unable to understand code context for:", [firstLine]);
+                    totalUnprocessed ++;                    
+                }
+                else if(codeObj.type == "comment") {
                     totalUnprocessed ++;
-                    console.log("Ignoring annotation before comment:", [firstLine]);
-                    continue;
+                    console.log("Annotation before comment:", [firstLine]);                    
                 }
+                */
                 
-                // Analyze what we're trying to comment
-                entry = codeParser.parseCode(sourceCode);
+                var entry = {
+                    comment : commentObj,                    
+                    code :codeObj
+                };
                 
-                if (entry) {
-                    
-                    // make sense of the actual comment
-                    entry.comment = parseAnnotation(comment);
-
-                    entries.push(entry);
-                }
-                
-                else {
-                    console.log("Unable to process context:", [firstLine]);
-                    totalUnprocessed ++;
-                }
-                
+                entries.push(entry);                
             }
             
         }
@@ -117,12 +118,7 @@ define(function (require, exports, module) {
     }    
     
     
-    function getUnprocessedCount() {
-        return totalUnprocessed;
-    }
-    
     exports.parseFileContents = parseFileContents;
     exports.parseAnnotation = parseAnnotation;
-    exports.getUnprocessedCount = getUnprocessedCount;
    
 });
